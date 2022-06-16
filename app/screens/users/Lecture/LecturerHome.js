@@ -17,9 +17,11 @@ export default function LecturerHomeScreen({navigation}){
     <View style={styles.container}>
       <ScrollView style = {styles.scrollScreen} >
 
-        <View style = {[styles.homeContent ,{backgroundColor : '#bef7df'}]}> 
-          <Text style = {styles.homeContentText}><Entypo name="book" size={24} color="black" /> Courses</Text>
-        </View>
+      <View style = {[styles.homeContent ,{backgroundColor : '#bef7df'}]}> 
+        <TouchableOpacity onPress={() =>{ navigation.navigate('ClassroomWelcome')}}>
+          <Text style = {styles.homeContentText}><Entypo name="book" size={24} color="black" /> Classroom</Text>
+        </TouchableOpacity>
+      </View>
 
         <View style = {[styles.homeContent ,{backgroundColor : '#f1fae8'}]}>  
           <TouchableOpacity onPress={() =>{ navigation.navigate('TimeTable')}}>

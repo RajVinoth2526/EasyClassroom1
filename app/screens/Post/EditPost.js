@@ -128,13 +128,13 @@ export default function EditPostScreen({navigation,route}){
             style={styles.textinput}
             
             defaultValue={title}
-            
+            // placeholder = {title}
             
             multiline={true}
             numberOfLines={2}
             
             textAlignVertical="top" 
-            onChangeText={(title) => setTitle(title)}
+            onChangeText={(title) => setTitle('hellooooooo')}
               />
             
         </View>

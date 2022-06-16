@@ -30,6 +30,8 @@ import EditPostScreen from "../screens/Post/EditPost";
 import PostScreen from "../screens/Post/PostScreen";
 import EditNoticeScreen from "../screens/Noticeboard/EditNotice";
 import TimeTableScreen from "../screens/TimeTable/TimeTableScreen";
+import ClassroomWelcome from "../screens/Classroom/welcome";
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -63,7 +65,8 @@ export default function App() {
       <Stack.Screen name={'EditPost'} component={EditPostScreen} options={{ headerShown: false }} />
       <Stack.Screen name={'EditNotice'} component={EditNoticeScreen} options={{ headerShown: false }} />
       <Stack.Screen name={'TimeTable'} component={TimeTableScreen} options={{ headerShown: false }} />
-     
+      <Stack.Screen name={'ClassroomWelcome'} component={ClassroomWelcome} options={{ headerShown: false }} />
+      
               
       </Stack.Navigator>
     </NavigationContainer>

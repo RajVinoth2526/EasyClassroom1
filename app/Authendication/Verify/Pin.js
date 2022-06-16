@@ -75,9 +75,8 @@ export default function Pin({ navigation }) {
     }
   }
 return (
-    
-   <View style = {styles.container}>
-     <SafeAreaView>
+  <SafeAreaView style = {styles.container}>  
+  
 
      <View style={styles.logoContainer}>
         <Image
@@ -86,7 +85,7 @@ return (
         ></Image>
       <Text style={styles.text}>TIME TO LEARN</Text>
       </View>
-
+    <ScrollView style = {{height :100}}>
      <View style = {styles.head}>
        <Text style = {styles.headText}>Enter PIN</Text>
 
@@ -99,7 +98,8 @@ return (
           width: 15,
           height: 15,
           
-          marginTop  :13,
+          marginTop  :'50%',
+          marginBottom:'120%',
           borderRadius: 10,
           opacity: 0.5,
           backgroundColor: '#7ecbf7',
@@ -123,30 +123,35 @@ return (
       />
 
    </View> 
+  </ScrollView> 
    <View style = {styles.enterButton}>
      <TouchableOpacity  onPress={handlePin}>
        <Text style = {styles.enterText}>Verify</Text>
      </TouchableOpacity>
    </View> 
 
-   </SafeAreaView> 
+  
     
 
-   </View>
-    
+  
+  </SafeAreaView> 
   );
 }
 
 const styles = StyleSheet.create({
 
   container : {
-    alignItems : 'center',
-    backgroundColor :'white',
-    flex : 1
+    flex: 1,
+    padding: 15,
+    paddingTop: 30,
+    alignItems:'center',
+    backgroundColor: "#ffffff",
+    
 
   },
   head :{
-    marginTop : 25,
+    marginTop : '10%',
+    marginBottom : '10%',
     alignItems :'center',
   },
   headText :{
@@ -155,7 +160,8 @@ const styles = StyleSheet.create({
   },
   pinEntry : {
 
-    marginTop : 50 ,
+    marginTop : '10%' ,
+    marginBottom:'20%'
    
    
      
@@ -166,7 +172,7 @@ const styles = StyleSheet.create({
     width : 150,
     height :50,
     borderRadius :20,
-    marginTop : 70,
+    marginBottom : '10%',
     alignSelf : 'center',
     shadowColor: "#000",
     backgroundColor : '#34dbeb',
