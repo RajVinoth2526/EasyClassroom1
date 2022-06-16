@@ -2,7 +2,11 @@ import React from 'react';
 
 import {View,Text,StyleSheet,TouchableOpacity} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
 
 export default function DemoHomeScreen({navigation}){
 
