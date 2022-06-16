@@ -10,7 +10,7 @@ import * as firebase from 'firebase';
 import {createDrawerNavigator ,DrawerContentScrollView, DrawerItemList, DrawerItem} from '@react-navigation/drawer';
 import { loggingOut } from '../../../API/firebaseMethods/firebaseMethod';
 import Profile from '../Profile/Profile';
-import SettingsScreen from '../settings /SettingsScreen';
+import SettingsScreen from '../settings/SettingsScreen';
 import AdminHomeScreen from './Admin/AdminHome';
 import StudentHomeScreen from './Student/StudentHome';
 import LecturerHomeScreen from './Lecture/LecturerHome';
