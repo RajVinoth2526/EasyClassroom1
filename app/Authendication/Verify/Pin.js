@@ -1,194 +1,177 @@
-
-import React, { useState ,useEffect} from 'react';
-import { View, Text, Image ,TextInput, Alert, ScrollView, Keyboard ,StyleSheet, SafeAreaView} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import CodeInput from 'react-native-confirmation-code-input';
-import { StoreRole } from '../../../API/firebaseMethods/firebaseMethod';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  Alert,
+  ScrollView,
+  Keyboard,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import CodeInput from "react-native-confirmation-code-input";
+import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
-import * as firebase from 'firebase';
-
-
-
-
+import SmoothPinCodeInput from "react-native-smooth-pincode-input";
+import * as firebase from "firebase";
 
 export default function Pin({ navigation }) {
-
-
-  const [pin, setPin] = useState('');
-  const [lectuerPin, setLecturerPin] = useState('');
-  const [demoPin, setDemoPin] = useState('');
-  const [studentPin, setStudentPin] = useState('');
-  const [adminPin, setAdminPin] = useState('');
-
+  const [pin, setPin] = useState("");
+  const [lectuerPin, setLecturerPin] = useState("");
+  const [demoPin, setDemoPin] = useState("");
+  const [studentPin, setStudentPin] = useState("");
+  const [adminPin, setAdminPin] = useState("");
 
   const emptyState = () => {
-    setPin('');
-  }
+    setPin("");
+  };
 
   useEffect(() => {
-    async function getUserInfo(){
+    async function getUserInfo() {
       let doc = await firebase
-      .firestore()
-      .collection('PinForRole')
-      .doc('pins')
-      .get();
+        .firestore()
+        .collection("PinForRole")
+        .doc("pins")
+        .get();
 
-      if (!doc.exists){
-        Alert.alert('No user data found!')
+      if (!doc.exists) {
+        Alert.alert("No user data found!");
       } else {
         let dataObj = doc.data();
         setLecturerPin(dataObj.LecturerPin);
         setDemoPin(dataObj.DemoPin);
         setStudentPin(dataObj.StudentPin);
-        setAdminPin(dataObj.AdminPin)    
-        
-        
+        setAdminPin(dataObj.AdminPin);
       }
     }
     getUserInfo();
-  })
+  });
 
-
-  
   const handlePin = () => {
-
-    if(pin == lectuerPin){
-      navigation.navigate('LecturerSignUp');
+    if (pin == lectuerPin) {
+      navigation.navigate("LecturerSignUp");
       emptyState();
-
-    }else if(pin ==  demoPin){
-      navigation.navigate('DemoSignUp');
+    } else if (pin == demoPin) {
+      navigation.navigate("DemoSignUp");
       emptyState();
-
-    }else if(pin == studentPin){
-      navigation.navigate('StudentSignUp');
+    } else if (pin == studentPin) {
+      navigation.navigate("StudentSignUp");
       emptyState();
-      
-    } else if(pin == adminPin){
-      navigation.navigate('AdminSignUp');
+    } else if (pin == adminPin) {
+      navigation.navigate("AdminSignUp");
       emptyState();
-    }
-    else{
-      Alert.alert('Incorrect Pin');
+    } else {
+      Alert.alert("Incorrect Pin");
       emptyState();
     }
-  }
-return (
-  <SafeAreaView style = {styles.container}>  
-  
-
-     <View style={styles.logoContainer}>
+  };
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.logoContainer}>
         <Image
-        style={styles.logo}
-        source={require("../../assets/logo.png")}
+          style={styles.logo}
+          source={require("../../assets/logo.png")}
         ></Image>
-      <Text style={styles.text}>TIME TO LEARN</Text>
+        <Text style={styles.text}>TIME TO LEARN</Text>
       </View>
-    <ScrollView style = {{height :100}}>
-     <View style = {styles.head}>
-       <Text style = {styles.headText}>Enter PIN</Text>
+      <ScrollView style={{ height: 100 }}>
+        <View style={styles.head}>
+          <Text style={styles.headText}>Enter PIN</Text>
+        </View>
+        <View style={styles.pinEntry}>
+          <SmoothPinCodeInput
+            placeholder={
+              <View
+                style={{
+                  width: 15,
+                  height: 15,
 
-
-     </View>
-    <View style = {styles.pinEntry}>
-     <SmoothPinCodeInput
-        placeholder={<View style={{
-         
-          width: 15,
-          height: 15,
-          
-          marginTop  :'50%',
-          marginBottom:'120%',
-          borderRadius: 10,
-          opacity: 0.5,
-          backgroundColor: '#7ecbf7',
-        }}></View>}
-        mask={<View style={{
-          width: 10,
-          height: 10,
-          borderRadius: 25,
-          backgroundColor: '#0378ff',
-        }}></View>}
-        cellSize = {40}
-        keyboardType = {'default'}
-        cellSpacing = {0.001}
-        codeLength={6}
-        maskDelay={200}
-        password={true}
-        cellStyle={null}
-        cellStyleFocused={null}
-        value={pin}
-        onTextChange={(pin) => setPin(pin)}
-      />
-
-   </View> 
-  </ScrollView> 
-   <View style = {styles.enterButton}>
-     <TouchableOpacity  onPress={handlePin}>
-       <Text style = {styles.enterText}>Verify</Text>
-     </TouchableOpacity>
-   </View> 
-
-  
-    
-
-  
-  </SafeAreaView> 
+                  marginTop: "50%",
+                  marginBottom: "120%",
+                  borderRadius: 10,
+                  opacity: 0.5,
+                  backgroundColor: "#7ecbf7",
+                }}
+              ></View>
+            }
+            mask={
+              <View
+                style={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 25,
+                  backgroundColor: "#0378ff",
+                }}
+              ></View>
+            }
+            cellSize={40}
+            keyboardType={"default"}
+            cellSpacing={0.001}
+            codeLength={6}
+            maskDelay={200}
+            password={true}
+            cellStyle={null}
+            cellStyleFocused={null}
+            value={pin}
+            onTextChange={(pin) => setPin(pin)}
+          />
+        </View>
+      </ScrollView>
+      <View style={styles.enterButton}>
+        <TouchableOpacity onPress={handlePin}>
+          <Text style={styles.enterText}>Verify</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-
-  container : {
+  container: {
     flex: 1,
     padding: 15,
     paddingTop: 30,
-    alignItems:'center',
+    alignItems: "center",
     backgroundColor: "#ffffff",
-    
+  },
+  head: {
+    marginTop: "10%",
+    marginBottom: "10%",
+    alignItems: "center",
+  },
+  headText: {
+    alignSelf: "center",
+    fontSize: 40,
+  },
+  pinEntry: {
+    marginTop: "10%",
+    marginBottom: "20%",
+  },
+  enterButton: {
+    backgroundColor: "#7ecbf7",
 
-  },
-  head :{
-    marginTop : '10%',
-    marginBottom : '10%',
-    alignItems :'center',
-  },
-  headText :{
-    alignSelf :'center',
-    fontSize : 40,
-  },
-  pinEntry : {
-
-    marginTop : '10%' ,
-    marginBottom:'20%'
-   
-   
-     
-  },
-  enterButton : {
-    backgroundColor :'#7ecbf7',
-
-    width : 150,
-    height :50,
-    borderRadius :20,
-    marginBottom : '10%',
-    alignSelf : 'center',
+    width: 150,
+    height: 50,
+    borderRadius: 20,
+    marginBottom: "10%",
+    alignSelf: "center",
     shadowColor: "#000",
-    backgroundColor : '#34dbeb',
+    backgroundColor: "#34dbeb",
     shadowOffset: {
-	  width: 0,
-	  height: 1,
+      width: 0,
+      height: 1,
     },
     shadowOpacity: 0.9,
     shadowRadius: 10,
-    elevation:8 ,
+    elevation: 8,
   },
 
-  enterText : {
-    marginTop :5,
-    alignSelf : 'center',
-    fontSize :25
+  enterText: {
+    marginTop: 5,
+    alignSelf: "center",
+    fontSize: 25,
   },
   logo: {
     width: 150,
@@ -196,16 +179,11 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     top: 20,
-    marginBottom : 70,
+    marginBottom: 70,
     alignItems: "center",
     padding: 10,
   },
-  text :{
-    marginTop : -20
-  }
-  
-  
-
-
- 
+  text: {
+    marginTop: -20,
+  },
 });

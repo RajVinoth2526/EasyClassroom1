@@ -4,14 +4,11 @@ import AuthNavigator from "./app/navigation/AuthNavigator";
 import { StatusBar, View, StyleSheet } from "react-native";
 
 export default function App() {
- 
   return (
     <View style={styles.container}>
-     
-        <NavigationContainer>
-          <AuthNavigator />
-        </NavigationContainer>
-     
+      <NavigationContainer>
+        <AuthNavigator />
+      </NavigationContainer>
     </View>
   );
 }
