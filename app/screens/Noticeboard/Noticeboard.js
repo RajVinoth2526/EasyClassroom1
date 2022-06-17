@@ -23,7 +23,11 @@ export default function NoticeboardScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.head}>
         <Text style={styles.headText}>
-          <Octicons name="note" size={30} color="#34dbeb" /> Noticeboard
+        <MaterialCommunityIcons
+              name="text-box-multiple"
+              size={30}
+              color="black"
+            /> Noticeboard
         </Text>
       </View>
 
@@ -83,8 +87,8 @@ const styles = StyleSheet.create({
   homeContent: {
     alignSelf: "center",
     alignItems: "center",
-    marginTop: 10,
-    marginBottom: 15,
+    marginTop: '5%',
+    marginBottom: '5%',
     backgroundColor: "#f2ffff",
     height: 120,
     width: 290,
@@ -105,8 +109,8 @@ const styles = StyleSheet.create({
   },
   head: {
     alignSelf: "center",
-    marginTop: 65,
-    marginBottom: 50,
+    marginTop: '20%',
+    marginBottom: '10%',
     alignSelf: "center",
   },
   headText: {

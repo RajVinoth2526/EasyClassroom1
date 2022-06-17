@@ -520,15 +520,16 @@ export default function TimeTableScreen({ navigation }) {
                 }}
               />
 
-              <View style={styles.uploadButton}>
+             
+            </View>
+            <View style={styles.uploadButton}>
                 <MaterialCommunityIcons
                   onPress={pickImage1}
                   name="image-plus"
                   size={24}
-                  color="#02b2f2"
+                  color="black"
                 />
               </View>
-            </View>
           </View>
           <View
             style={[
@@ -559,15 +560,16 @@ export default function TimeTableScreen({ navigation }) {
                 }}
               />
 
-              <View style={styles.uploadButton}>
+              
+            </View>
+            <View style={styles.uploadButton}>
                 <MaterialCommunityIcons
                   onPress={pickImage2}
                   name="image-plus"
                   size={24}
-                  color="#02b2f2"
+                  color="black"
                 />
               </View>
-            </View>
           </View>
           <View
             style={[
@@ -598,15 +600,16 @@ export default function TimeTableScreen({ navigation }) {
                 }}
               />
 
-              <View style={styles.uploadButton}>
+              
+            </View>
+            <View style={styles.uploadButton}>
                 <MaterialCommunityIcons
                   onPress={pickImage3}
                   name="image-plus"
                   size={24}
-                  color="#02b2f2"
+                  color="black"
                 />
               </View>
-            </View>
           </View>
         </ScrollView>
       </View>
@@ -695,6 +698,7 @@ const styles = StyleSheet.create({
   },
   uploadButton: {
     alignItems: "flex-end",
-    marginEnd: 40,
+    marginEnd: '10%',
+    marginBottom : '2%'
   },
 });

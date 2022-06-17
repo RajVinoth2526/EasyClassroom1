@@ -466,6 +466,7 @@ export default function Profile({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    
     padding: 50,
     marginBottom: 10,
     backgroundColor: "white",
@@ -482,10 +483,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   scrollScreen: {
-    marginTop: 20,
-    marginBottom: 525,
-    marginLeft: 15,
-    marginRight: 15,
+    marginTop: '5%',
+    height:'70%',
+    marginBottom:'10%',
+    marginLeft: '5%',
+    marginRight: '5%',
     borderRadius: 15,
     backgroundColor: "#88e1fc",
     marginHorizontal: 1,
