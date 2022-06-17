@@ -162,7 +162,6 @@ export default function TimeTableScreen({ navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-
   const generateRandomBrightestHSLColor = () => {
     return "hsla(" + ~~(360 * Math.random()) + "," + "80%," + "90%,2)";
   };
@@ -175,77 +174,104 @@ export default function TimeTableScreen({ navigation }) {
             <Text style={{ fontSize: 20, alignSelf: "center" }}>
               {" "}
               <MaterialCommunityIcons
-              name="table-clock"
-              size={25}
-              color="black"
-            />{" "}Time Table
+                name="table-clock"
+                size={25}
+                color="black"
+              />{" "}
+              Time Table
             </Text>
           </View>
-         <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{  marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 1
-            </Text>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 1
+              </Text>
+            </View>
+            <TouchableOpacity>
+              <View style={styles.avatar}>
+                <Image
+                  source={{ uri: image1 }}
+                  style={{
+                    borderRadius: 3,
+                    height: 200,
+                    width: 300,
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 2
+              </Text>
+            </View>
+
             <View style={styles.avatar}>
               <Image
-                source={{ uri: image1 }}
+                source={{ uri: image2 }}
                 style={{
-                  borderRadius :3,
+                  borderRadius: 3,
                   height: 200,
                   width: 300,
                 }}
               />
             </View>
-          </TouchableOpacity>
-         </View>
-         <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 2
-            </Text>
           </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 3
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image2 }}
-              style={{
-                borderRadius :3,
-                height: 200,
-                width: 300,
-              }}
-            />
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image3 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+            </View>
           </View>
-
-          </View>
-          <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 3
-            </Text>
-          </View>
-
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image3 }}
-              style={{
-                borderRadius :3,
-                height: 200,
-                width: 300,
-              }}
-            />
-          </View>
-        </View>
         </ScrollView>
       </View>
     );
@@ -259,69 +285,96 @@ export default function TimeTableScreen({ navigation }) {
               <Octicons name="note" size={25} color="#34dbeb" /> Time Table
             </Text>
           </View>
-          <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 1
-            </Text>
-          </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 1
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image1 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image1 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+            </View>
           </View>
-        </View>
-        <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 2
-            </Text>
-          </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 2
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image2 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image2 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+            </View>
           </View>
-        </View>
-        <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 3
-            </Text>
-          </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 3
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image3 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image3 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+            </View>
           </View>
-        </View>
         </ScrollView>
       </View>
     );
@@ -335,69 +388,96 @@ export default function TimeTableScreen({ navigation }) {
               <Octicons name="note" size={25} color="#34dbeb" /> Time Table
             </Text>
           </View>
-          <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 1
-            </Text>
-          </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 1
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image1 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image1 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+            </View>
           </View>
-        </View>
-        <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 2
-            </Text>
-          </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 2
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image2 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image2 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+            </View>
           </View>
-        </View>
-        <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 3
-            </Text>
-          </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 3
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image3 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image3 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+            </View>
           </View>
-        </View>
         </ScrollView>
       </View>
     );
@@ -411,95 +491,122 @@ export default function TimeTableScreen({ navigation }) {
               <Octicons name="note" size={25} color="#34dbeb" /> Time Table
             </Text>
           </View>
-          <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 1
-            </Text>
-          </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 1
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image1 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
-          
-            <View style={styles.uploadButton}>
-              <MaterialCommunityIcons
-                onPress={pickImage1}
-                name="image-plus"
-                size={24}
-                color="#02b2f2"
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image1 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
               />
+
+              <View style={styles.uploadButton}>
+                <MaterialCommunityIcons
+                  onPress={pickImage1}
+                  name="image-plus"
+                  size={24}
+                  color="#02b2f2"
+                />
+              </View>
             </View>
           </View>
-          </View>
-          <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 2
-            </Text>
-          </View>
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 2
+              </Text>
+            </View>
 
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image2 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
-
-            <View style={styles.uploadButton}>
-              <MaterialCommunityIcons
-                onPress={pickImage2}
-                name="image-plus"
-                size={24}
-                color="#02b2f2"
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image2 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
               />
+
+              <View style={styles.uploadButton}>
+                <MaterialCommunityIcons
+                  onPress={pickImage2}
+                  name="image-plus"
+                  size={24}
+                  color="#02b2f2"
+                />
+              </View>
             </View>
           </View>
-          </View>
-          <View style = {[styles.Box, {backgroundColor : generateRandomBrightestHSLColor()}]}>
-          <View style={{ marginTop: 30 }}>
-            <Text
-              style={{ fontSize: 20, alignItems: "flex-start", marginLeft: 30 }}
-            >
-              {" "}
-              Level 3
-            </Text>
-          </View>
-
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image3 }}
-              style={{
-                borderRadius:3,
-                height: 200,
-                width: 300,
-              }}
-            />
-
-            <View style={styles.uploadButton}>
-              <MaterialCommunityIcons
-                onPress={pickImage3}
-                name="image-plus"
-                size={24}
-                color="#02b2f2"
-              />
+          <View
+            style={[
+              styles.Box,
+              { backgroundColor: generateRandomBrightestHSLColor() },
+            ]}
+          >
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  alignItems: "flex-start",
+                  marginLeft: 30,
+                }}
+              >
+                {" "}
+                Level 3
+              </Text>
             </View>
-          </View>
+
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image3 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+
+              <View style={styles.uploadButton}>
+                <MaterialCommunityIcons
+                  onPress={pickImage3}
+                  name="image-plus"
+                  size={24}
+                  color="#02b2f2"
+                />
+              </View>
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -533,7 +640,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 10,
     marginTop: -10,
-    height: '100%',
+    height: "100%",
     backgroundColor: "white",
     marginHorizontal: 1,
     shadowColor: "#000",
@@ -545,8 +652,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 0.001,
   },
- 
- 
+
   Box: {
     marginBottom: 15,
     marginTop: 15,
@@ -565,9 +671,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 6,
   },
- 
- 
- 
+
   Loadingcontainer: {
     flex: 1,
 
@@ -578,7 +682,7 @@ const styles = StyleSheet.create({
   avatar: {
     marginTop: 20,
     marginBottom: 30,
-    borderRadius:3,
+    borderRadius: 3,
     alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -588,7 +692,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 5,
-    
   },
   uploadButton: {
     alignItems: "flex-end",
