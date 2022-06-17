@@ -1,24 +1,29 @@
-import React , { useEffect, useState } from 'react';
-import { ActivityIndicator, RefreshControl, StyleSheet, Text, View ,Image,Alert,TouchableOpacity} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import * as ImagePicker from 'expo-image-picker';
-import * as firebase from 'firebase';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Foundation } from '@expo/vector-icons';
-import { UploadImage } from '../../../API/firebaseMethods/firebaseMethod';
-import { GetImage } from '../../../API/firebaseMethods/firebaseMethod';
-import IMAGE from '../../assets/profile-placeholder.png';
-
-
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import * as ImagePicker from "expo-image-picker";
+import * as firebase from "firebase";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { Foundation } from "@expo/vector-icons";
+import { UploadImage } from "../../../API/firebaseMethods/firebaseMethod";
+import { GetImage } from "../../../API/firebaseMethods/firebaseMethod";
+import IMAGE from "../../assets/profile-placeholder.png";
 
 const wait = (timeout) => {
-  return new Promise(resolve => setTimeout(resolve, timeout));
-}
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
-export default function Profile({navigation}) {
-
-
+export default function Profile({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -27,693 +32,549 @@ export default function Profile({navigation}) {
   }, []);
 
   let currentUserUID = firebase.auth().currentUser.uid;
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
-  const [district, setDistrict] = useState('');
-  const [faculty, setFaculty] = useState('');
-  const [gender, setGender] = useState('');
-  const [course, setCourse] = useState('');
-  const [indexNumber, setIndexNumber] = useState('');
-  const [registrationNumber, setRegistrationNumber] = useState('');
-  const [id, setId] = useState('');
-  const [department, setDepartment] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [district, setDistrict] = useState("");
+  const [faculty, setFaculty] = useState("");
+  const [gender, setGender] = useState("");
+  const [course, setCourse] = useState("");
+  const [indexNumber, setIndexNumber] = useState("");
+  const [registrationNumber, setRegistrationNumber] = useState("");
+  const [id, setId] = useState("");
+  const [department, setDepartment] = useState("");
 
-  
-  
-  
   const currentUser = firebase.auth().currentUser;
 
-    
+  // const [photoURL, setPhotoURL] = useState(IMAGENAME);
+  const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
+  const [image, setImage] = useState(exampleImageUri);
 
-   
-   
-   // const [photoURL, setPhotoURL] = useState(IMAGENAME);
-   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri
-   const [image, setImage] = useState(exampleImageUri);
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
+    setImage(result.uri);
+    // console.log(result);
 
-  
-
-    const pickImage = async () => {
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      })
-  
-      
-  
-      setImage(result.uri);
-     // console.log(result);
-  
-      if (!result.cancelled) {
-
-        UploadImage(result.uri, currentUserUID)
+    if (!result.cancelled) {
+      UploadImage(result.uri, currentUserUID)
         .then(() => {
           console.log("Uploaded");
         })
-        .catch((error) =>{
-                Alert.alert('Error:',error.message);
+        .catch((error) => {
+          Alert.alert("Error:", error.message);
         });
+    }
 
-        
-      }
-
-      
-
-    
-
-      
-     await firebase.storage()
+    await firebase
+      .storage()
       .ref()
-      .child('images/' +currentUserUID)
-      .getDownloadURL()
+      .child("images/" + currentUserUID)
+      .getDownloadURL();
 
-
-
-    return(
+    return (
       <View style={styles.Loadingcontainer}>
-     
-      <Image
-        style={styles.logo}
-        source={require("../../assets/logo.png")}
-      ></Image>
-      <Text style={{color: 'black', fontSize: 40}}>Easy Classroom</Text>
-      <ActivityIndicator color="blue" size="large" />
-    
+        <Image
+          style={styles.logo}
+          source={require("../../assets/logo.png")}
+        ></Image>
+        <Text style={{ color: "black", fontSize: 40 }}>Easy Classroom</Text>
+        <ActivityIndicator color="blue" size="large" />
       </View>
-    )
-      
-       
-    
-      
-      
-    
-    };
+    );
+  };
 
+  useEffect(() => {
+    firebase
+      .storage()
+      .ref()
+      .child("profileImage/" + currentUserUID) //name in storage in firebase console
+      .getDownloadURL()
+      .then((url) => {
+        setImage(url);
+      })
+      .catch((e) => console.log("Errors while downloading => ", e));
+  }, []);
 
-   
-    
-      useEffect(() => {
-          firebase.storage()
-            .ref()
-            .child('profileImage/' +currentUserUID) //name in storage in firebase console
-            .getDownloadURL()
-            .then((url) => {
-              setImage(url);
-            })
-            .catch((e) => console.log('Errors while downloading => ', e));
-        }, []);
-
-    
-
-  
-
-
-  
-  
-
-   
-    
-        
-    
-    useEffect(() => {
-    async function getUserInfo(){
+  useEffect(() => {
+    async function getUserInfo() {
       let doc = await firebase
-      .firestore()
-      .collection("users")
-      .doc(currentUserUID)
-      .get();
+        .firestore()
+        .collection("users")
+        .doc(currentUserUID)
+        .get();
 
-      if (!doc.exists){
-        Alert.alert('No user data found!')
+      if (!doc.exists) {
+        Alert.alert("No user data found!");
       } else {
         let dataObj = doc.data();
-        setFirstName(dataObj.firstName)
-        setLastName(dataObj.lastName) 
-        setIndexNumber(dataObj.indexNumber)
-        setRegistrationNumber(dataObj.registrationNumber) 
-        setFaculty(dataObj.faculty)
-        setCourse(dataObj.course) 
-        setGender(dataObj.gender)
-        setEmail(dataObj.email)
+        setFirstName(dataObj.firstName);
+        setLastName(dataObj.lastName);
+        setIndexNumber(dataObj.indexNumber);
+        setRegistrationNumber(dataObj.registrationNumber);
+        setFaculty(dataObj.faculty);
+        setCourse(dataObj.course);
+        setGender(dataObj.gender);
+        setEmail(dataObj.email);
         setId(dataObj.id);
         setDepartment(dataObj.department);
-        setRole(dataObj.role) 
-        setDistrict(dataObj.district)
-       
+        setRole(dataObj.role);
+        setDistrict(dataObj.district);
       }
-
-
     }
     getUserInfo();
+  });
 
-
-  })
-
-
-  
-
-
-
-if( role == 'Lecturer'){ 
-
-
-  return (
-    <View style = {StyleSheet.container}>
-        <View style = {styles.background}>
-    
-       <View style = {styles.avatar}>
-        <Image source={{ uri: image }} style={{  
-          height : 100,
-          width :100,
-          borderRadius :50 }} />
-        </View>
-      
-        <View style = {styles.uploadButton} >
-              <MaterialCommunityIcons onPress ={pickImage} name="image-plus" size={24} color="#02b2f2" />
-        </View>
-        <View style={styles.fullName} >
-            <Text style ={{fontWeight:'bold',
-              fontSize : 15,}} >{firstName}  {lastName}
-            </Text>
-        </View>
-
-  <View style = {styles.containerScrollbar}>
-   <ScrollView style = {styles.scrollScreen} 
-
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
-
-
-        >
-          
-          <View style = {styles.profileDetails}>
-             
-
-
-          <Text  style = {styles.headText}> ID </Text>
-              <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{id}</Text>
-              </View>
-              <Text  style = {styles.headText}> First Name </Text>
-              <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{firstName}</Text>
-              </View>
-              <Text style = {styles.headText} > Last Name </Text>
-              <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{lastName}</Text>
-              </View>
-              
-              <Text style = {styles.headText} > Gender  </Text>
-              <View style ={styles.dataContainer}>
-              <Text style={styles.dataText}>{gender}</Text>
-              </View>
-              <Text style = {styles.headText} > District  </Text>
-              <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{district}</Text>
-              </View>
-              <Text style = {styles.headText} > Faculty  </Text>
-              <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{faculty}</Text>
-              </View>
-              <Text style = {styles.headText} > Deparment  </Text>
-              <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{department}</Text>
-              </View>
-              
-
-              <Text style = {styles.headText} > Email  </Text>
-              <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{email}</Text>
-              </View>
-
-             
-
-              <TouchableOpacity style = {styles.buttonEditProfile} onPress={() => navigation.navigate('UpdateProfile')} >
-                 <AntDesign name="edit" size={30} color="#02b2f2" />
-                 <Text style = { {color :'#02b2f2'}}>Edit</Text>
-                 
-             </TouchableOpacity> 
-
-            
-
-             
-            
-           </View>  
-           
-          </ScrollView>
-          </View>  
-
+  if (role == "Lecturer") {
+    return (
+      <View style={StyleSheet.container}>
+        <View style={styles.background}>
+          <View style={styles.avatar}>
+            <Image
+              source={{ uri: image }}
+              style={{
+                height: 100,
+                width: 100,
+                borderRadius: 50,
+              }}
+            />
           </View>
 
-         
-    </View>
-  )
+          <View style={styles.uploadButton}>
+            <MaterialCommunityIcons
+              onPress={pickImage}
+              name="image-plus"
+              size={24}
+              color="#02b2f2"
+            />
+          </View>
+          <View style={styles.fullName}>
+            <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+              {firstName} {lastName}
+            </Text>
+          </View>
 
-  
-
-  
-  
- 
-  }
-  else if( role == 'Demonstrator'){
-
-    return (
-      <View style = {StyleSheet.container}>
-            
-  
-            <View style = {styles.avatar}>
-            <Image source={{ uri: image }} style={{  
-              height : 100,
-              width :100,
-              borderRadius :50 }} />
-            </View>
-          
-            <View style = {styles.uploadButton} >
-                  <MaterialCommunityIcons onPress ={pickImage} name="image-plus" size={24} color="#02b2f2" />
-            </View>
-            <View style={styles.fullName} >
-                <Text style ={{fontWeight:'bold',
-                  fontSize : 15,}} >{firstName}  {lastName}
-                </Text>
-            </View>
-            <ScrollView style = {styles.scrollScreen} >
-  
-              <View style = {styles.profileDetails}>
-               
-  
-                <Text  style = {styles.headText}> ID </Text>
-                <View style ={styles.dataContainer}>
+          <View style={styles.containerScrollbar}>
+            <ScrollView
+              style={styles.scrollScreen}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
+              <View style={styles.profileDetails}>
+                <Text style={styles.headText}> ID </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{id}</Text>
                 </View>
-                <Text  style = {styles.headText}> First Name </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> First Name </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{firstName}</Text>
                 </View>
-                <Text style = {styles.headText} > Last Name </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> Last Name </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{lastName}</Text>
                 </View>
-                
-                <Text style = {styles.headText} > Gender  </Text>
-                <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{gender}</Text>
+
+                <Text style={styles.headText}> Gender </Text>
+                <View style={styles.dataContainer}>
+                  <Text style={styles.dataText}>{gender}</Text>
                 </View>
-                <Text style = {styles.headText} > District  </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> District </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{district}</Text>
                 </View>
-                <Text style = {styles.headText} > Faculty  </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> Faculty </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{faculty}</Text>
                 </View>
-
-                <Text style = {styles.headText} > Department  </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> Deparment </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{department}</Text>
                 </View>
-                
-                <Text style = {styles.headText} > Email  </Text>
-                <View style ={styles.dataContainer}>
+
+                <Text style={styles.headText}> Email </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{email}</Text>
                 </View>
-  
-               
-  
-                <TouchableOpacity style = {styles.buttonEditProfile} onPress={() => navigation.navigate('UpdateProfile')} >
-                   <AntDesign name="edit" size={30} color="#02b2f2" />
-                   <Text style = { {color :'#02b2f2'}}>Edit</Text>
-                   
-               </TouchableOpacity> 
-  
-               
-              
-                
-               
-            </View>  
-             
+
+                <TouchableOpacity
+                  style={styles.buttonEditProfile}
+                  onPress={() => navigation.navigate("UpdateProfile")}
+                >
+                  <AntDesign name="edit" size={30} color="#02b2f2" />
+                  <Text style={{ color: "#02b2f2" }}>Edit</Text>
+                </TouchableOpacity>
+              </View>
             </ScrollView>
-  
-  
-          
-            
-             
-  
+          </View>
         </View>
-    )
-
-
-  }
-
-
-  
-
-  else if (role == 'Student'){
-
+      </View>
+    );
+  } else if (role == "Demonstrator") {
     return (
-      <View style = {StyleSheet.container}>
-          <View style = {styles.background}>
-      
-         <View style = {styles.avatar}>
-          <Image source={{ uri: image }} style={{  
-            height : 100,
-            width :100,
-            borderRadius :50 }} />
-          </View>
-        
-          <View style = {styles.uploadButton} >
-                <MaterialCommunityIcons onPress ={pickImage} name="image-plus" size={24} color="#02b2f2" />
-          </View>
-          <View style={styles.fullName} >
-              <Text style ={{fontWeight:'bold',
-                fontSize : 15,}} >{firstName}  {lastName}
-              </Text>
-          </View>
+      <View style={StyleSheet.container}>
+        <View style={styles.avatar}>
+          <Image
+            source={{ uri: image }}
+            style={{
+              height: 100,
+              width: 100,
+              borderRadius: 50,
+            }}
+          />
+        </View>
 
-    <View style = {styles.containerScrollbar}>
-     <ScrollView style = {styles.scrollScreen} 
+        <View style={styles.uploadButton}>
+          <MaterialCommunityIcons
+            onPress={pickImage}
+            name="image-plus"
+            size={24}
+            color="#02b2f2"
+          />
+        </View>
+        <View style={styles.fullName}>
+          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+            {firstName} {lastName}
+          </Text>
+        </View>
+        <ScrollView style={styles.scrollScreen}>
+          <View style={styles.profileDetails}>
+            <Text style={styles.headText}> ID </Text>
+            <View style={styles.dataContainer}>
+              <Text style={styles.dataText}>{id}</Text>
+            </View>
+            <Text style={styles.headText}> First Name </Text>
+            <View style={styles.dataContainer}>
+              <Text style={styles.dataText}>{firstName}</Text>
+            </View>
+            <Text style={styles.headText}> Last Name </Text>
+            <View style={styles.dataContainer}>
+              <Text style={styles.dataText}>{lastName}</Text>
+            </View>
 
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
+            <Text style={styles.headText}> Gender </Text>
+            <View style={styles.dataContainer}>
+              <Text style={styles.dataText}>{gender}</Text>
+            </View>
+            <Text style={styles.headText}> District </Text>
+            <View style={styles.dataContainer}>
+              <Text style={styles.dataText}>{district}</Text>
+            </View>
+            <Text style={styles.headText}> Faculty </Text>
+            <View style={styles.dataContainer}>
+              <Text style={styles.dataText}>{faculty}</Text>
+            </View>
+
+            <Text style={styles.headText}> Department </Text>
+            <View style={styles.dataContainer}>
+              <Text style={styles.dataText}>{department}</Text>
+            </View>
+
+            <Text style={styles.headText}> Email </Text>
+            <View style={styles.dataContainer}>
+              <Text style={styles.dataText}>{email}</Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.buttonEditProfile}
+              onPress={() => navigation.navigate("UpdateProfile")}
+            >
+              <AntDesign name="edit" size={30} color="#02b2f2" />
+              <Text style={{ color: "#02b2f2" }}>Edit</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  } else if (role == "Student") {
+    return (
+      <View style={StyleSheet.container}>
+        <View style={styles.background}>
+          <View style={styles.avatar}>
+            <Image
+              source={{ uri: image }}
+              style={{
+                height: 100,
+                width: 100,
+                borderRadius: 50,
+              }}
             />
-          }
+          </View>
 
+          <View style={styles.uploadButton}>
+            <MaterialCommunityIcons
+              onPress={pickImage}
+              name="image-plus"
+              size={24}
+              color="#02b2f2"
+            />
+          </View>
+          <View style={styles.fullName}>
+            <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+              {firstName} {lastName}
+            </Text>
+          </View>
 
-          >
-            
-            <View style = {styles.profileDetails}>
-               
-  
-  
-                <Text  style = {styles.headText}> First Name </Text>
-                <View style ={styles.dataContainer}>
+          <View style={styles.containerScrollbar}>
+            <ScrollView
+              style={styles.scrollScreen}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
+              <View style={styles.profileDetails}>
+                <Text style={styles.headText}> First Name </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{firstName}</Text>
                 </View>
-                <Text style = {styles.headText} > Last Name </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> Last Name </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{lastName}</Text>
                 </View>
-                <Text style = {styles.headText} > Registration Number </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> Registration Number </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{registrationNumber}</Text>
                 </View>
-                <Text style = {styles.headText} > Index Number  </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> Index Number </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{indexNumber}</Text>
                 </View>
-                <Text style = {styles.headText} > Gender  </Text>
-                <View style ={styles.dataContainer}>
-                <Text style={styles.dataText}>{gender}</Text>
+                <Text style={styles.headText}> Gender </Text>
+                <View style={styles.dataContainer}>
+                  <Text style={styles.dataText}>{gender}</Text>
                 </View>
-                <Text style = {styles.headText} > District  </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> District </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{district}</Text>
                 </View>
-                <Text style = {styles.headText} > Faculty  </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> Faculty </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{faculty}</Text>
                 </View>
 
-                
-                <Text style = {styles.headText} > course  </Text>
-                <View style ={styles.dataContainer}>
+                <Text style={styles.headText}> course </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{course}</Text>
                 </View>
-  
-                
-  
-                <Text style = {styles.headText} > Email  </Text>
-                <View style ={styles.dataContainer}>
+
+                <Text style={styles.headText}> Email </Text>
+                <View style={styles.dataContainer}>
                   <Text style={styles.dataText}>{email}</Text>
                 </View>
-  
-               
-  
-                <TouchableOpacity style = {styles.buttonEditProfile} onPress={() => navigation.navigate('UpdateProfile')} >
-                   <AntDesign name="edit" size={30} color="#02b2f2" />
-                   <Text style = { {color :'#02b2f2'}}>Edit</Text>
-                   
-               </TouchableOpacity> 
 
-              
-  
-               
-              
-             </View>  
-             
+                <TouchableOpacity
+                  style={styles.buttonEditProfile}
+                  onPress={() => navigation.navigate("UpdateProfile")}
+                >
+                  <AntDesign name="edit" size={30} color="#02b2f2" />
+                  <Text style={{ color: "#02b2f2" }}>Edit</Text>
+                </TouchableOpacity>
+              </View>
             </ScrollView>
-            </View>  
-
-            </View>
-
-           
+          </View>
+        </View>
       </View>
-    )
-
-    
-
-  }
-
-
-else if(role == 'Admin'){
-  return (
-    <View style = {StyleSheet.container}>
-          
-      <View style = {styles.background}>
-          <View style = {styles.avatar}>
-          <Image source={{ uri: image }} style={{  
-            height : 100,
-            width :100,
-            borderRadius :50 }} />
+    );
+  } else if (role == "Admin") {
+    return (
+      <View style={StyleSheet.container}>
+        <View style={styles.background}>
+          <View style={styles.avatar}>
+            <Image
+              source={{ uri: image }}
+              style={{
+                height: 100,
+                width: 100,
+                borderRadius: 50,
+              }}
+            />
           </View>
-        
-          <View style = {styles.uploadButton} >
-                <MaterialCommunityIcons onPress ={pickImage} name="image-plus" size={24} color="#02b2f2" />
+
+          <View style={styles.uploadButton}>
+            <MaterialCommunityIcons
+              onPress={pickImage}
+              name="image-plus"
+              size={24}
+              color="#02b2f2"
+            />
           </View>
-          <View style={styles.fullName} >
-              <Text style ={{fontWeight:'bold',
-                fontSize : 15,}} >{firstName}  {lastName}
-              </Text>
+          <View style={styles.fullName}>
+            <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+              {firstName} {lastName}
+            </Text>
           </View>
-          <ScrollView style = {styles.scrollScreen}>
-            <View style = {styles.profileDetails}>
-              <Text  style = {styles.headText}> First Name </Text>
-              <View style ={styles.dataContainer}>
+          <ScrollView style={styles.scrollScreen}>
+            <View style={styles.profileDetails}>
+              <Text style={styles.headText}> First Name </Text>
+              <View style={styles.dataContainer}>
                 <Text style={styles.dataText}>{firstName}</Text>
               </View>
-              <Text style = {styles.headText} > Last Name </Text>
-              <View style ={styles.dataContainer}>
+              <Text style={styles.headText}> Last Name </Text>
+              <View style={styles.dataContainer}>
                 <Text style={styles.dataText}>{lastName}</Text>
               </View>
-      
-              <Text style = {styles.headText} > Gender  </Text>
-              <View style ={styles.dataContainer}>
-              <Text style={styles.dataText}>{gender}</Text>
+
+              <Text style={styles.headText}> Gender </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{gender}</Text>
               </View>
-              <Text style = {styles.headText} > District  </Text>
-              <View style ={styles.dataContainer}>
+              <Text style={styles.headText}> District </Text>
+              <View style={styles.dataContainer}>
                 <Text style={styles.dataText}>{district}</Text>
               </View>
-              <Text style = {styles.headText} > Faculty  </Text>
-              <View style ={styles.dataContainer}>
+              <Text style={styles.headText}> Faculty </Text>
+              <View style={styles.dataContainer}>
                 <Text style={styles.dataText}>{faculty}</Text>
               </View>
-              <Text style = {styles.headText} > department  </Text>
-              <View style ={styles.dataContainer}>
+              <Text style={styles.headText}> department </Text>
+              <View style={styles.dataContainer}>
                 <Text style={styles.dataText}>{department}</Text>
               </View>
 
-              
-
-              <Text style = {styles.headText} > Email  </Text>
-              <View style ={styles.dataContainer}>
+              <Text style={styles.headText}> Email </Text>
+              <View style={styles.dataContainer}>
                 <Text style={styles.dataText}>{email}</Text>
               </View>
 
-             
-
-              <TouchableOpacity style = {styles.buttonEditProfile} onPress={() => navigation.navigate('UpdateProfile')} >
-                 <AntDesign name="edit" size={30} color="#02b2f2" />
-                 <Text style = { {color :'#02b2f2'}}>Edit</Text>
-                 
-             </TouchableOpacity> 
-
-            </View>  
-           
+              <TouchableOpacity
+                style={styles.buttonEditProfile}
+                onPress={() => navigation.navigate("UpdateProfile")}
+              >
+                <AntDesign name="edit" size={30} color="#02b2f2" />
+                <Text style={{ color: "#02b2f2" }}>Edit</Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
-
-
-        
-          
-           
-          </View>
+        </View>
       </View>
-  )
-}
+    );
+  }
 
-  return(
-
-  
+  return (
     <View style={styles.Loadingcontainer}>
-     
-       
-       
-        <ActivityIndicator color="blue" size="large" />
-      
+      <ActivityIndicator color="blue" size="large" />
     </View>
-
-    
-  
-
-)
-
-
+  );
 }
-
 
 const styles = StyleSheet.create({
   container: {
-    padding:50,
-    marginBottom : 10,
-    backgroundColor:'white',
-    
-   
-    
+    padding: 50,
+    marginBottom: 10,
+    backgroundColor: "white",
   },
 
-  
-
-  background : {
-    backgroundColor : 'white'
-
+  background: {
+    backgroundColor: "white",
   },
- 
-  fullName:{
-    marginTop : 10,
-    alignItems :'center',
-    fontWeight:'bold',
-    fontSize : 15,
 
+  fullName: {
+    marginTop: 10,
+    alignItems: "center",
+    fontWeight: "bold",
+    fontSize: 15,
   },
   scrollScreen: {
-    marginTop:20,
-    marginBottom:525,
-    marginLeft : 15,
-    marginRight :15,
-    borderRadius:15,
-    backgroundColor: '#88e1fc',
+    marginTop: 20,
+    marginBottom: 525,
+    marginLeft: 15,
+    marginRight: 15,
+    borderRadius: 15,
+    backgroundColor: "#88e1fc",
     marginHorizontal: 1,
     shadowColor: "#000",
     shadowOffset: {
-	  width: 0,
-	  height: 1,
+      width: 0,
+      height: 1,
     },
     shadowOpacity: 0.9,
     shadowRadius: 10,
     elevation: 0.8,
-
   },
   buttonEditProfile: {
-   
-    marginTop : 15,
-    marginBottom : 15,
-    alignSelf :'center',
-    
+    marginTop: 15,
+    marginBottom: 15,
+    alignSelf: "center",
   },
-  refreshButton :{
-    marginLeft : 200,
-    marginTop : -10,
-  },
-  
-  avatar : {
-    marginTop: 20,
-    height : 107,
-    width :107,
-    
-    borderRadius : 60,
-    borderWidth : 3.3,
-    borderColor : '#02b2f2',
-    alignSelf :'center',
+  refreshButton: {
+    marginLeft: 200,
+    marginTop: -10,
   },
 
-  uploadButton :{
-    alignSelf :'center',
-    marginRight : -90,
-    marginTop : -15,
+  avatar: {
+    marginTop: 20,
+    height: 107,
+    width: 107,
+
+    borderRadius: 60,
+    borderWidth: 3.3,
+    borderColor: "#02b2f2",
+    alignSelf: "center",
   },
-  profileDetails :{
-    marginTop : 50,
-    marginLeft : 30,
-    marginRight : 30,
-    
+
+  uploadButton: {
+    alignSelf: "center",
+    marginRight: -90,
+    marginTop: -15,
+  },
+  profileDetails: {
+    marginTop: 50,
+    marginLeft: 30,
+    marginRight: 30,
+
     shadowColor: "#000",
     shadowOffset: {
-	  width: 0,
-	  height: 1,
+      width: 0,
+      height: 1,
     },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
   },
-  headText:{
-    marginTop : 1,
-    marginBottom : 5,
-    fontSize :18,
-    fontWeight :'bold'
+  headText: {
+    marginTop: 1,
+    marginBottom: 5,
+    fontSize: 18,
+    fontWeight: "bold",
   },
-  dataText :{
-    fontSize :15,
-    marginLeft : 25,
-    marginTop : 5,
-    marginBottom : 6,
-    color :'#929394'
-   
-   
+  dataText: {
+    fontSize: 15,
+    marginLeft: 25,
+    marginTop: 5,
+    marginBottom: 6,
+    color: "#929394",
   },
-  dataContainer:{
-    marginLeft : 5,
+  dataContainer: {
+    marginLeft: 5,
     marginBottom: 10,
-    backgroundColor : '#e3f8ff',
+    backgroundColor: "#e3f8ff",
     shadowColor: "#000",
     shadowOffset: {
-	  width: 0,
-	  height: 1,
+      width: 0,
+      height: 1,
     },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
-    borderRadius : 10,
+    borderRadius: 10,
   },
   Loadingcontainer: {
     flex: 1,
-    
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor:'#ffffff'
+
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 
   logo: {
-  
     width: 200,
     height: 200,
   },
-
-  
-
-})
-
-  
-
-  
-  
+});
