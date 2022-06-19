@@ -30,6 +30,7 @@ import PostScreen from "../screens/Post/PostScreen";
 import EditNoticeScreen from "../screens/Noticeboard/EditNotice";
 import TimeTableScreen from "../screens/TimeTable/TimeTableScreen";
 import ClassroomWelcome from "../screens/Classroom/welcome";
+import PayScreen from "../screens/Payment/PayScreen";
 
 const Stack = createStackNavigator();
 
@@ -159,6 +160,11 @@ export default function App() {
         <Stack.Screen
           name={"ClassroomWelcome"}
           component={ClassroomWelcome}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"payscreen"}
+          component={PayScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
