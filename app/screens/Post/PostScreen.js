@@ -311,8 +311,9 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginTop: 20,
     marginRight: 30,
-
-    borderRadius: 2,
+    borderWidth:1,
+    borderColor:'black',
+    borderRadius: 5,
   },
   pic: {
     alignSelf: "center",
@@ -338,7 +339,6 @@ const styles = StyleSheet.create({
   },
   Loadingcontainer: {
     flex: 1,
-
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",

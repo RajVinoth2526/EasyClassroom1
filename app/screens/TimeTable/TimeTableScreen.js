@@ -22,6 +22,7 @@ import { UploadTimeTable } from "../../../API/firebaseMethods/firebaseMethod";
 import ImageModal from "react-native-image-modal";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -184,7 +185,7 @@ export default function TimeTableScreen({ navigation }) {
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+              
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -199,9 +200,12 @@ export default function TimeTableScreen({ navigation }) {
                 Level 1
               </Text>
             </View>
-            <TouchableOpacity>
+            
               <View style={styles.avatar}>
-                <Image
+                <ImageModal
+                  swipeToDismiss={false}
+                  resizeMode="contain"
+                  imageBackgroundColor="#000000"
                   source={{ uri: image1 }}
                   style={{
                     borderRadius: 3,
@@ -210,12 +214,12 @@ export default function TimeTableScreen({ navigation }) {
                   }}
                 />
               </View>
-            </TouchableOpacity>
+           
           </View>
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+            
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -232,7 +236,10 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-              <Image
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
                 source={{ uri: image2 }}
                 style={{
                   borderRadius: 3,
@@ -245,7 +252,7 @@ export default function TimeTableScreen({ navigation }) {
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+             
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -262,7 +269,10 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-              <Image
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
                 source={{ uri: image3 }}
                 style={{
                   borderRadius: 3,
@@ -288,7 +298,7 @@ export default function TimeTableScreen({ navigation }) {
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+             
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -305,20 +315,23 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-              <Image
-                source={{ uri: image1 }}
-                style={{
-                  borderRadius: 3,
-                  height: 200,
-                  width: 300,
-                }}
-              />
+            <ImageModal
+                  swipeToDismiss={false}
+                  resizeMode="contain"
+                  imageBackgroundColor="#000000"
+                  source={{ uri: image1 }}
+                  style={{
+                    borderRadius: 3,
+                    height: 200,
+                    width: 300,
+                  }}
+                />
             </View>
           </View>
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+              
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -335,20 +348,23 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-              <Image
-                source={{ uri: image2 }}
-                style={{
-                  borderRadius: 3,
-                  height: 200,
-                  width: 300,
-                }}
-              />
+            <ImageModal
+                  swipeToDismiss={false}
+                  resizeMode="contain"
+                  imageBackgroundColor="#000000"
+                  source={{ uri: image2 }}
+                  style={{
+                    borderRadius: 3,
+                    height: 200,
+                    width: 300,
+                  }}
+                />
             </View>
           </View>
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+            
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -365,14 +381,17 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-              <Image
-                source={{ uri: image3 }}
-                style={{
-                  borderRadius: 3,
-                  height: 200,
-                  width: 300,
-                }}
-              />
+            <ImageModal
+                  swipeToDismiss={false}
+                  resizeMode="contain"
+                  imageBackgroundColor="#000000"
+                  source={{ uri: image3 }}
+                  style={{
+                    borderRadius: 3,
+                    height: 200,
+                    width: 300,
+                  }}
+                />
             </View>
           </View>
         </ScrollView>
@@ -391,7 +410,7 @@ export default function TimeTableScreen({ navigation }) {
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+            
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -408,20 +427,23 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-              <Image
-                source={{ uri: image1 }}
-                style={{
-                  borderRadius: 3,
-                  height: 200,
-                  width: 300,
-                }}
-              />
+            <ImageModal
+                  swipeToDismiss={false}
+                  resizeMode="contain"
+                  imageBackgroundColor="#000000"
+                  source={{ uri: image1 }}
+                  style={{
+                    borderRadius: 3,
+                    height: 200,
+                    width: 300,
+                  }}
+                />
             </View>
           </View>
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+              
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -438,21 +460,23 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-              <Image
-                source={{ uri: image2 }}
-                style={{
-                  borderRadius: 3,
-                  height: 200,
-                  width: 300,
-                }}
-              />
+            <ImageModal
+                  swipeToDismiss={false}
+                  resizeMode="contain"
+                  imageBackgroundColor="#000000"
+                  source={{ uri: image2}}
+                  style={{
+                    borderRadius: 3,
+                    height: 200,
+                    width: 300,
+                  }}
+                />
             </View>
           </View>
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
-            ]}
+               ]}
           >
             <View style={{ marginTop: 30 }}>
               <Text
@@ -468,14 +492,17 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-              <Image
-                source={{ uri: image3 }}
-                style={{
-                  borderRadius: 3,
-                  height: 200,
-                  width: 300,
-                }}
-              />
+            <ImageModal
+                  swipeToDismiss={false}
+                  resizeMode="contain"
+                  imageBackgroundColor="#000000"
+                  source={{ uri: image3 }}
+                  style={{
+                    borderRadius: 3,
+                    height: 200,
+                    width: 300,
+                  }}
+                />
             </View>
           </View>
         </ScrollView>
@@ -494,7 +521,7 @@ export default function TimeTableScreen({ navigation }) {
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+            
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -520,20 +547,21 @@ export default function TimeTableScreen({ navigation }) {
                 }}
               />
 
-              <View style={styles.uploadButton}>
+             
+            </View>
+            <View style={styles.uploadButton}>
                 <MaterialCommunityIcons
                   onPress={pickImage1}
                   name="image-plus"
                   size={24}
-                  color="#02b2f2"
+                  color="black"
                 />
               </View>
-            </View>
           </View>
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+             
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -559,20 +587,21 @@ export default function TimeTableScreen({ navigation }) {
                 }}
               />
 
-              <View style={styles.uploadButton}>
+              
+            </View>
+            <View style={styles.uploadButton}>
                 <MaterialCommunityIcons
                   onPress={pickImage2}
                   name="image-plus"
                   size={24}
-                  color="#02b2f2"
+                  color="black"
                 />
               </View>
-            </View>
           </View>
           <View
             style={[
               styles.Box,
-              { backgroundColor: generateRandomBrightestHSLColor() },
+             
             ]}
           >
             <View style={{ marginTop: 30 }}>
@@ -598,15 +627,16 @@ export default function TimeTableScreen({ navigation }) {
                 }}
               />
 
-              <View style={styles.uploadButton}>
+              
+            </View>
+            <View style={styles.uploadButton}>
                 <MaterialCommunityIcons
                   onPress={pickImage3}
                   name="image-plus"
                   size={24}
-                  color="#02b2f2"
+                  color="black"
                 />
               </View>
-            </View>
           </View>
         </ScrollView>
       </View>
@@ -637,6 +667,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   scrollScreen: {
+    
     marginBottom: 20,
     borderRadius: 10,
     marginTop: -10,
@@ -658,7 +689,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginLeft: 5,
     marginRight: 5,
-    //backgroundColor: "#a3eaff",
+    backgroundColor: "#b1dffc",
     borderRadius: 5,
     marginHorizontal: 1,
     borderRadius: 10,
@@ -695,6 +726,7 @@ const styles = StyleSheet.create({
   },
   uploadButton: {
     alignItems: "flex-end",
-    marginEnd: 40,
+    marginEnd: '10%',
+    marginBottom : '2%'
   },
 });
