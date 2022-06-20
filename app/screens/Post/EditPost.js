@@ -19,8 +19,9 @@ import * as ImagePicker from "expo-image-picker";
 import { FontAwesome5 } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import * as firebase from "firebase";
-//import { UploadPost } from '../../../../API/firebaseMethods/firebaseMethod';
-//import IMAGE from '../../../assets/photo.png';
+import { UploadPostImage } from "../../../API/firebaseMethods/firebaseMethod";
+import IMAGE from '../../assets/photo.png';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
 import { FontAwesome } from "@expo/vector-icons";
@@ -31,32 +32,72 @@ export default function EditPostScreen({ navigation, route }) {
   const [title, setTitle] = useState("");
   const [message1, setMessage1] = useState("");
   const [title1, setTitle1] = useState("");
- 
-  const { PostID } = route.params;
+  const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
+  const [image, setImage] = useState(exampleImageUri);
+  const { PostID } = route.params; 
 
 
   
 
   const handlePress = () => {
     if(!message1 ){
-     EditPost(PostID, message, title1);
+     EditPost(PostID, message, title1,image);
      navigation.replace("Dashboard");
      Alert.alert("Post Updated!!");
    }else if(!title1){
-     EditPost(PostID, message, title);
+     EditPost(PostID, message1, title,image);
      navigation.replace("Dashboard");
      Alert.alert("post Updated!!");
    }else if(!message1 && !title1){
-     EditPost(PostID, message, title);
+     EditPost(PostID, message, title,image);
      navigation.replace("Dashboard");
      Alert.alert("post Updated!!");
    }else{
-     EditPost(PostID, message1, title1);
+     EditPost(PostID, message1, title1,image);
      navigation.replace("Dashboard");
      Alert.alert("post Updated!!");
 
    }
  };
+
+ useEffect(() => {
+  firebase
+    .storage()
+    .ref()
+    .child("PostImage/" + PostID) //name in storage in firebase console
+    .getDownloadURL()
+    .then((url) => {
+      setImage(url);
+     
+    })
+    .catch((e) => console.log("Errors while downloading => ", e));
+}, []);
+
+const pickImage = async () => {
+  // No permissions request is necessary for launching the image library
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.All,
+    allowsEditing: true,
+    aspect: [4, 3],
+    quality: 1,
+  });
+
+  setImage(result.uri);
+  // console.log(result);
+
+  if (!result.cancelled) {
+    UploadPostImage(result.uri, PostID)
+      .then(() => {
+       
+        console.log("Uploaded");
+      })
+      .catch((error) => {
+        Alert.alert("Error:", error.message);
+      });
+  }
+
+
+};
 
 
   
@@ -85,22 +126,20 @@ export default function EditPostScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <MaterialIcons
-        name="post-add"
-        size={40}
-        color="#38deff"
-        style={{ marginLeft: 70, marginTop: 35, marginBottom: -65 }}
-      />
+      
       <View style={styles.postName}>
-        <Text style={{ fontSize: 30, marginTop: 5 }}> Edit Post</Text>
+        <Text style={{ fontSize: 30, marginTop: 5 }}> <MaterialIcons
+        name="post-add"
+        size={35}
+        color="black"
+       
+      />Edit Post</Text>
       </View>
 
-      <ScrollView>
+      <ScrollView style = {styles.scrollScreen}>
         <View style={[styles.homeContent, { backgroundColor: "#88e1fc" }]}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
+        
+           
 
 
             <View style={styles.avatar}>
@@ -126,7 +165,7 @@ export default function EditPostScreen({ navigation, route }) {
             <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
               Title
             </Text>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+           
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
@@ -137,12 +176,12 @@ export default function EditPostScreen({ navigation, route }) {
                   onChangeText={(title1) => setTitle1(title1)}
                 />
               </View>
-            </TouchableWithoutFeedback>
+            
 
             <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
               Content
             </Text>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
@@ -155,11 +194,12 @@ export default function EditPostScreen({ navigation, route }) {
                   onChangeText={(message1) => setMessage1(message1)}
                 />
               </View>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
+            
         </View>
 
-        <View style={styles.iconAdd}>
+        
+      </ScrollView>
+      <View style={styles.iconAdd}>
           <TouchableOpacity onPress={handlePress}>
             <FontAwesome
               name="send"
@@ -172,7 +212,6 @@ export default function EditPostScreen({ navigation, route }) {
             </Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
     </View>
   );
 }
@@ -187,7 +226,8 @@ const styles = StyleSheet.create({
   },
   iconAdd: {
     alignSelf: "center",
-    marginBottom: 50,
+    marginTop :'4%',
+    marginBottom: '3%',
   },
   avatar: {
     marginTop: 30,
@@ -196,19 +236,14 @@ const styles = StyleSheet.create({
   postName: {
     marginTop: 20,
     alignSelf: "center",
-    marginLeft: 40,
     marginBottom: 10,
-    height: 60,
-    width: 290,
     borderRadius: 10,
-    alignItems: "center",
+  
   },
   scrollScreen: {
-    marginTop: 5,
-    marginRight: 1,
-    marginBottom: 500,
+   
     borderRadius: 1,
-    marginLeft: 10,
+    height :'100%',
     backgroundColor: "white",
     marginHorizontal: 1,
     shadowColor: "#000",
@@ -222,14 +257,10 @@ const styles = StyleSheet.create({
   },
   homeContent: {
     alignSelf: "center",
-
+    width :'100%',
     marginTop: 5,
-    marginBottom: 20,
+
     backgroundColor: "#f2ffff",
-    height: 500,
-    width: 330,
-    marginLeft: -10,
-    marginRight: -10,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -260,6 +291,8 @@ const styles = StyleSheet.create({
   },
   photoUpload: {
     marginTop: 20,
+    alignSelf:'flex-end',
+    marginRight: '3%'
   },
   textinput: {
     marginLeft: 10,

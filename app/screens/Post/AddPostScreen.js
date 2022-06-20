@@ -20,7 +20,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import * as firebase from "firebase";
 import { UploadPostImage } from "../../../API/firebaseMethods/firebaseMethod";
-
+import IMG from "../../assets/profile-placeholder.png";
 import IMAGE from '../../assets/photo.png';
 import { MaterialIcons } from "@expo/vector-icons";
 import { UploadPost } from "../../../API/firebaseMethods/firebaseMethod";
@@ -32,6 +32,9 @@ export default function AddPostScreen({ navigation }) {
   const [title, setTitle] = useState("");
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
+  const exampleImageUri1 = Image.resolveAssetSource(IMG).uri;
+  const [image1, setImage1] = useState(exampleImageUri1);
+ 
  
 
   const [ID] = useState(uuid.v4());

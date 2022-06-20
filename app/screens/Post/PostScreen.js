@@ -12,7 +12,6 @@ import {
   Alert,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { DeletePost } from "../../../API/firebaseMethods/firebaseMethod";
@@ -27,13 +26,13 @@ export default function PostScreen({ navigation }) {
   const [role, setRole] = useState("");
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
-  const NoticeType = "Faculty";
+ 
   
 
   let currentUserUID = firebase.auth().currentUser.uid;
 
   function printId(ID ,url) {
-    navigation.navigate("EditPost", { PostID: ID, Url : });
+    navigation.navigate("EditPost", { PostID: ID });
   }
 
   function deletePost(id) {
@@ -83,6 +82,8 @@ export default function PostScreen({ navigation }) {
   const handlePress = () => {
     navigation.navigate("AddPostScreen");
   };
+
+  
 
   useEffect(() => {
     firebase

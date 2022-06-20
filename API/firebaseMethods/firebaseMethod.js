@@ -76,7 +76,7 @@ export async function UploadPost(id, message, title,imageUrl) {
   }
 }
 
-export async function EditPost(id, message, title) {
+export async function EditPost(id, message, title,image) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -99,6 +99,7 @@ export async function EditPost(id, message, title) {
       lastName: dataObj.lastName,
       message: message,
       DateTime: dateAndTime,
+      imageUrl: image,
     });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
