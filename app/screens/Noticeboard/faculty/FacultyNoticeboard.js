@@ -142,7 +142,7 @@ export default function PostScreen({ navigation }) {
           <View style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={{ fontSize: 20, marginTop: 5, alignSelf: "center" }}>
               {" "}
-              <Octicons name="note" size={25} color="#34dbeb" /> Faculty
+              <Octicons name="note" size={25} color="black" /> Faculty
               Noticeboard
             </Text>
           </View>

@@ -12,10 +12,10 @@ import {
   Alert,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { DeletePost } from "../../../API/firebaseMethods/firebaseMethod";
+import IMAGE from '../../assets/profile-placeholder.png';
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -24,10 +24,14 @@ const wait = (timeout) => {
 export default function PostScreen({ navigation }) {
   const [subjects, setSubjects] = useState([]);
   const [role, setRole] = useState("");
+  const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
+  const [image, setImage] = useState(exampleImageUri);
+ 
+  
 
   let currentUserUID = firebase.auth().currentUser.uid;
 
-  function printId(ID) {
+  function printId(ID ,url) {
     navigation.navigate("EditPost", { PostID: ID });
   }
 
@@ -79,13 +83,31 @@ export default function PostScreen({ navigation }) {
     navigation.navigate("AddPostScreen");
   };
 
+  
+
+  useEffect(() => {
+    firebase
+      .storage()
+      .ref()
+      .child("profileImage/" + currentUserUID) //name in storage in firebase console
+      .getDownloadURL()
+      .then((url) => {
+        setImage(url);
+       
+      })
+      .catch((e) => console.log("Errors while downloading => ", e));
+  }, []);
+
+
   useEffect(() => {
     async function fetchSubjects() {
       const data = [];
-      const Imagedata = [];
+      
       const db = firebase.firestore();
       const querySnapshot = await db.collection("Posts").get();
       querySnapshot.forEach((doc) => {
+        
+
         console.log(doc.id, " => ", doc.data());
         data.push(doc.data());
       });
@@ -128,6 +150,8 @@ export default function PostScreen({ navigation }) {
   if (role == "Lecturer") {
     return (
       <View style={styles.container}>
+
+       
         <ScrollView style={styles.scrollScreen}>
           <FlatList
             data={subjects}
@@ -135,10 +159,30 @@ export default function PostScreen({ navigation }) {
               <View
                 style={[
                   styles.Box,
-                  { backgroundColor: generateRandomBrightestHSLColor() },
+                 
                 ]}
-              >
-                <View style={{ marginLeft: 280, marginTop: 8 }}>
+              > 
+              <View style={styles.head}>
+                
+                  <Image
+                    source={{ uri: image }}
+                    style={{
+                      marginLeft :'5%',
+                      marginTop:'2%',
+                      height: 41,
+                      width: 41,
+                      borderWidth:1.5,
+                      borderColor:'#03dffc',
+                      borderRadius: 50,
+                    }}
+                  />
+                
+
+                <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                </Text>
+
+                <View style ={{marginLeft :'38%',marginTop:'2%'}} >
                   <TouchableOpacity
                     onPress={() => Edit(item.Postid, item.UserId)}
                   >
@@ -146,14 +190,41 @@ export default function PostScreen({ navigation }) {
                     <Text style={{ fontSize: 8 }}>Edit</Text>
                   </TouchableOpacity>
                 </View>
+                </View>
+                
+                
                 <Text style={styles.title}>{item.title}</Text>
+                <View>
+                <Image
+                  
+                  source={{ uri: item.imageUrl }}
+                  style={{
+                    marginTop: 20,
+                    borderColor:'#03dffc',
+                    borderRadius:4,
+                    borderWidth:2,
+                    marginBottom: 30,
+                    borderRadius: 4,
+                    height: 200,
+                    width: 300,
+                    alignSelf: "center",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 5,
+                    elevation: 8,
+                                  }}
+                />
+              </View>
+               
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.message}</Text>
-                  <Text style={styles.msgText}>
-                    {item.firstName} {item.lastName}
-                  </Text>
+                  
 
-                  <Text style={styles.msgText}>{item.DateTime}</Text>
+                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',fontSize :10}}>{item.DateTime}</Text>
                 </View>
               </View>
             )}
@@ -169,6 +240,8 @@ export default function PostScreen({ navigation }) {
             onPress={handlePress}
           />
         </View>
+
+        
       </View>
     );
   } else if (role == "Demo") {
@@ -246,13 +319,12 @@ const styles = StyleSheet.create({
   },
   AddIcon: {
     position: "absolute",
-    marginBottom: 5,
-    marginTop: "150%",
-    alignSelf: "center",
+    marginTop :'3%',
+    alignSelf:'flex-end',
+    marginRight :'10%'
   },
   scrollScreen: {
     borderRadius: 10,
-
     width: "100%",
     marginBottom: "30%",
     backgroundColor: "white",
@@ -311,8 +383,12 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginTop: 20,
     marginRight: 30,
+<<<<<<< HEAD
     borderWidth: 1,
     borderColor: "black",
+=======
+   
+>>>>>>> bbafefaa047e78698760b00ca171495caa4433ce
     borderRadius: 5,
   },
   pic: {
@@ -321,18 +397,22 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 30,
-    alignSelf: "center",
+    alignSelf:'flex-start',
+    marginLeft:'4%',
     fontSize: 25,
     fontWeight: "bold",
   },
-  msgText: {
-    marginLeft: 190,
-    marginTop: 5,
-    marginBottom: 5,
-    fontSize: 10,
+  Name: {
+   alignSelf:'center',
+   marginLeft :'5%',
+   fontSize : 18
+  },
+  head :{
+    flex : 1,
+    flexDirection: "row"
   },
   msg: {
-    fontSize: 15,
+    fontSize: 18,
     marginBottom: 30,
     marginLeft: -5,
     marginRight: -10,
@@ -343,4 +423,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#ffffff",
   },
+  avatar: {
+    marginTop: 20,
+    borderRightColor:'black',
+    borderRadius:3,
+    borderWidth:1,
+    marginBottom: 30,
+    borderRadius: 4,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+ 
 });

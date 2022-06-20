@@ -45,7 +45,7 @@ export async function StudentRegistration(
   }
 }
 
-export async function UploadPost(id, message, title) {
+export async function UploadPost(id, message, title,imageUrl) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -68,13 +68,15 @@ export async function UploadPost(id, message, title) {
       lastName: dataObj.lastName,
       message: message,
       DateTime: dateAndTime,
+      imageUrl: imageUrl,
+      
     });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-export async function EditPost(id, message, title) {
+export async function EditPost(id, message, title,image) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -97,6 +99,7 @@ export async function EditPost(id, message, title) {
       lastName: dataObj.lastName,
       message: message,
       DateTime: dateAndTime,
+      imageUrl: image,
     });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
@@ -189,6 +192,17 @@ export async function UploadImage(uri, imageName) {
     .storage()
     .ref()
     .child("profileImage/" + imageName);
+  const snapshot = await ref.put(blob);
+}
+
+export async function UploadPostImage(uri, imageName) {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+
+  var ref = firebase
+    .storage()
+    .ref()
+    .child("PostImage/" + imageName);
   const snapshot = await ref.put(blob);
 }
 export async function UploadTimeTable(uri, imageName) {
