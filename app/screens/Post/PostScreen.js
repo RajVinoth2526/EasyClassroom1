@@ -26,12 +26,12 @@ export default function PostScreen({ navigation }) {
   const [role, setRole] = useState("");
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
- 
-  
+
+
 
   let currentUserUID = firebase.auth().currentUser.uid;
 
-  function printId(ID ,url) {
+  function printId(ID, url) {
     navigation.navigate("EditPost", { PostID: ID });
   }
 
@@ -83,7 +83,7 @@ export default function PostScreen({ navigation }) {
     navigation.navigate("AddPostScreen");
   };
 
-  
+
 
   useEffect(() => {
     firebase
@@ -93,7 +93,7 @@ export default function PostScreen({ navigation }) {
       .getDownloadURL()
       .then((url) => {
         setImage(url);
-       
+
       })
       .catch((e) => console.log("Errors while downloading => ", e));
   }, []);
@@ -102,11 +102,11 @@ export default function PostScreen({ navigation }) {
   useEffect(() => {
     async function fetchSubjects() {
       const data = [];
-      
+
       const db = firebase.firestore();
       const querySnapshot = await db.collection("Posts").get();
       querySnapshot.forEach((doc) => {
-        
+
 
         console.log(doc.id, " => ", doc.data());
         data.push(doc.data());
@@ -151,7 +151,7 @@ export default function PostScreen({ navigation }) {
     return (
       <View style={styles.container}>
 
-       
+
         <ScrollView style={styles.scrollScreen}>
           <FlatList
             data={subjects}
@@ -159,72 +159,72 @@ export default function PostScreen({ navigation }) {
               <View
                 style={[
                   styles.Box,
-                 
+
                 ]}
-              > 
-              <View style={styles.head}>
-                
+              >
+                <View style={styles.head}>
+
                   <Image
                     source={{ uri: image }}
                     style={{
-                      marginLeft :'5%',
-                      marginTop:'2%',
+                      marginLeft: '5%',
+                      marginTop: '2%',
                       height: 41,
                       width: 41,
-                      borderWidth:1.5,
-                      borderColor:'#03dffc',
+                      borderWidth: 1.5,
+                      borderColor: '#03dffc',
                       borderRadius: 50,
                     }}
                   />
-                
 
-                <Text style={styles.Name}>
+
+                  <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
-                </Text>
+                  </Text>
 
-                <View style ={{marginLeft :'38%',marginTop:'2%'}} >
-                  <TouchableOpacity
-                    onPress={() => Edit(item.Postid, item.UserId)}
-                  >
-                    <AntDesign name="edit" size={20} color="black" />
-                    <Text style={{ fontSize: 8 }}>Edit</Text>
-                  </TouchableOpacity>
+                  <View style={{ marginLeft: '38%', marginTop: '2%' }} >
+                    <TouchableOpacity
+                      onPress={() => Edit(item.Postid, item.UserId)}
+                    >
+                      <AntDesign name="edit" size={20} color="black" />
+                      <Text style={{ fontSize: 8 }}>Edit</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                </View>
-                
-                
+
+
                 <Text style={styles.title}>{item.title}</Text>
                 <View>
-                <Image
-                  
-                  source={{ uri: item.imageUrl }}
-                  style={{
-                    marginTop: 20,
-                    borderColor:'#03dffc',
-                    borderRadius:4,
-                    borderWidth:2,
-                    marginBottom: 30,
-                    borderRadius: 4,
-                    height: 200,
-                    width: 300,
-                    alignSelf: "center",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 5,
-                    elevation: 8,
-                                  }}
-                />
-              </View>
-               
+                  <Image
+
+                    source={{ uri: item.imageUrl }}
+                    style={{
+                      marginTop: 20,
+                      borderColor: '#03dffc',
+                      borderRadius: 4,
+                      borderWidth: 2,
+                      marginBottom: 30,
+                      borderRadius: 4,
+                      height: 200,
+                      width: 300,
+                      alignSelf: "center",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 5,
+                      elevation: 8,
+                    }}
+                  />
+                </View>
+
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.message}</Text>
-                  
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',fontSize :10}}>{item.DateTime}</Text>
+
+                  <Text style={{ alignSelf: 'flex-end', marginBottom: '3%', fontSize: 10 }}>{item.DateTime}</Text>
                 </View>
               </View>
             )}
@@ -241,7 +241,7 @@ export default function PostScreen({ navigation }) {
           />
         </View>
 
-        
+
       </View>
     );
   } else if (role == "Demo") {
@@ -319,9 +319,9 @@ const styles = StyleSheet.create({
   },
   AddIcon: {
     position: "absolute",
-    marginTop :'3%',
-    alignSelf:'flex-end',
-    marginRight :'10%'
+    marginTop: '3%',
+    alignSelf: 'flex-end',
+    marginRight: '10%'
   },
   scrollScreen: {
     borderRadius: 10,
@@ -383,12 +383,7 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginTop: 20,
     marginRight: 30,
-<<<<<<< HEAD
-    borderWidth: 1,
-    borderColor: "black",
-=======
-   
->>>>>>> bbafefaa047e78698760b00ca171495caa4433ce
+
     borderRadius: 5,
   },
   pic: {
@@ -397,18 +392,18 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 30,
-    alignSelf:'flex-start',
-    marginLeft:'4%',
+    alignSelf: 'flex-start',
+    marginLeft: '4%',
     fontSize: 25,
     fontWeight: "bold",
   },
   Name: {
-   alignSelf:'center',
-   marginLeft :'5%',
-   fontSize : 18
+    alignSelf: 'center',
+    marginLeft: '5%',
+    fontSize: 18
   },
-  head :{
-    flex : 1,
+  head: {
+    flex: 1,
     flexDirection: "row"
   },
   msg: {
@@ -425,9 +420,9 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginTop: 20,
-    borderRightColor:'black',
-    borderRadius:3,
-    borderWidth:1,
+    borderRightColor: 'black',
+    borderRadius: 3,
+    borderWidth: 1,
     marginBottom: 30,
     borderRadius: 4,
     alignSelf: "center",
@@ -440,5 +435,5 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
   },
- 
+
 });
