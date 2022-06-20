@@ -72,9 +72,11 @@ export default function LecturerHomeScreen({ navigation }) {
         </View>
 
         <View style={[styles.homeContent, { backgroundColor: "#e2bdf0" }]}>
-          <TouchableOpacity onPress={() => {
-            navigation.navigate("payscreen")
-          }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("PaymentScreen");
+            }}
+          >
             <Text style={styles.homeContentText}>
               <MaterialIcons name="payment" size={24} color="black" /> Pay
             </Text>

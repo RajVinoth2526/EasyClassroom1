@@ -22,7 +22,6 @@ import { UploadTimeTable } from "../../../API/firebaseMethods/firebaseMethod";
 import ImageModal from "react-native-image-modal";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -182,12 +181,7 @@ export default function TimeTableScreen({ navigation }) {
               Time Table
             </Text>
           </View>
-          <View
-            style={[
-              styles.Box,
-              
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -200,28 +194,22 @@ export default function TimeTableScreen({ navigation }) {
                 Level 1
               </Text>
             </View>
-            
-              <View style={styles.avatar}>
-                <ImageModal
-                  swipeToDismiss={false}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image1 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-              </View>
-           
+
+            <View style={styles.avatar}>
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
+                source={{ uri: image1 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
+            </View>
           </View>
-          <View
-            style={[
-              styles.Box,
-            
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -249,12 +237,7 @@ export default function TimeTableScreen({ navigation }) {
               />
             </View>
           </View>
-          <View
-            style={[
-              styles.Box,
-             
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -295,12 +278,7 @@ export default function TimeTableScreen({ navigation }) {
               <Octicons name="note" size={25} color="#34dbeb" /> Time Table
             </Text>
           </View>
-          <View
-            style={[
-              styles.Box,
-             
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -315,25 +293,20 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-            <ImageModal
-                  swipeToDismiss={false}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image1 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
+                source={{ uri: image1 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
             </View>
           </View>
-          <View
-            style={[
-              styles.Box,
-              
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -348,25 +321,20 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-            <ImageModal
-                  swipeToDismiss={false}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image2 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
+                source={{ uri: image2 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
             </View>
           </View>
-          <View
-            style={[
-              styles.Box,
-            
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -381,17 +349,17 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-            <ImageModal
-                  swipeToDismiss={false}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image3 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
+                source={{ uri: image3 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
             </View>
           </View>
         </ScrollView>
@@ -407,12 +375,7 @@ export default function TimeTableScreen({ navigation }) {
               <Octicons name="note" size={25} color="#34dbeb" /> Time Table
             </Text>
           </View>
-          <View
-            style={[
-              styles.Box,
-            
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -427,25 +390,20 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-            <ImageModal
-                  swipeToDismiss={false}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image1 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
+                source={{ uri: image1 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
             </View>
           </View>
-          <View
-            style={[
-              styles.Box,
-              
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -460,24 +418,20 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-            <ImageModal
-                  swipeToDismiss={false}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image2}}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
+                source={{ uri: image2 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
             </View>
           </View>
-          <View
-            style={[
-              styles.Box,
-               ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -492,17 +446,17 @@ export default function TimeTableScreen({ navigation }) {
             </View>
 
             <View style={styles.avatar}>
-            <ImageModal
-                  swipeToDismiss={false}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image3 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
+              <ImageModal
+                swipeToDismiss={false}
+                resizeMode="contain"
+                imageBackgroundColor="#000000"
+                source={{ uri: image3 }}
+                style={{
+                  borderRadius: 3,
+                  height: 200,
+                  width: 300,
+                }}
+              />
             </View>
           </View>
         </ScrollView>
@@ -518,12 +472,7 @@ export default function TimeTableScreen({ navigation }) {
               <Octicons name="note" size={25} color="#34dbeb" /> Time Table
             </Text>
           </View>
-          <View
-            style={[
-              styles.Box,
-            
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -546,24 +495,17 @@ export default function TimeTableScreen({ navigation }) {
                   width: 300,
                 }}
               />
-
-             
             </View>
             <View style={styles.uploadButton}>
-                <MaterialCommunityIcons
-                  onPress={pickImage1}
-                  name="image-plus"
-                  size={24}
-                  color="black"
-                />
-              </View>
+              <MaterialCommunityIcons
+                onPress={pickImage1}
+                name="image-plus"
+                size={24}
+                color="black"
+              />
+            </View>
           </View>
-          <View
-            style={[
-              styles.Box,
-             
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -586,24 +528,17 @@ export default function TimeTableScreen({ navigation }) {
                   width: 300,
                 }}
               />
-
-              
             </View>
             <View style={styles.uploadButton}>
-                <MaterialCommunityIcons
-                  onPress={pickImage2}
-                  name="image-plus"
-                  size={24}
-                  color="black"
-                />
-              </View>
+              <MaterialCommunityIcons
+                onPress={pickImage2}
+                name="image-plus"
+                size={24}
+                color="black"
+              />
+            </View>
           </View>
-          <View
-            style={[
-              styles.Box,
-             
-            ]}
-          >
+          <View style={[styles.Box]}>
             <View style={{ marginTop: 30 }}>
               <Text
                 style={{
@@ -626,17 +561,15 @@ export default function TimeTableScreen({ navigation }) {
                   width: 300,
                 }}
               />
-
-              
             </View>
             <View style={styles.uploadButton}>
-                <MaterialCommunityIcons
-                  onPress={pickImage3}
-                  name="image-plus"
-                  size={24}
-                  color="black"
-                />
-              </View>
+              <MaterialCommunityIcons
+                onPress={pickImage3}
+                name="image-plus"
+                size={24}
+                color="black"
+              />
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -667,7 +600,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   scrollScreen: {
-    
     marginBottom: 20,
     borderRadius: 10,
     marginTop: -10,
@@ -726,7 +658,7 @@ const styles = StyleSheet.create({
   },
   uploadButton: {
     alignItems: "flex-end",
-    marginEnd: '10%',
-    marginBottom : '2%'
+    marginEnd: "10%",
+    marginBottom: "2%",
   },
 });

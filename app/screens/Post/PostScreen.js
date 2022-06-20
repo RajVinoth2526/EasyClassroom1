@@ -311,8 +311,8 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginTop: 20,
     marginRight: 30,
-    borderWidth:1,
-    borderColor:'black',
+    borderWidth: 1,
+    borderColor: "black",
     borderRadius: 5,
   },
   pic: {
