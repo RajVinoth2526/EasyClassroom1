@@ -99,6 +99,7 @@ export default function Profile({ navigation }) {
       .getDownloadURL()
       .then((url) => {
         setImage(url);
+       // console.logI(url);
       })
       .catch((e) => console.log("Errors while downloading => ", e));
   }, []);

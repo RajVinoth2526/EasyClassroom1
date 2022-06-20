@@ -19,48 +19,118 @@ import * as ImagePicker from "expo-image-picker";
 import { FontAwesome5 } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import * as firebase from "firebase";
-//import { UploadPost } from '../../../../API/firebaseMethods/firebaseMethod';
-//import IMAGE from '../../../assets/photo.png';
+import { UploadPostImage } from "../../../API/firebaseMethods/firebaseMethod";
+
+import IMAGE from '../../assets/photo.png';
 import { MaterialIcons } from "@expo/vector-icons";
 import { UploadPost } from "../../../API/firebaseMethods/firebaseMethod";
 import { FontAwesome } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function AddPostScreen({ navigation }) {
   const [message, setMessage] = useState("");
   const [title, setTitle] = useState("");
+  const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
+  const [image, setImage] = useState(exampleImageUri);
+ 
 
-  const id = uuid.v4();
+  const [ID] = useState(uuid.v4());
+ 
+  
+ 
 
-  const handlePress = () => {
-    if (!message) {
+  const handlePress =  async() => {
+
+   
+
+
+      const url = await firebase
+        .storage()
+        .ref()
+        .child("PostImage/" + ID) //name in storage in firebase console
+        .getDownloadURL()
+        .catch((e) => console.log("Errors while downloading => ", e));
+
+
+      if (!message) {
       Alert.alert("Text required");
     } else if (!title) {
       Alert.alert("title required");
     } else {
-      UploadPost(id, message, title);
+      
+      UploadPost(ID, message, title,url);
       navigation.replace("Dashboard");
       Alert.alert("Post Uploaded!");
     }
   };
 
+
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    
+    
+    
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    
+    setImage(result.uri);
+    
+  
+    
+    if (!result.cancelled) {
+      UploadPostImage(result.uri, ID)
+        .then(() => {
+         
+          console.log("Uploaded");
+        })
+        .catch((error) => {
+          Alert.alert("Error:", error.message);
+        });
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <MaterialIcons
-        name="post-add"
-        size={40}
-        color="#38deff"
-        style={{ marginLeft: 60, marginTop: 35, marginBottom: -65 }}
-      />
+      
       <View style={styles.postName}>
-        <Text style={{ fontSize: 30, marginTop: 5 }}> Create Post</Text>
+        <Text style={{ fontSize: 30, marginTop: 5 }}><MaterialIcons
+        name="post-add"
+        size={30}
+        color="black"
+        
+      />Create Post</Text>
       </View>
 
-      <ScrollView>
+      <ScrollView style = {styles.scrollScreen}>
         <View style={[styles.homeContent, { backgroundColor: "#88e1fc" }]}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
+         
+
+            <View style={styles.avatar}>
+                <Image
+                  
+                  source={{ uri: image }}
+                  style={{
+                    borderRadius: 3,
+                   
+                    height: 200,
+                    width: 300,
+                  }}
+                />
+              </View>
+              <View style={styles.photoUpload}>
+                <MaterialCommunityIcons
+                  onPress={pickImage}
+                  name="image-plus"
+                  size={30}
+                  color="black"
+                />
+              </View>
             <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
               Title
             </Text>
@@ -95,10 +165,13 @@ export default function AddPostScreen({ navigation }) {
                 />
               </View>
             </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
+          
         </View>
 
-        <View style={styles.iconAdd}>
+        
+      </ScrollView>
+      
+      <View style={styles.iconAdd}>
           <TouchableOpacity onPress={handlePress}>
             <FontAwesome
               name="send"
@@ -111,7 +184,6 @@ export default function AddPostScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
     </View>
   );
 }
@@ -126,16 +198,16 @@ const styles = StyleSheet.create({
   },
   iconAdd: {
     alignSelf: "center",
-    marginBottom: 50,
+    marginTop :'3%',
+    marginBottom :'2%'
   },
   avatar: {
     marginTop: 30,
     alignSelf: "center",
   },
   postName: {
-    marginTop: 20,
+    marginTop: 10,
     alignSelf: "center",
-    marginLeft: 40,
     marginBottom: 10,
     height: 60,
     width: 290,
@@ -143,12 +215,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   scrollScreen: {
-    marginTop: 5,
-    marginRight: 1,
-    marginBottom: 500,
-    borderRadius: 1,
-    marginLeft: 10,
+    marginTop: '2%',
+    width:'100%',
+    height :'90%',
+    marginBottom :'2%',
     backgroundColor: "white",
+    borderRadius:10,
     marginHorizontal: 1,
     shadowColor: "#000",
     shadowOffset: {
@@ -163,12 +235,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
 
     marginTop: 5,
-    marginBottom: 20,
+    marginBottom: '10%',
     backgroundColor: "#f2ffff",
-    height: 500,
-    width: 330,
-    marginLeft: -10,
-    marginRight: -10,
+    width:'98%',
+    height:'100%',
+
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -198,7 +269,8 @@ const styles = StyleSheet.create({
     fontSize: 8,
   },
   photoUpload: {
-    marginTop: 20,
+    alignSelf :'flex-end',
+    marginRight :'10%',
   },
   textinput: {
     marginLeft: 10,
@@ -210,5 +282,22 @@ const styles = StyleSheet.create({
 
     paddingRight: 20,
     padding: 10,
+  },
+  avatar: {
+    marginTop: 20,
+    borderRightColor:'black',
+    borderRadius:3,
+    borderWidth:1,
+    marginBottom: 30,
+    borderRadius: 3,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
   },
 });

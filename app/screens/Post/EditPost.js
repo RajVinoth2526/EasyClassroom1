@@ -29,15 +29,39 @@ import { set } from "react-native-reanimated";
 export default function EditPostScreen({ navigation, route }) {
   const [message, setMessage] = useState("");
   const [title, setTitle] = useState("");
-  const [updatemessage, setUpdatemessage] = useState("");
-  const [updatetitle, setUpdatetitle] = useState("");
+  const [message1, setMessage1] = useState("");
+  const [title1, setTitle1] = useState("");
+ 
   const { PostID } = route.params;
 
+
+  
+
   const handlePress = () => {
-    EditPost(PostID, message, title);
-    navigation.replace("Dashboard");
-    Alert.alert("Post Updated!!");
-  };
+    if(!message1 ){
+     EditPost(PostID, message, title1);
+     navigation.replace("Dashboard");
+     Alert.alert("Post Updated!!");
+   }else if(!title1){
+     EditPost(PostID, message, title);
+     navigation.replace("Dashboard");
+     Alert.alert("post Updated!!");
+   }else if(!message1 && !title1){
+     EditPost(PostID, message, title);
+     navigation.replace("Dashboard");
+     Alert.alert("post Updated!!");
+   }else{
+     EditPost(PostID, message1, title1);
+     navigation.replace("Dashboard");
+     Alert.alert("post Updated!!");
+
+   }
+ };
+
+
+  
+  
+
 
   useEffect(() => {
     async function getUserInfo() {
@@ -77,6 +101,28 @@ export default function EditPostScreen({ navigation, route }) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
           >
+
+
+            <View style={styles.avatar}>
+                <Image
+                  
+                  source={{ uri: image }}
+                  style={{
+                    borderRadius: 3,
+                   
+                    height: 200,
+                    width: 300,
+                  }}
+                />
+              </View>
+              <View style={styles.photoUpload}>
+                <MaterialCommunityIcons
+                  onPress={pickImage}
+                  name="image-plus"
+                  size={30}
+                  color="black"
+                />
+              </View>
             <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
               Title
             </Text>
@@ -85,12 +131,10 @@ export default function EditPostScreen({ navigation, route }) {
                 <TextInput
                   style={styles.textinput}
                   defaultValue={title}
-                  // placeholder = {title}
-
                   multiline={true}
                   numberOfLines={2}
                   textAlignVertical="top"
-                  onChangeText={(title) => setTitle("hellooooooo")}
+                  onChangeText={(title1) => setTitle1(title1)}
                 />
               </View>
             </TouchableWithoutFeedback>
@@ -102,13 +146,13 @@ export default function EditPostScreen({ navigation, route }) {
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
-                  // placeholder="Type here"
+                 
                   defaultValue={message}
-                  //value={updatemessage}
+                 
                   multiline={true}
                   numberOfLines={10}
                   textAlignVertical="top"
-                  onChangeText={(message) => setMessage(message)}
+                  onChangeText={(message1) => setMessage1(message1)}
                 />
               </View>
             </TouchableWithoutFeedback>

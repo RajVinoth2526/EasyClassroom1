@@ -29,20 +29,52 @@ import { EditNotice } from "../../../API/firebaseMethods/firebaseMethod";
 export default function EditNoticeScreen({ navigation, route }) {
   const [notice, setNotice] = useState("");
   const [title, setTitle] = useState("");
+  const [notice1, setNotice1] = useState("");
+  const [title1, setTitle1] = useState("");
   const { PostId } = route.params;
-  const { Type } = route.params;
+  const {Type} = route.params;
+ 
 
   const handlePress = () => {
-    if (!notice) {
-      Alert.alert("Text required");
-    } else if (!title) {
-      Alert.alert("title required");
-    } else {
+     if(!notice1 ){
+      EditNotice(PostId, notice, title1, Type);
+      navigation.replace("Dashboard");
+      Alert.alert("notice Updated!!");
+    }else if(!title1){
+      EditNotice(PostId, notice1, title, Type);
+      navigation.replace("Dashboard");
+      Alert.alert("notice Updated!!");
+    }else if(!notice1 && !title1){
       EditNotice(PostId, notice, title, Type);
       navigation.replace("Dashboard");
       Alert.alert("notice Updated!!");
+    }else{
+      EditNotice(PostId, notice1, title1, Type);
+      navigation.replace("Dashboard");
+      Alert.alert("notice Updated!!");
+
     }
   };
+
+  useEffect(() => {
+    async function getUserInfo() {
+      let doc = await firebase
+        .firestore()
+        .collection("Notices")
+        .doc(PostId)
+        .get();
+
+      if (!doc.exists) {
+        Alert.alert("No user data found!");
+      } else {
+        let dataObj = doc.data();
+        setNotice(dataObj.notice);
+
+        setTitle(dataObj.title);
+      }
+    }
+    getUserInfo();
+  });
 
   return (
     <View style={styles.container}>
@@ -70,11 +102,11 @@ export default function EditNoticeScreen({ navigation, route }) {
                 <TextInput
                   style={styles.textinput}
                   placeholder="Type here"
-                  value={title}
+                  defaultValue ={title}
                   multiline={true}
                   numberOfLines={2}
                   textAlignVertical="top"
-                  onChangeText={(title) => setTitle(title)}
+                  onChangeText={(title1) => setTitle1(title1)}
                 />
               </View>
             </TouchableWithoutFeedback>
@@ -88,11 +120,11 @@ export default function EditNoticeScreen({ navigation, route }) {
                   style={styles.textinput}
                   placeholder="Type here"
                   editable={true}
-                  value={notice}
+                  defaultValue={notice}
                   multiline={true}
                   numberOfLines={10}
                   textAlignVertical="top"
-                  onChangeText={(notice) => setNotice(notice)}
+                  onChangeText={(notice1) => setNotice1(notice1)}
                 />
               </View>
             </TouchableWithoutFeedback>

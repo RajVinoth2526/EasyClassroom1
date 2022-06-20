@@ -46,26 +46,18 @@ export default function AddNoticeScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <MaterialIcons
-        name="post-add"
-        size={40}
-        color="#38deff"
-        style={{ marginLeft: 60, marginTop: 35, marginBottom: -65 }}
-      />
+      
       <View style={styles.postName}>
-        <Text style={{ fontSize: 25, marginTop: 8 }}> Create Notice</Text>
+       <Text style={{ fontSize: 30 }}><MaterialIcons name="post-add" size={35}color="black"/>Create Notice</Text>
       </View>
 
       <ScrollView>
-        <View style={[styles.homeContent, { backgroundColor: "#e0f8ff" }]}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
+        <View style={[styles.homeContent, { backgroundColor: "#88e1fc" }]}>
+        
             <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
               Title
             </Text>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+           
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
@@ -77,12 +69,12 @@ export default function AddNoticeScreen({ navigation, route }) {
                   onChangeText={(title) => setTitle(title)}
                 />
               </View>
-            </TouchableWithoutFeedback>
+           
 
             <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
               Content
             </Text>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+           
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
@@ -94,11 +86,13 @@ export default function AddNoticeScreen({ navigation, route }) {
                   onChangeText={(notice) => setNotice(notice)}
                 />
               </View>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
+            
+        
         </View>
 
-        <View style={styles.iconAdd}>
+        
+      </ScrollView>
+      <View style={styles.iconAdd}>
           <TouchableOpacity onPress={handlePress}>
             <FontAwesome
               name="send"
@@ -111,7 +105,6 @@ export default function AddNoticeScreen({ navigation, route }) {
             </Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
     </View>
   );
 }
@@ -126,7 +119,8 @@ const styles = StyleSheet.create({
   },
   iconAdd: {
     alignSelf: "center",
-    marginBottom: 50,
+    marginTop:'5%',
+    marginBottom: '10%',
   },
   avatar: {
     marginTop: 30,
@@ -135,17 +129,12 @@ const styles = StyleSheet.create({
   postName: {
     marginTop: 20,
     alignSelf: "center",
-    marginLeft: 40,
     marginBottom: 10,
-    height: 60,
-    width: 290,
-    borderRadius: 10,
     alignItems: "center",
   },
   scrollScreen: {
+    height :'80%',
     marginTop: 5,
-    marginRight: 1,
-    marginBottom: 500,
     borderRadius: 1,
     marginLeft: 10,
     backgroundColor: "white",
@@ -177,7 +166,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 6,
     shadowRadius: 20,
-    elevation: 0.5,
+    elevation: 5,
   },
   homeContentText: {
     alignSelf: "center",
