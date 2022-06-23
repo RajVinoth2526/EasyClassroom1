@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   Alert,
+  ActivityIndicator,
   SafeAreaView,
   KeyboardAvoidingView,
   keyboardVerticalOffset,
@@ -34,10 +35,11 @@ export default function AddPostScreen({ navigation }) {
   const [image, setImage] = useState(exampleImageUri);
   const exampleImageUri1 = Image.resolveAssetSource(IMG).uri;
   const [image1, setImage1] = useState(exampleImageUri1);
- 
+  const [isLoading, setisLoading] = useState(false);
  
 
   const [ID] = useState(uuid.v4());
+  let currentUserUID = firebase.auth().currentUser.uid;
  
   
  
@@ -46,7 +48,12 @@ export default function AddPostScreen({ navigation }) {
 
    
 
-
+    const ProfileUrl = await firebase
+    .storage()
+    .ref()
+    .child("profileImage/" + currentUserUID) //name in storage in firebase console
+    .getDownloadURL()
+    .catch((e) => console.log("Errors while downloading => ", e));
       const url = await firebase
         .storage()
         .ref()
@@ -61,7 +68,7 @@ export default function AddPostScreen({ navigation }) {
       Alert.alert("title required");
     } else {
       
-      UploadPost(ID, message, title,url);
+      UploadPost(ID, message, title,url,ProfileUrl);
       navigation.replace("Dashboard");
       Alert.alert("Post Uploaded!");
     }
@@ -87,9 +94,10 @@ export default function AddPostScreen({ navigation }) {
   
     
     if (!result.cancelled) {
+      setisLoading(true);
       UploadPostImage(result.uri, ID)
         .then(() => {
-         
+          setisLoading(false);
           console.log("Uploaded");
         })
         .catch((error) => {
@@ -97,6 +105,15 @@ export default function AddPostScreen({ navigation }) {
         });
     }
   };
+
+  if(isLoading == true){
+    return(
+    <View style={styles.Loadingcontainer}>
+      <Text>Image Uploading Please wait!</Text>
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -302,5 +319,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 5,
+  },
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 });

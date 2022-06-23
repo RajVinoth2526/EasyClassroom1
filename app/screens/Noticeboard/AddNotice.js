@@ -31,14 +31,23 @@ export default function AddNoticeScreen({ navigation, route }) {
   const { type } = route.params;
 
   const id = uuid.v4();
+  let currentUserUID = firebase.auth().currentUser.uid;
 
-  const handlePress = () => {
+  const handlePress =  async() => {
+
+    const ProfileUrl = await firebase
+    .storage()
+    .ref()
+    .child("profileImage/" + currentUserUID) //name in storage in firebase console
+    .getDownloadURL()
+    .catch((e) => console.log("Errors while downloading => ", e));
+
     if (!notice) {
       Alert.alert("Text required");
     } else if (!title) {
       Alert.alert("title required");
     } else {
-      CreateNotice(id, notice, title, type);
+      CreateNotice(id, notice, title, type,ProfileUrl);
       navigation.replace("Dashboard");
       Alert.alert("Notice Uploaded!");
     }

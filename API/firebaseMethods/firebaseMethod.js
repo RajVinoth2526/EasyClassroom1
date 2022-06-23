@@ -45,7 +45,7 @@ export async function StudentRegistration(
   }
 }
 
-export async function UploadPost(id, message, title,imageUrl) {
+export async function UploadPost(id, message, title,imageUrl,ProfileUrl) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -69,6 +69,7 @@ export async function UploadPost(id, message, title,imageUrl) {
       message: message,
       DateTime: dateAndTime,
       imageUrl: imageUrl,
+      ProfileUrl : ProfileUrl
       
     });
   } catch (err) {
@@ -115,7 +116,7 @@ export async function DeletePost(id) {
   }
 }
 
-export async function CreateNotice(id, notice, title, type) {
+export async function CreateNotice(id, notice, title, type,ProfileUrl) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -139,6 +140,7 @@ export async function CreateNotice(id, notice, title, type) {
       firstName: dataObj.firstName,
       lastName: dataObj.lastName,
       DateTime: dateAndTime,
+      ProfileUrl :ProfileUrl
     });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);

@@ -25,6 +25,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
 import { FontAwesome } from "@expo/vector-icons";
 import { EditNotice } from "../../../API/firebaseMethods/firebaseMethod";
+import { normalizeUnits } from "moment";
 
 export default function EditNoticeScreen({ navigation, route }) {
   const [notice, setNotice] = useState("");
@@ -36,19 +37,19 @@ export default function EditNoticeScreen({ navigation, route }) {
  
 
   const handlePress = () => {
-     if(!notice1 ){
-      EditNotice(PostId, notice, title1, Type);
-      navigation.replace("Dashboard");
-      Alert.alert("notice Updated!!");
-    }else if(!title1){
+     if(!title1  ){
       EditNotice(PostId, notice1, title, Type);
       navigation.replace("Dashboard");
       Alert.alert("notice Updated!!");
-    }else if(!notice1 && !title1){
+    }if(!notice1){
+      EditNotice(PostId, notice, title1, Type);
+      navigation.replace("Dashboard");
+      Alert.alert("notice Updated!!");
+    }if(!notice1 && !title1){
       EditNotice(PostId, notice, title, Type);
       navigation.replace("Dashboard");
       Alert.alert("notice Updated!!");
-    }else{
+    }if(notice1 && title1){
       EditNotice(PostId, notice1, title1, Type);
       navigation.replace("Dashboard");
       Alert.alert("notice Updated!!");
@@ -90,18 +91,15 @@ export default function EditNoticeScreen({ navigation, route }) {
 
       <ScrollView>
         <View style={[styles.homeContent, { backgroundColor: "#88e1fc" }]}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
+         
             <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
               Title
             </Text>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
-                  placeholder="Type here"
+                  editable={true}
                   defaultValue ={title}
                   multiline={true}
                   numberOfLines={2}
@@ -109,16 +107,15 @@ export default function EditNoticeScreen({ navigation, route }) {
                   onChangeText={(title1) => setTitle1(title1)}
                 />
               </View>
-            </TouchableWithoutFeedback>
+           
 
             <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
               Content
             </Text>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+           
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
-                  placeholder="Type here"
                   editable={true}
                   defaultValue={notice}
                   multiline={true}
@@ -127,8 +124,7 @@ export default function EditNoticeScreen({ navigation, route }) {
                   onChangeText={(notice1) => setNotice1(notice1)}
                 />
               </View>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
+            
         </View>
 
         <View style={styles.iconAdd}>
@@ -188,7 +184,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 1, 
     shadowRadius: 10,
     elevation: 0.5,
   },

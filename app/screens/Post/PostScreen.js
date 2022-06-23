@@ -17,6 +17,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { DeletePost } from "../../../API/firebaseMethods/firebaseMethod";
 import IMAGE from '../../assets/profile-placeholder.png';
 
+
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -59,7 +60,7 @@ export default function PostScreen({ navigation }) {
         { cancelable: false }
       );
     } else {
-      Alert.alert("only Your can edit your own post ");
+      Alert.alert("only You can edit your own post ");
     }
   }
 
@@ -149,10 +150,23 @@ export default function PostScreen({ navigation }) {
 
   if (role == "Lecturer") {
     return (
-      <View style={styles.container}>
+     
 
        
-        <ScrollView style={styles.scrollScreen}>
+        <ScrollView
+         style={styles.scrollScreen}
+         refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        >
+          <View style={styles.AddIcon}>
+          <Ionicons
+            name="md-add-circle-sharp"
+            size={50}
+            color="#03dffc"
+            onPress={handlePress}
+          />
+        </View>
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
@@ -165,14 +179,15 @@ export default function PostScreen({ navigation }) {
               <View style={styles.head}>
                 
                   <Image
-                    source={{ uri: image }}
+                    
+                    source={{ uri: item.ProfileUrl }}
                     style={{
                       marginLeft :'5%',
                       marginTop:'2%',
                       height: 41,
                       width: 41,
                       borderWidth:1.5,
-                      borderColor:'#03dffc',
+                      
                       borderRadius: 50,
                     }}
                   />
@@ -186,7 +201,7 @@ export default function PostScreen({ navigation }) {
                   <TouchableOpacity
                     onPress={() => Edit(item.Postid, item.UserId)}
                   >
-                    <AntDesign name="edit" size={20} color="black" />
+                    <AntDesign name="edit" size={20} color="#03dffc" />
                     <Text style={{ fontSize: 8 }}>Edit</Text>
                   </TouchableOpacity>
                 </View>
@@ -194,15 +209,15 @@ export default function PostScreen({ navigation }) {
                 
                 
                 <Text style={styles.title}>{item.title}</Text>
-                <View>
+                <View style ={styles.avatar}>
                 <Image
-                  
+                
                   source={{ uri: item.imageUrl }}
                   style={{
-                    marginTop: 20,
-                    borderColor:'#03dffc',
+                    
+                    
                     borderRadius:4,
-                    borderWidth:2,
+                    borderWidth:1.5,
                     marginBottom: 30,
                     borderRadius: 4,
                     height: 200,
@@ -224,15 +239,31 @@ export default function PostScreen({ navigation }) {
                   <Text style={styles.msg}>{item.message}</Text>
                   
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',fontSize :10}}>{item.DateTime}</Text>
+                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
                 </View>
               </View>
             )}
             keyExtractor={(item, index) => index.toString()}
+
           />
+
+          
+
         </ScrollView>
 
-        <View style={styles.AddIcon}>
+        
+        
+      
+    );
+  } else if (role == "Demo") {
+    return (
+      <ScrollView
+         style={styles.scrollScreen}
+         refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        >
+          <View style={styles.AddIcon}>
           <Ionicons
             name="md-add-circle-sharp"
             size={50}
@@ -240,65 +271,175 @@ export default function PostScreen({ navigation }) {
             onPress={handlePress}
           />
         </View>
-
-        
-      </View>
-    );
-  } else if (role == "Demo") {
-    return (
-      <View style={styles.container}>
-        <ScrollView style={[styles.scrollScreen, { marginBottom: 110 }]}>
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
               <View
                 style={[
                   styles.Box,
-                  { backgroundColor: generateRandomBrightestHSLColor() },
+                 
                 ]}
-              >
+              > 
+              <View style={styles.head}>
+                
+                  <Image
+                    
+                    source={{ uri: image }}
+                    style={{
+                      marginLeft :'5%',
+                      marginTop:'2%',
+                      height: 41,
+                      width: 41,
+                      borderWidth:1.5,
+                      
+                      borderRadius: 50,
+                    }}
+                  />
+                
+
+                <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                </Text>
+
+                
+                </View>
+                
+                
                 <Text style={styles.title}>{item.title}</Text>
+                <View style ={styles.avatar}>
+                <Image
+                
+                  source={{ uri: item.imageUrl }}
+                  style={{
+                    
+                    
+                    borderRadius:4,
+                    borderWidth:1.5,
+                    marginBottom: 30,
+                    borderRadius: 4,
+                    height: 200,
+                    width: 300,
+                    alignSelf: "center",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 5,
+                    elevation: 8,
+                                  }}
+                />
+              </View>
+               
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.message}</Text>
-                  <Text style={styles.msgText}>
-                    {item.firstName} {item.lastName}
-                  </Text>
+                  
 
-                  <Text style={styles.msgText}>{item.DateTime}</Text>
+                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
                 </View>
               </View>
             )}
+            keyExtractor={(item, index) => index.toString()}
+
           />
+
+          
+
         </ScrollView>
-      </View>
     );
   } else if (role == "Student") {
     return (
-      <View style={styles.container}>
-        <ScrollView style={[styles.scrollScreen, { marginBottom: 110 }]}>
+      <ScrollView
+         style={styles.scrollScreen}
+         refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        >
+          <View style={styles.AddIcon}>
+          <Ionicons
+            name="md-add-circle-sharp"
+            size={50}
+            color="#03dffc"
+            onPress={handlePress}
+          />
+        </View>
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
               <View
                 style={[
                   styles.Box,
-                  { backgroundColor: generateRandomBrightestHSLColor() },
+                 
                 ]}
-              >
+              > 
+              <View style={styles.head}>
+                
+                  <Image
+                    
+                    source={{ uri: image }}
+                    style={{
+                      marginLeft :'5%',
+                      marginTop:'2%',
+                      height: 41,
+                      width: 41,
+                      borderWidth:1.5,
+                      
+                      borderRadius: 50,
+                    }}
+                  />
+                
+
+                <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                </Text>
+
+                
+                </View>
+                
+                
                 <Text style={styles.title}>{item.title}</Text>
+                <View style ={styles.avatar}>
+                <Image
+                
+                  source={{ uri: item.imageUrl }}
+                  style={{
+                    
+                    
+                    borderRadius:4,
+                    borderWidth:1.5,
+                    marginBottom: 30,
+                    borderRadius: 4,
+                    height: 200,
+                    width: 300,
+                    alignSelf: "center",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 5,
+                    elevation: 8,
+                                  }}
+                />
+              </View>
+               
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.message}</Text>
-                  <Text style={styles.msgText}>
-                    {item.firstName} {item.lastName}
-                  </Text>
+                  
 
-                  <Text style={styles.msgText}>{item.DateTime}</Text>
+                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
                 </View>
               </View>
             )}
+            keyExtractor={(item, index) => index.toString()}
+
           />
+
+          
+
         </ScrollView>
-      </View>
     );
   }
 
@@ -318,15 +459,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   AddIcon: {
-    position: "absolute",
-    marginTop :'3%',
+   
+    marginBottom :'1%',
     alignSelf:'flex-end',
     marginRight :'10%'
   },
   scrollScreen: {
     borderRadius: 10,
     width: "100%",
-    marginBottom: "30%",
+    marginBottom: "35%",
     backgroundColor: "white",
     marginHorizontal: 1,
     shadowColor: "#000",
@@ -342,7 +483,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     marginTop: 10,
-    marginBottom: 15,
+    marginBottom: '2%',
     backgroundColor: "#f2ffff",
     height: 120,
     width: 290,
@@ -362,11 +503,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   Box: {
-    marginBottom: 15,
-    marginTop: 15,
-    marginLeft: 5,
-    marginRight: 5,
-    backgroundColor: "#f5feff",
+    marginBottom: '1%',
+    marginTop: '1%',
+    alignSelf :'center',
+    width:'95%',
+    backgroundColor: "white",
     borderRadius: 5,
     marginHorizontal: 1,
     borderRadius: 10,
@@ -380,9 +521,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   Msg: {
-    marginLeft: 30,
-    marginTop: 20,
-    marginRight: 30,
+    marginLeft: '5%',
+    marginRight: '5%',
+    marginTop:'5%',
    
     borderRadius: 5,
   },
@@ -391,10 +532,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   title: {
-    marginTop: 30,
+    marginTop: '5%',
     alignSelf:'flex-start',
-    marginLeft:'4%',
-    fontSize: 25,
+    marginLeft:'5%',
+    marginBottom:'5%',
+    fontSize: 20,
     fontWeight: "bold",
   },
   Name: {
@@ -404,13 +546,20 @@ const styles = StyleSheet.create({
   },
   head :{
     flex : 1,
-    flexDirection: "row"
+    flexDirection: "row",
+    borderBottomColor :"#03dffc",
+    borderBottomWidth:1,
+    paddingBottom :10,
+    borderBottomStartRadius:15,
+    borderBottomEndRadius:15
   },
   msg: {
     fontSize: 18,
-    marginBottom: 30,
-    marginLeft: -5,
-    marginRight: -10,
+    borderWidth :1,
+    borderColor:'#03dffc',
+    borderRadius :10,
+    padding:10,
+    
   },
   Loadingcontainer: {
     flex: 1,
@@ -419,13 +568,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   avatar: {
-    marginTop: 20,
-    borderRightColor:'black',
-    borderRadius:3,
-    borderWidth:1,
-    marginBottom: 30,
-    borderRadius: 4,
-    alignSelf: "center",
+   
+    height:200,
+    width :300,
+    alignSelf:'center',
+    borderRadius:10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -433,7 +580,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 5,
-    elevation: 5,
+    elevation: 8,
   },
  
 });

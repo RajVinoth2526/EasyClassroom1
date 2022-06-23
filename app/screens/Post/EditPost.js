@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   Alert,
+  ActivityIndicator,
   SafeAreaView,
   KeyboardAvoidingView,
   keyboardVerticalOffset,
@@ -35,6 +36,7 @@ export default function EditPostScreen({ navigation, route }) {
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
   const { PostID } = route.params; 
+  const [isLoading, setisLoading] = useState(false);
 
 
   
@@ -44,15 +46,15 @@ export default function EditPostScreen({ navigation, route }) {
      EditPost(PostID, message, title1,image);
      navigation.replace("Dashboard");
      Alert.alert("Post Updated!!");
-   }else if(!title1){
+   }if(!title1){
      EditPost(PostID, message1, title,image);
      navigation.replace("Dashboard");
      Alert.alert("post Updated!!");
-   }else if(!message1 && !title1){
+   }if(!message1 && !title1){
      EditPost(PostID, message, title,image);
      navigation.replace("Dashboard");
      Alert.alert("post Updated!!");
-   }else{
+   }if(title1 && message1){
      EditPost(PostID, message1, title1,image);
      navigation.replace("Dashboard");
      Alert.alert("post Updated!!");
@@ -86,9 +88,10 @@ const pickImage = async () => {
   // console.log(result);
 
   if (!result.cancelled) {
+    setisLoading(true);
     UploadPostImage(result.uri, PostID)
       .then(() => {
-       
+        setisLoading(false);
         console.log("Uploaded");
       })
       .catch((error) => {
@@ -123,6 +126,15 @@ const pickImage = async () => {
     }
     getUserInfo();
   });
+
+  if(isLoading == true){
+    return(
+    <View style={styles.Loadingcontainer}>
+      <Text>Image Uploading Please wait!</Text>
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -270,6 +282,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 6,
     shadowRadius: 20,
     elevation: 0.5,
+  },
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
   homeContentText: {
     alignSelf: "center",

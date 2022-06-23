@@ -169,7 +169,7 @@ export default function TimeTableScreen({ navigation }) {
 
   if (role == "Lecturer") {
     return (
-      <View style={styles.container}>
+     
         <ScrollView showsHorizontalScrollIndicator={false} style={styles.scrollScreen}>
           <View style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={{ fontSize: 20, alignSelf: "center" }}>
@@ -284,11 +284,11 @@ export default function TimeTableScreen({ navigation }) {
             </View>
           </View>
         </ScrollView>
-      </View>
+      
     );
   } else if (role == "Demo") {
     return (
-      <View style={styles.container}>
+     
         <ScrollView style={styles.scrollScreen}>
           <View style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={{ fontSize: 20, alignSelf: "center" }}>
@@ -396,11 +396,11 @@ export default function TimeTableScreen({ navigation }) {
             </View>
           </View>
         </ScrollView>
-      </View>
+      
     );
   } else if (role == "Student") {
     return (
-      <View style={styles.container}>
+     
         <ScrollView style={styles.scrollScreen}>
           <View style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={{ fontSize: 20, alignSelf: "center" }}>
@@ -507,11 +507,11 @@ export default function TimeTableScreen({ navigation }) {
             </View>
           </View>
         </ScrollView>
-      </View>
+     
     );
   } else if (role == "Admin") {
     return (
-      <View style={styles.container}>
+     
         <ScrollView style={styles.scrollScreen}>
           <View style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={{ fontSize: 20, alignSelf: "center" }}>
@@ -648,7 +648,7 @@ export default function TimeTableScreen({ navigation }) {
               </View>
           </View>
         </ScrollView>
-      </View>
+     
     );
   }
 
@@ -694,10 +694,10 @@ const styles = StyleSheet.create({
   },
 
   Box: {
-    marginBottom: 15,
-    marginTop: 15,
-    marginLeft: 5,
-    marginRight: 5,
+    alignSelf:'center',
+    marginBottom: '2%',
+    marginTop: '5%',
+    width:'95%',
     backgroundColor: "#b1dffc",
     borderRadius: 5,
     marginHorizontal: 1,
