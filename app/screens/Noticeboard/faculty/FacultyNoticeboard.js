@@ -171,12 +171,7 @@ export default function PostScreen({ navigation }) {
                 {item.firstName} {item.lastName}
               </Text>
 
-              <View  style ={{marginLeft :'38%',marginTop:'2%'}}>
-                <TouchableOpacity onPress={() => Edit(item.id, item.UserID)}>
-                  <AntDesign name="edit" size={20} color="#03dffc" />
-                  <Text style={{ fontSize: 8 }}>Edit</Text>
-                </TouchableOpacity>
-              </View>
+             
             </View>
 
                 <Text style={styles.title}>{item.title}</Text>
@@ -232,12 +227,7 @@ export default function PostScreen({ navigation }) {
                 {item.firstName} {item.lastName}
               </Text>
 
-              <View  style ={{marginLeft :'38%',marginTop:'2%'}}>
-                <TouchableOpacity onPress={() => Edit(item.id, item.UserID)}>
-                  <AntDesign name="edit" size={20} color="#03dffc" />
-                  <Text style={{ fontSize: 8 }}>Edit</Text>
-                </TouchableOpacity>
-              </View>
+              
             </View>
 
                 <Text style={styles.title}>{item.title}</Text>
@@ -291,12 +281,7 @@ export default function PostScreen({ navigation }) {
                 {item.firstName} {item.lastName}
               </Text>
 
-              <View  style ={{marginLeft :'38%',marginTop:'2%'}}>
-                <TouchableOpacity onPress={() => Edit(item.id, item.UserID)}>
-                  <AntDesign name="edit" size={20} color="#03dffc" />
-                  <Text style={{ fontSize: 8 }}>Edit</Text>
-                </TouchableOpacity>
-              </View>
+              
             </View>
 
                 <Text style={styles.title}>{item.title}</Text>

@@ -208,11 +208,7 @@ export default function PostScreen({ navigation }) {
           </Text>
         </View>
 
-        <View style={styles.AddIcon}>
-          <TouchableOpacity onPress={handlePress}>
-            <MaterialIcons name="add-circle" size={50} color="#03dffc" />
-          </TouchableOpacity>
-        </View>
+        
 
         <FlatList
           data={subjects}
@@ -265,11 +261,7 @@ export default function PostScreen({ navigation }) {
           </Text>
         </View>
 
-        <View style={styles.AddIcon}>
-          <TouchableOpacity onPress={handlePress}>
-            <MaterialIcons name="add-circle" size={50} color="#03dffc" />
-          </TouchableOpacity>
-        </View>
+       
 
         <FlatList
           data={subjects}

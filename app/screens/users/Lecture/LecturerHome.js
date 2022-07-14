@@ -60,9 +60,15 @@ export default function LecturerHomeScreen({ navigation }) {
         </View>
 
         <View style={[styles.homeContent, { backgroundColor: "#c2bdf0" }]}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Results");
+            }}
+          >
           <Text style={styles.homeContentText}>
             <Foundation name="results" size={24} color="black" /> Results
           </Text>
+        </TouchableOpacity>
         </View>
 
         <View style={[styles.homeContent, { backgroundColor: "#f0bdbd" }]}>

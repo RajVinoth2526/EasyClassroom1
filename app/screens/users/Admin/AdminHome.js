@@ -53,9 +53,15 @@ export default function AdminHomeScreen({ navigation }) {
         </View>
 
         <View style={[styles.homeContent, { backgroundColor: "#c2bdf0" }]}>
+        <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("AddResults");
+            }}
+          >
           <Text style={styles.homeContentText}>
-            <Foundation name="results" size={24} color="black" /> Results
+            <Foundation name="results" size={24} color="black" /> Add Results
           </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={[styles.homeContent, { backgroundColor: "#f0bdbd" }]}>

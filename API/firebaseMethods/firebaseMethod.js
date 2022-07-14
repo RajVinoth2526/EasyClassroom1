@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 
 export async function StudentRegistration(
+
   email,
   password,
   lastName,
@@ -28,6 +29,10 @@ export async function StudentRegistration(
     const currentUser = firebase.auth().currentUser;
 
     const db = firebase.firestore();
+    let year = new Date().getFullYear();
+
+    const academyYear = (year -1) +'|' +year;
+
     db.collection("users").doc(currentUser.uid).set({
       email: currentUser.email,
       lastName: lastName,
@@ -39,6 +44,28 @@ export async function StudentRegistration(
       course: course,
       role: "Student",
       faculty: faculty,
+      academyYear : academyYear,
+    });
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+export async function AddResults(
+  year,
+  level,
+  RegistrationNumber,
+  course,
+  result,
+  credits
+) {
+  try {
+   
+
+    const db = firebase.firestore();
+    db.collection(year).doc(level).collection(RegistrationNumber).doc(course).set({
+      course :course,
+      result : result,
+      credits : credits,
     });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);

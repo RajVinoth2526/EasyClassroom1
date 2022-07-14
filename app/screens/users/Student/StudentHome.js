@@ -24,6 +24,11 @@ export default function StudentHomeScreen({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={[styles.homeContent, { backgroundColor: "#f1fae8" }]}>
+        <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("TimeTable");
+            }}
+          >
           <Text style={styles.homeContentText}>
             {" "}
             <MaterialCommunityIcons
@@ -33,6 +38,7 @@ export default function StudentHomeScreen({ navigation }) {
             />{" "}
             Time Table
           </Text>
+          </TouchableOpacity>
         </View>
         <View style={[styles.homeContent, { backgroundColor: "#ffeab8" }]}>
           <TouchableOpacity
@@ -50,11 +56,17 @@ export default function StudentHomeScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
-        500
+  
         <View style={[styles.homeContent, { backgroundColor: "#c2bdf0" }]}>
+        <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Results");
+            }}
+          >
           <Text style={styles.homeContentText}>
             <Foundation name="results" size={24} color="black" /> Results
           </Text>
+        </TouchableOpacity>
         </View>
         <View style={[styles.homeContent, { backgroundColor: "#f0bdbd" }]}>
           <Text style={styles.homeContentText}>

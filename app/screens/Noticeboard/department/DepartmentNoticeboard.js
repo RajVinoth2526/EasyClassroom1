@@ -185,9 +185,7 @@ export default function PostScreen({ navigation }) {
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.notice}</Text>
-                  <Text style={styles.msgText}>
-                    {item.firstName} {item.lastName}
-                  </Text>
+                  
 
                   <Text style={styles.msgText}>{item.DateTime}</Text>
                 </View>
@@ -238,21 +236,14 @@ export default function PostScreen({ navigation }) {
                 {item.firstName} {item.lastName}
               </Text>
 
-              <View  style ={{marginLeft :'38%',marginTop:'2%'}}>
-                <TouchableOpacity onPress={() => Edit(item.id, item.UserID)}>
-                  <AntDesign name="edit" size={20} color="#03dffc" />
-                  <Text style={{ fontSize: 8 }}>Edit</Text>
-                </TouchableOpacity>
-              </View>
+             
             </View>
 
 
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.notice}</Text>
-                  <Text style={styles.msgText}>
-                    {item.firstName} {item.lastName}
-                  </Text>
+                  
 
                   <Text style={styles.msgText}>{item.DateTime}</Text>
                 </View>
@@ -301,21 +292,14 @@ export default function PostScreen({ navigation }) {
                 {item.firstName} {item.lastName}
               </Text>
 
-              <View  style ={{marginLeft :'38%',marginTop:'2%'}}>
-                <TouchableOpacity onPress={() => Edit(item.id, item.UserID)}>
-                  <AntDesign name="edit" size={20} color="#03dffc" />
-                  <Text style={{ fontSize: 8 }}>Edit</Text>
-                </TouchableOpacity>
-              </View>
+             
             </View>
 
 
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.notice}</Text>
-                  <Text style={styles.msgText}>
-                    {item.firstName} {item.lastName}
-                  </Text>
+                 
 
                   <Text style={styles.msgText}>{item.DateTime}</Text>
                 </View>
@@ -419,10 +403,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   msgText: {
-    marginLeft: 150,
-    marginTop: 5,
-    marginBottom: 5,
-    fontSize: 10,
+    
+    alignSelf:'flex-end',
+    fontSize:10
   },
   msg: {
     fontSize: 15,

@@ -263,14 +263,7 @@ export default function PostScreen({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         >
-          <View style={styles.AddIcon}>
-          <Ionicons
-            name="md-add-circle-sharp"
-            size={50}
-            color="#03dffc"
-            onPress={handlePress}
-          />
-        </View>
+          
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
@@ -284,7 +277,7 @@ export default function PostScreen({ navigation }) {
                 
                   <Image
                     
-                    source={{ uri: image }}
+                    source={{ uri: item.ProfileUrl }}
                     style={{
                       marginLeft :'5%',
                       marginTop:'2%',
@@ -356,14 +349,7 @@ export default function PostScreen({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         >
-          <View style={styles.AddIcon}>
-          <Ionicons
-            name="md-add-circle-sharp"
-            size={50}
-            color="#03dffc"
-            onPress={handlePress}
-          />
-        </View>
+          
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
@@ -377,7 +363,7 @@ export default function PostScreen({ navigation }) {
                 
                   <Image
                     
-                    source={{ uri: image }}
+                    source={{ uri: item.ProfileUrl }}
                     style={{
                       marginLeft :'5%',
                       marginTop:'2%',
