@@ -62,7 +62,7 @@ export default function AddPostScreen({ navigation }) {
         .catch((e) => console.log("Errors while downloading => ", e));
 
 
-      if (!message) {
+    if (!message) {
       Alert.alert("Text required");
     } else if (!title) {
       Alert.alert("title required");

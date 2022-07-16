@@ -29,6 +29,14 @@ export async function AdminRegistration(
       department: department,
       role: "Admin",
     });
+    const db1 = firebase.firestore();
+    db1.collection("Admin").doc(currentUser.uid).set({
+     
+      id: currentUser.uid,
+      firstName: firstName,
+      lastName: lastName,
+      
+    });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }

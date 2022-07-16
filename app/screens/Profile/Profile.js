@@ -18,13 +18,14 @@ import { Foundation } from "@expo/vector-icons";
 import { UploadImage } from "../../../API/firebaseMethods/firebaseMethod";
 import { GetImage } from "../../../API/firebaseMethods/firebaseMethod";
 import IMAGE from "../../assets/profile-placeholder.png";
-
+import { UpdateUserDetails } from "../../../API/firebaseMethods/firebaseMethod";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
 export default function Profile({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -51,6 +52,24 @@ export default function Profile({ navigation }) {
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
 
+  async function UpdateUserDetail(){
+
+    const ProfileUrl = await firebase
+    .storage()
+    .ref()
+    .child("profileImage/" + currentUserUID) //name in storage in firebase console
+    .getDownloadURL()
+    .then((ProfileUrl) => {
+      UpdateUserDetails(currentUserUID,firstName,lastName,ProfileUrl,role);
+    })
+  
+    .catch((e) => 
+    
+    console.log("Errors while downloading => ", e)
+
+    );
+
+  }
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -64,31 +83,28 @@ export default function Profile({ navigation }) {
     // console.log(result);
 
     if (!result.cancelled) {
+      setisLoading(true);
       UploadImage(result.uri, currentUserUID)
-        .then(() => {
-          console.log("Uploaded");
-        })
+      .then(() => {
+        setisLoading(false);
+        console.log("Uploaded");
+      })
+        
         .catch((error) => {
           Alert.alert("Error:", error.message);
         });
+      
+
     }
 
-    await firebase
-      .storage()
-      .ref()
-      .child("images/" + currentUserUID)
-      .getDownloadURL();
 
-    return (
-      <View style={styles.Loadingcontainer}>
-        <Image
-          style={styles.logo}
-          source={require("../../assets/logo.png")}
-        ></Image>
-        <Text style={{ color: "black", fontSize: 40 }}>Easy Classroom</Text>
-        <ActivityIndicator color="blue" size="large" />
-      </View>
-    );
+    UpdateUserDetail();
+
+    
+
+    
+     
+    
   };
 
   useEffect(() => {
@@ -99,7 +115,7 @@ export default function Profile({ navigation }) {
       .getDownloadURL()
       .then((url) => {
         setImage(url);
-       // console.logI(url);
+       //console.logI(url);
       })
       .catch((e) => console.log("Errors while downloading => ", e));
   }, []);
@@ -132,6 +148,15 @@ export default function Profile({ navigation }) {
     }
     getUserInfo();
   });
+
+  if(isLoading == true){
+    return(
+    <View style={styles.Loadingcontainer}>
+      <Text>Image Uploading Please wait!</Text>
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
+    );
+  }
 
   if (role == "Lecturer") {
     return (

@@ -10,7 +10,7 @@ import { Entypo } from "@expo/vector-icons";
 
 export default function LecturerHomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+   
       <ScrollView style={styles.scrollScreen}>
         <View style={[styles.homeContent, { backgroundColor: "#bef7df" }]}>
           <TouchableOpacity
@@ -58,19 +58,7 @@ export default function LecturerHomeScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
-
-        <View style={[styles.homeContent, { backgroundColor: "#c2bdf0" }]}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Results");
-            }}
-          >
-          <Text style={styles.homeContentText}>
-            <Foundation name="results" size={24} color="black" /> Results
-          </Text>
-        </TouchableOpacity>
-        </View>
-
+        
         <View style={[styles.homeContent, { backgroundColor: "#f0bdbd" }]}>
           <Text style={styles.homeContentText}>
             <FontAwesome name="calendar" size={24} color="black" /> Calender
@@ -83,7 +71,7 @@ export default function LecturerHomeScreen({ navigation }) {
           </Text>
         </View>
       </ScrollView>
-    </View>
+  
   );
 }
 
@@ -92,15 +80,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     paddingTop: 30,
+    alignItems:'center',
 
     backgroundColor: "white",
   },
   scrollScreen: {
-    marginTop: 5,
-    marginRight: 10,
-    marginBottom: 115,
-    borderRadius: 10,
-    marginLeft: 10,
+    
+    height:'60%',
+    width:'100%',
+    alignSelf:'center',
+    marginBottom: "35%",
+    borderBottomLeftRadius:20,
+    borderBottomRightRadius:20,
     backgroundColor: "white",
     marginHorizontal: 1,
     shadowColor: "#000",

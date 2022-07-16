@@ -36,7 +36,6 @@ export default function SignUp({ navigation }) {
     setGender("");
     //setDOB('');
     setDistrict("");
-    setRole("");
     setFaculty("");
     setDepartment("");
     setEmail("");

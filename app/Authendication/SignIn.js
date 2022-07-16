@@ -38,7 +38,7 @@ export default function SignIn({ navigation }) {
           source={require("../assets/logo.png")}
         ></Image>
         <Text style={{ color: "black", fontSize: 40 }}>Easy Classroom</Text>
-        <ActivityIndicator color="blue" size="large" />
+        <ActivityIndicator color="#03befc" size="large" />
       </View>
     );
   };

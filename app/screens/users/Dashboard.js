@@ -38,6 +38,7 @@ import LecturerSearchScreen from "./Lecture/LecturerSearchScreen";
 import DemoSearchScreen from "./Demo/DemoSearchScreen";
 import StudentSearchScreen from "./Student/StudentSearchScreen";
 import RefreshPostScreen from "../Post/RefreshPostScreen";
+import ChatScreen from "../Chat/ChatScreen";
 
 const Tab = createBottomTabNavigator();
 const Draw = createDrawerNavigator();
@@ -124,7 +125,7 @@ function TabNavigation() {
         />
         <Tab.Screen
           name="Chat"
-          component={LecturerChatScreen}
+          component={ChatScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
@@ -225,7 +226,7 @@ function TabNavigation() {
 
         <Tab.Screen
           name="Chat"
-          component={StudentChatScreen}
+          component={ChatScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
@@ -324,7 +325,7 @@ function TabNavigation() {
         />
         <Tab.Screen
           name="Chat"
-          component={DemoChatScreen}
+          component={ChatScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
@@ -404,7 +405,7 @@ function TabNavigation() {
 
         <Tab.Screen
           name="Chat"
-          component={AdminChatScreen}
+          component={ChatScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
@@ -449,7 +450,7 @@ function TabNavigation() {
 
   return (
     <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="blue" size="large" />
+      <ActivityIndicator color="03befc" size="large" />
     </View>
   );
 }

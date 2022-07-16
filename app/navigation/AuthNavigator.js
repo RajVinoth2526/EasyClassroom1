@@ -32,7 +32,9 @@ import TimeTableScreen from "../screens/TimeTable/TimeTableScreen";
 import ClassroomWelcome from "../screens/Classroom/welcome";
 import ResultsScreen from "../screens/Results/ResultsScreen";
 import AddResultsScreen from "../screens/Results/AddResults";
-
+import ContactScreen from "../screens/Chat/ContactsScreen";
+import SelectContactScreen from "../screens/Chat/SelectContactScreen";
+import ChatBoxScreen from "../screens/Chat/ChatBoxScreen";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -171,6 +173,21 @@ export default function App() {
          <Stack.Screen
           name={"AddResults"}
           component={AddResultsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"contact"}
+          component={ContactScreen}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name={"SelectContact"}
+          component={SelectContactScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ChatBox"}
+          component={ChatBoxScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

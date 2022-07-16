@@ -25,7 +25,7 @@ export default function LoadingScreen({ navigation }) {
       >
         Easy Classroom
       </Text>
-      <ActivityIndicator color="blue" size="large" />
+      <ActivityIndicator color="#03befc" size="large" />
     </View>
   );
 }

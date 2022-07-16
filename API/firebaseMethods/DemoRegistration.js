@@ -29,6 +29,15 @@ export async function DemoRegistration(
       district: district,
       role: "Demonstrator",
     });
+  
+    const db1 = firebase.firestore();
+    db1.collection("Demonstrator").doc(currentUser.uid).set({
+     
+      id: currentUser.uid,
+      firstName: firstName,
+      lastName: lastName,
+      
+    });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }

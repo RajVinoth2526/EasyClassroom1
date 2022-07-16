@@ -14,8 +14,16 @@ Platform:
   linux x64
 
 Trace: 
-  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
-      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26)
+  Error: https://github.com/react-navigation/react-native-tab-view: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141517:19)
+      at Object.onceWrapper (node:events:645:28)
+      at ClientRequest.emit (node:events:526:28)
+      at TLSSocket.emitRequestTimeout (node:_http_client:758:9)
+      at Object.onceWrapper (node:events:645:28)
+      at TLSSocket.emit (node:events:538:35)
+      at TLSSocket.Socket._onTimeout (node:net:501:8)
+      at listOnTimeout (node:internal/timers:559:17)
+      at processTimers (node:internal/timers:502:7)
 
 npm manifest: 
   {
@@ -67,17 +75,23 @@ npm manifest:
       "react-native-fast-image": "^8.5.11",
       "react-native-gesture-handler": "~2.2.1",
       "react-native-image-modal": "^1.0.16",
+      "react-native-image-progress": "^1.2.0",
       "react-native-image-viewing": "^0.2.2",
+      "react-native-image-with-progress-bar": "^1.0.8",
       "react-native-modal": "^13.0.1",
       "react-native-modal-datetime-picker": "^13.1.2",
       "react-native-modal-photo-view": "^0.1.1",
+      "react-native-paper": "^4.12.2",
       "react-native-picker-select": "^8.0.4",
       "react-native-pincode-input": "^1.0.2",
+      "react-native-progress": "^5.0.0",
       "react-native-reanimated": "~2.8.0",
       "react-native-restart": "^0.0.24",
       "react-native-safe-area-context": "4.2.4",
       "react-native-screens": "~3.11.1",
       "react-native-smooth-pincode-input": "^1.0.9",
+      "react-native-table-component": "^1.2.2",
+      "react-native-underline-tabbar": "^1.3.6",
       "react-native-uuid": "^2.0.1",
       "react-native-vector-icons": "^9.1.0",
       "react-native-web": "0.17.7",

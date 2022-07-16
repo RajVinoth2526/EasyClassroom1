@@ -10,7 +10,7 @@ export async function LecturerRegistration(
   gender,
   faculty,
   department,
-  district,
+  district, 
   id
 ) {
   try {
@@ -28,6 +28,14 @@ export async function LecturerRegistration(
       department: department,
       district: district,
       role: "Lecturer",
+    });
+    const db1 = firebase.firestore();
+    db1.collection("Lecturer").doc(currentUser.uid).set({
+     
+      id: currentUser.uid,
+      firstName: firstName,
+      lastName: lastName,
+      
     });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);

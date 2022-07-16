@@ -29,6 +29,7 @@ export async function StudentRegistration(
     const currentUser = firebase.auth().currentUser;
 
     const db = firebase.firestore();
+    
     let year = new Date().getFullYear();
 
     const academyYear = (year -1) +'|' +year;
@@ -46,9 +47,138 @@ export async function StudentRegistration(
       faculty: faculty,
       academyYear : academyYear,
     });
+
+
+    
+    const db1 = firebase.firestore();
+    db1.collection("Student").doc(currentUser.uid).set({
+     
+      id: currentUser.uid,
+      firstName: firstName,
+      lastName: lastName,
+      
+    });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
+}
+
+export async function StoreSendMessage(
+  id,
+  type,
+  message,
+  SenderID,
+  ReceiverID,
+  firstName,
+  lastName,
+  ProfileUrl
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("messages").doc(SenderID).collection(ReceiverID).doc(id).set({
+     
+      MessageId: id,
+      type : type,
+      ReceiverID : ReceiverID,
+      message:message,
+      dateAndTime : dateAndTime,
+      firstName : firstName,
+      lastName : lastName,
+      ProfileUrl : ProfileUrl,
+      created: firebase.firestore.FieldValue.serverTimestamp()
+
+    });
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+export async function StoreReceiveMessage(
+  id,
+  message,
+  ReceiverID,
+  SenderID,
+  firstName,
+  lastName,
+  ProfileUrl
+  
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("messages").doc(ReceiverID).collection(SenderID).doc(id).set({
+     
+      MessageId: id,
+      ReceiverID : ReceiverID,
+      message:message,
+      dateAndTime : dateAndTime,
+      firstName : firstName,
+      lastName : lastName,
+      ProfileUrl : ProfileUrl
+
+    });
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+export async function StoreReceivedID(
+  ReceiverID,
+  ID,
+  firstName,
+  lastName,
+  ProfileUrl,
+
+ 
+) {
+
+
+  
+  const db1 = firebase.firestore();
+    db1.collection(ReceiverID+"senders").doc(ID).set({
+     
+      ID : ID,
+      firstName: firstName,
+      lastName: lastName,
+      ProfileUrl : ProfileUrl
+    });
+  
+}
+
+
+export async function UpdateUserDetails(
+  id,
+  firstName,
+  lastName,
+  ProfileUrl,
+  role,
+ 
+) {
+
+
+  const currentUser = firebase.auth().currentUser;
+  const db1 = firebase.firestore();
+    db1.collection(role).doc(id).update({
+     
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      ProfileUrl : ProfileUrl
+    });
+  
 }
 export async function AddResults(
   year,

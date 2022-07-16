@@ -32,7 +32,7 @@ export default function PostScreen({ navigation }) {
 
   let currentUserUID = firebase.auth().currentUser.uid;
 
-  function printId(ID ,url) {
+  function printId(ID ) {
     navigation.navigate("EditPost", { PostID: ID });
   }
 
@@ -159,14 +159,7 @@ export default function PostScreen({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         >
-          <View style={styles.AddIcon}>
-          <Ionicons
-            name="md-add-circle-sharp"
-            size={50}
-            color="#03dffc"
-            onPress={handlePress}
-          />
-        </View>
+         
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
@@ -246,6 +239,16 @@ export default function PostScreen({ navigation }) {
             keyExtractor={(item, index) => index.toString()}
 
           />
+
+
+        <View style={styles.AddIcon}>
+          <Ionicons
+            name="md-add-circle-sharp"
+            size={50}
+            color="#03dffc"
+            onPress={handlePress}
+          />
+        </View>
 
           
 

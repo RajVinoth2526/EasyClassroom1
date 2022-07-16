@@ -228,6 +228,9 @@ export default function ResultsScreen({ navigation }) {
    
   });
 
+
+  
+
   
   return (
     <View style={styles.container}>
