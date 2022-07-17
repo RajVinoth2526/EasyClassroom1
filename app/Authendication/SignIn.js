@@ -9,14 +9,20 @@ import {
   Image,
   ActivityIndicator,
   KeyboardAvoidingView,
+  BackHandler
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { signIn } from "../../API/firebaseMethods/firebaseMethod";
 import Modal from "react-native-modal";
 
+
 export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+
+
+ 
 
   const handlePress = () => {
     if (!email) {

@@ -69,7 +69,7 @@ export default function AddPostScreen({ navigation }) {
     } else {
       
       UploadPost(ID, message, title,url,ProfileUrl);
-      navigation.replace("Dashboard");
+      navigation.goBack();
       Alert.alert("Post Uploaded!");
     }
   };

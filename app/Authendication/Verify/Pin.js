@@ -9,6 +9,7 @@ import {
   Keyboard,
   StyleSheet,
   SafeAreaView,
+  ActivityIndicator
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CodeInput from "react-native-confirmation-code-input";
@@ -23,6 +24,7 @@ export default function Pin({ navigation }) {
   const [demoPin, setDemoPin] = useState("");
   const [studentPin, setStudentPin] = useState("");
   const [adminPin, setAdminPin] = useState("");
+  const [flag, setFlag] = useState("");
 
   const emptyState = () => {
     setPin("");
@@ -33,7 +35,7 @@ export default function Pin({ navigation }) {
       let doc = await firebase
         .firestore()
         .collection("PinForRole")
-        .doc("pins")
+        .doc("Pins")
         .get();
 
       if (!doc.exists) {
@@ -44,22 +46,23 @@ export default function Pin({ navigation }) {
         setDemoPin(dataObj.DemoPin);
         setStudentPin(dataObj.StudentPin);
         setAdminPin(dataObj.AdminPin);
+        setFlag(dataObj.flag);
       }
     }
     getUserInfo();
   });
 
   const handlePin = () => {
-    if (pin == lectuerPin) {
+    if (pin == lectuerPin && lectuerPin != null) {
       navigation.navigate("LecturerSignUp");
       emptyState();
-    } else if (pin == demoPin) {
+    } else if (pin == demoPin && demoPin != null) {
       navigation.navigate("DemoSignUp");
       emptyState();
-    } else if (pin == studentPin) {
+    } else if (pin == studentPin && studentPin != null) {
       navigation.navigate("StudentSignUp");
       emptyState();
-    } else if (pin == adminPin) {
+    } else if (pin == adminPin && adminPin != null) {
       navigation.navigate("AdminSignUp");
       emptyState();
     } else {
@@ -67,6 +70,8 @@ export default function Pin({ navigation }) {
       emptyState();
     }
   };
+
+  if(flag == "true"){
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -128,6 +133,13 @@ export default function Pin({ navigation }) {
   );
 }
 
+return(
+  <View style={styles.Loadingcontainer}>
+  <ActivityIndicator color="#03befc" size="large" />
+</View>
+);
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -185,5 +197,11 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: -20,
+  },
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 });

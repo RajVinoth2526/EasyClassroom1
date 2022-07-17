@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   FlatList,
+  ActivityIndicator
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,6 +15,7 @@ import * as firebase from "firebase";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function SelectContactScreen({ navigation, route }) {
+  const [isLoading, setisLoading] = useState(true);
   const [subjects, setSubjects] = useState([]);
   const { ROLE } = route.params;
 
@@ -29,6 +31,7 @@ export default function SelectContactScreen({ navigation, route }) {
       });
 
       setSubjects(data);
+      setisLoading(false);
     }
 
     fetchSubjects();
@@ -38,35 +41,83 @@ export default function SelectContactScreen({ navigation, route }) {
     navigation.navigate("ChatBox",{ ReceiverID: id,ReceiverUrl : url,ReceiverFirstName : firstName,ReceiverLastName : lastName });
   };
 
+  
+
+  if(isLoading == true){
+    return(
+    <View style={styles.Loadingcontainer}>
+      
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
+    );
+  }
+
+
   if (ROLE == "Lecturer") {
     return (
       <View style={styles.container}>
-        <Text style = {{fontSize :30 ,marginBottom :"3%",marginLeft:'2%'}}>Contacts</Text>
+         <Text style = {{fontSize :30 ,marginBottom :"3%",marginLeft:'2%'}}>Contacts</Text>
         <ScrollView>
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
-                <View style={[styles.Box]}>
-                  <View style={styles.head}>
-                    <Image
-                      source={{ uri: item.ProfileUrl }}
-                      style={{
-                        marginLeft: "5%",
-                        marginTop: "2%",
-                        height: 41,
-                        width: 41,
-                        borderWidth: 1.5,
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <Image
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      marginLeft: "5%",
+                      marginTop: "2%",
+                      height: 41,
+                      width: 41,
+                      borderWidth: 1.5,
 
-                        borderRadius: 50,
-                      }}
-                    />
+                      borderRadius: 50,
+                    }}
+                  />
 
-                    <Text style={styles.Name}>
-                      {item.firstName} {item.lastName}
-                    </Text>
-                  </View>
+                  <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                  </Text>
                 </View>
+              </View>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
+      </View>
+    );
+  }if (ROLE == "Demonstrator") {
+    return (
+      <View style={styles.container}>
+         <Text style = {{fontSize :30 ,marginBottom :"3%",marginLeft:'2%'}}>Contacts</Text>
+        <ScrollView>
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <Image
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      marginLeft: "5%",
+                      marginTop: "2%",
+                      height: 41,
+                      width: 41,
+                      borderWidth: 1.5,
+
+                      borderRadius: 50,
+                    }}
+                  />
+
+                  <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                  </Text>
+                </View>
+              </View>
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -75,8 +126,7 @@ export default function SelectContactScreen({ navigation, route }) {
       </View>
     );
   }
-
-  if (ROLE == "Demonstrator") {
+  if (ROLE == "Student") {
     return (
       <View style={styles.container}>
          <Text style = {{fontSize :30 ,marginBottom :"3%",marginLeft:'2%'}}>Contacts</Text>
@@ -152,11 +202,7 @@ export default function SelectContactScreen({ navigation, route }) {
     );
   }
 
-  return (
-    <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="#03befc" size="large" />
-    </View>
-  );
+  
 }
 
 const styles = StyleSheet.create({

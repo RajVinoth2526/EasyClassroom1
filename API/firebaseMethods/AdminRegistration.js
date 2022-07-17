@@ -11,11 +11,15 @@ export async function AdminRegistration(
   district,
   faculty,
   department,
-  id
+  id,
+  image
 ) {
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     const currentUser = firebase.auth().currentUser;
+
+    const response = await fetch(image);
+    const blob = await response.blob();
 
     const db = firebase.firestore();
     db.collection("users").doc(currentUser.uid).set({
@@ -29,14 +33,24 @@ export async function AdminRegistration(
       department: department,
       role: "Admin",
     });
+  
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("profileImage/" + currentUser.uid);
+    const snapshot = await ref.put(blob);
+
+    
     const db1 = firebase.firestore();
     db1.collection("Admin").doc(currentUser.uid).set({
      
       id: currentUser.uid,
       firstName: firstName,
       lastName: lastName,
-      
+      ProfileUrl : image      
     });
+
+    
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }

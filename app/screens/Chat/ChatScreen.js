@@ -15,6 +15,8 @@ import * as firebase from "firebase";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function ChatScreen({ navigation }) {
+
+  const [isLoading, setisLoading] = useState(true);
   const [subjects, setSubjects] = useState([]);
 
   let currentUserUID = firebase.auth().currentUser.uid;
@@ -34,6 +36,7 @@ export default function ChatScreen({ navigation }) {
       });
 
       setSubjects(data);
+      setisLoading(false);
     }
 
     fetchSubjects();
@@ -47,10 +50,21 @@ export default function ChatScreen({ navigation }) {
     navigation.navigate("ChatBox", { ReceiverID : ID ,ReceiverUrl : ProfileUrl ,ReceiverFirstName : firstName ,ReceiverLastName : lastName});
   };
 
+
+  if(isLoading == true){
+    return(
+    <View style={styles.Loadingcontainer}>
+      
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
+    );
+  }
+
+
   
 
 
-  if(subjects != ""){
+  
 
  
     return (
@@ -99,35 +113,10 @@ export default function ChatScreen({ navigation }) {
       </View>
       </View>
     );
-}
 
-if(subjects == ""){
 
- 
-  return (
-    <View style={styles.container}>
-      <Text style={{fontSize :30 ,marginBottom :"5%",marginLeft :'3%',fontWeight:'900'}}>Chats</Text>
-      
-     
 
-      <View style={styles.AddIcon}>
-      
-      <Ionicons
-        name="md-add-circle-sharp"
-        size={70}
-        color="#03dffc"
-        onPress={handlePress}
-      />
-    </View>
-    </View>
-  );
-}
-        
-return(
-  <View style={styles.Loadingcontainer}>
-  <ActivityIndicator color="#03befc" size="large" />
-</View>
-);
+
   
 
  

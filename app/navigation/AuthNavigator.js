@@ -35,6 +35,7 @@ import AddResultsScreen from "../screens/Results/AddResults";
 import ContactScreen from "../screens/Chat/ContactsScreen";
 import SelectContactScreen from "../screens/Chat/SelectContactScreen";
 import ChatBoxScreen from "../screens/Chat/ChatBoxScreen";
+
 const Stack = createStackNavigator();
 
 export default function App() {

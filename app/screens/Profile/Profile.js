@@ -52,24 +52,7 @@ export default function Profile({ navigation }) {
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
 
-  async function UpdateUserDetail(){
-
-    const ProfileUrl = await firebase
-    .storage()
-    .ref()
-    .child("profileImage/" + currentUserUID) //name in storage in firebase console
-    .getDownloadURL()
-    .then((ProfileUrl) => {
-      UpdateUserDetails(currentUserUID,firstName,lastName,ProfileUrl,role);
-    })
   
-    .catch((e) => 
-    
-    console.log("Errors while downloading => ", e)
-
-    );
-
-  }
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -84,6 +67,8 @@ export default function Profile({ navigation }) {
 
     if (!result.cancelled) {
       setisLoading(true);
+      
+      UpdateUserDetails(currentUserUID,firstName,lastName,result.uri,role);
       UploadImage(result.uri, currentUserUID)
       .then(() => {
         setisLoading(false);
@@ -98,7 +83,7 @@ export default function Profile({ navigation }) {
     }
 
 
-    UpdateUserDetail();
+
 
     
 
@@ -485,7 +470,7 @@ export default function Profile({ navigation }) {
 
   return (
     <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="blue" size="large" />
+      <ActivityIndicator color="#03befc" size="large" />
     </View>
   );
 }

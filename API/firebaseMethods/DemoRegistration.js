@@ -11,7 +11,8 @@ export async function DemoRegistration(
   district,
   faculty,
   department,
-  id
+  id,
+  image
 ) {
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -29,6 +30,17 @@ export async function DemoRegistration(
       district: district,
       role: "Demonstrator",
     });
+
+    const response = await fetch(image);
+    const blob = await response.blob();
+  
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("profileImage/" + currentUser.uid);
+    const snapshot = await ref.put(blob);
+
+  
   
     const db1 = firebase.firestore();
     db1.collection("Demonstrator").doc(currentUser.uid).set({
@@ -36,6 +48,7 @@ export async function DemoRegistration(
       id: currentUser.uid,
       firstName: firstName,
       lastName: lastName,
+      ProfileUrl : image
       
     });
   } catch (err) {

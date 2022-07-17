@@ -28,6 +28,7 @@ import { StoreReceiveMessage } from "../../../API/firebaseMethods/firebaseMethod
 import { StoreReceivedID } from "../../../API/firebaseMethods/firebaseMethod";
 
 export default function ChatBoxScreen({ navigation, route }) {
+  
   const { ReceiverID } = route.params;
   const { ReceiverUrl } = route.params;
   const { ReceiverFirstName } = route.params;
@@ -40,8 +41,10 @@ export default function ChatBoxScreen({ navigation, route }) {
   const [role, setRole] = useState("");
   const [messages, setMessages] = useState("");
   const [messages1, setMessages1] = useState("");
+  
   const [type1, setType1] = useState("msg");
   const [type2, setType2] = useState("replay");
+  
 
   const ID = uuid.v4();
 
@@ -202,6 +205,113 @@ export default function ChatBoxScreen({ navigation, route }) {
       };
     }, []),
   );
+
+
+function RefreshPage(){
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={[styles.Box]}>
+        <View style={styles.HEAD}>
+          <Image
+            source={{ uri: ReceiverUrl }}
+            style={{
+              marginLeft: "5%",
+              height: 41,
+              width: 41,
+              borderWidth: 1.5,
+
+              borderRadius: 50,
+            }}
+          />
+
+          <Text style={styles.Name}>
+            {ReceiverFirstName} {ReceiverLastName}
+          </Text>
+        </View>
+      </View>
+      <ScrollView
+        style={{ width: "95%", alignSelf: "center", marginBottom: "25%" }}
+      >
+        
+
+        <FlatList
+          data={messages}
+          renderItem={({ item }) => (
+
+            <View>
+            {
+            item.type == 'msg'
+               ?
+               <View style = {styles.message}>
+              <Text style={{fontSize:18,alignSelf:'center' ,paddingLeft:8,paddingRight:8,paddingTop:5}}>{item.message}</Text> 
+              <Text style={{fontSize:8 ,alignSelf:'center',color :'#8f8c8c',paddingTop :3,paddingBottom :4 ,paddingLeft:5,paddingRight:5}}>{item.dateAndTime}</Text>
+              </View>
+               :
+               <View style = {styles.message1}>
+             <Text style={{fontSize:18,alignSelf:'center' ,paddingLeft:8,paddingRight:8 ,paddingTop:5}}>{item.message}</Text> 
+              <Text style={{fontSize:8 ,alignSelf:'center',color :'#8f8c8c', paddingTop :3,paddingBottom :4 ,paddingLeft:5,paddingRight:5}}>{item.dateAndTime}</Text>
+
+              </View>
+            }
+        </View>
+            
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </ScrollView>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 20,
+          flexDirection: "row",
+          alignSelf: "center",
+        }}
+      >
+        <View style={styles.action}>
+          <TextInput
+            style={styles.textinput}
+            placeholder="Type here"
+            autoComplete="off"
+            value={message}
+            multiline={true}
+            numberOfLines={1}
+            textAlignVertical="top"
+            onChangeText={(message) => setMessage(message)}
+          />
+        </View>
+
+        <View style={styles.iconAdd}>
+          <TouchableOpacity onPress={handlePress}>
+            <FontAwesome
+              name="send"
+              size={30}
+              color="#38deff"
+              style={{ alignSelf: "center" }}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+
+  
+  
+}
+
+  const MINUTE_MS = 500;
+
+useEffect(() => {
+  const interval = setInterval(() => {
+   refresh();
+   RefreshPage();
+   
+  }, MINUTE_MS);
+
+  return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+}, [])
+
+
+
 
  
 

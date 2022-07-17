@@ -100,42 +100,49 @@ export default function PostScreen({ navigation }) {
   }, []);
 
 
-  useEffect(() => {
-    async function fetchSubjects() {
-      const data = [];
-      
-      const db = firebase.firestore();
-      const querySnapshot = await db.collection("Posts").get();
-      querySnapshot.forEach((doc) => {
-        
+  
 
-        console.log(doc.id, " => ", doc.data());
-        data.push(doc.data());
-      });
+  async function getUserInfo() {
+    let doc = await firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUserUID)
+      .get();
 
-      setSubjects(data);
+    if (!doc.exists) {
+      Alert.alert("No user data found!");
+    } else {
+      let dataObj = doc.data();
+      setRole(dataObj.role);
     }
+  }
 
+  async function fetchSubjects() {
+    const data = [];
+    
+    const db = firebase.firestore();
+    const querySnapshot = await db.collection("Posts").get();
+    querySnapshot.forEach((doc) => {
+      
+
+      console.log(doc.id, " => ", doc.data());
+      data.push(doc.data());
+    });
+
+    setSubjects(data);
+  }
+
+
+  useEffect(() => {
+    
+    getUserInfo();
+  });
+
+  useEffect(() => {
+    
     fetchSubjects();
   }, []);
 
-  useEffect(() => {
-    async function getUserInfo() {
-      let doc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUserUID)
-        .get();
-
-      if (!doc.exists) {
-        Alert.alert("No user data found!");
-      } else {
-        let dataObj = doc.data();
-        setRole(dataObj.role);
-      }
-    }
-    getUserInfo();
-  });
 
   const generateRandomBrightestHSLColor = () => {
     return "hsla(" + ~~(360 * Math.random()) + "," + "80%," + "90%,2)";
@@ -148,11 +155,30 @@ export default function PostScreen({ navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+
+  const MINUTE_MS = 500;
+
+useEffect(() => {
+  const interval = setInterval(() => {
+
+    fetchSubjects();
+    getUserInfo();
+    RefreshPage();
+   
+  }, MINUTE_MS);
+
+  return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+}, [])
+
+
+function RefreshPage(){
+
+
   if (role == "Lecturer") {
     return (
-     
+      
 
-       
+       <View  style = {styles.container}>
         <ScrollView
          style={styles.scrollScreen}
          refreshControl={
@@ -241,18 +267,318 @@ export default function PostScreen({ navigation }) {
           />
 
 
-        <View style={styles.AddIcon}>
-          <Ionicons
-            name="md-add-circle-sharp"
-            size={50}
-            color="#03dffc"
-            onPress={handlePress}
-          />
-        </View>
+        
 
           
 
         </ScrollView>
+
+        <View style={styles.AddIcon}>
+          <Ionicons
+            name="md-add-circle-sharp"
+            size={70}
+            color="#03dffc"
+            onPress={handlePress}
+          />
+        </View>
+        </View>
+
+        
+        
+      
+    );
+  } else if (role == "Demo") {
+    return (
+      <ScrollView
+         style={styles.scrollScreen}
+         refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        >
+          
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.Box,
+                 
+                ]}
+              > 
+              <View style={styles.head}>
+                
+                  <Image
+                    
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      marginLeft :'5%',
+                      marginTop:'2%',
+                      height: 41,
+                      width: 41,
+                      borderWidth:1.5,
+                      
+                      borderRadius: 50,
+                    }}
+                  />
+                
+
+                <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                </Text>
+
+                
+                </View>
+                
+                
+                <Text style={styles.title}>{item.title}</Text>
+                <View style ={styles.avatar}>
+                <Image
+                
+                  source={{ uri: item.imageUrl }}
+                  style={{
+                    
+                    
+                    borderRadius:4,
+                    borderWidth:1.5,
+                    marginBottom: 30,
+                    borderRadius: 4,
+                    height: 200,
+                    width: 300,
+                    alignSelf: "center",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 5,
+                    elevation: 8,
+                                  }}
+                />
+              </View>
+               
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.message}</Text>
+                  
+
+                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+
+          />
+
+          
+
+        </ScrollView>
+    );
+  } else if (role == "Student") {
+    return (
+      <ScrollView
+         style={styles.scrollScreen}
+         refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        >
+          
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.Box,
+                 
+                ]}
+              > 
+              <View style={styles.head}>
+                
+                  <Image
+                    
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      marginLeft :'5%',
+                      marginTop:'2%',
+                      height: 41,
+                      width: 41,
+                      borderWidth:1.5,
+                      
+                      borderRadius: 50,
+                    }}
+                  />
+                
+
+                <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                </Text>
+
+                
+                </View>
+                
+                
+                <Text style={styles.title}>{item.title}</Text>
+                <View style ={styles.avatar}>
+                <Image
+                
+                  source={{ uri: item.imageUrl }}
+                  style={{
+                    
+                    
+                    borderRadius:4,
+                    borderWidth:1.5,
+                    marginBottom: 30,
+                    borderRadius: 4,
+                    height: 200,
+                    width: 300,
+                    alignSelf: "center",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 5,
+                    elevation: 8,
+                                  }}
+                />
+              </View>
+               
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.message}</Text>
+                  
+
+                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+
+          />
+
+          
+
+        </ScrollView>
+    );
+  }
+
+  return (
+    <View style={styles.Loadingcontainer}>
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
+  );
+  
+
+}
+
+
+  if (role == "Lecturer") {
+    return (
+      
+
+       <View  style = {styles.container}>
+        <ScrollView
+         style={styles.scrollScreen}
+         refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        >
+         
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.Box,
+                 
+                ]}
+              > 
+              <View style={styles.head}>
+                
+                  <Image
+                    
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      marginLeft :'5%',
+                      marginTop:'2%',
+                      height: 41,
+                      width: 41,
+                      borderWidth:1.5,
+                      
+                      borderRadius: 50,
+                    }}
+                  />
+                
+
+                <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                </Text>
+
+                <View style ={{marginLeft :'38%',marginTop:'2%'}} >
+                  <TouchableOpacity
+                    onPress={() => Edit(item.Postid, item.UserId)}
+                  >
+                    <AntDesign name="edit" size={20} color="#03dffc" />
+                    <Text style={{ fontSize: 8 }}>Edit</Text>
+                  </TouchableOpacity>
+                </View>
+                </View>
+                
+                
+                <Text style={styles.title}>{item.title}</Text>
+                <View style ={styles.avatar}>
+                <Image
+                
+                  source={{ uri: item.imageUrl }}
+                  style={{
+                    
+                    
+                    borderRadius:4,
+                    borderWidth:1.5,
+                    marginBottom: 30,
+                    borderRadius: 4,
+                    height: 200,
+                    width: 300,
+                    alignSelf: "center",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 5,
+                    elevation: 8,
+                                  }}
+                />
+              </View>
+               
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.message}</Text>
+                  
+
+                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+
+          />
+
+
+        
+
+          
+
+        </ScrollView>
+
+        <View style={styles.AddIcon}>
+          <Ionicons
+            name="md-add-circle-sharp"
+            size={70}
+            color="#03dffc"
+            onPress={handlePress}
+          />
+        </View>
+        </View>
 
         
         
@@ -449,9 +775,10 @@ const styles = StyleSheet.create({
   },
   AddIcon: {
    
-    marginBottom :'1%',
-    alignSelf:'flex-end',
-    marginRight :'10%'
+   position:'absolute',
+   bottom:'25%',
+   alignSelf:'flex-end',
+   marginRight:'5%'
   },
   scrollScreen: {
     borderRadius: 10,

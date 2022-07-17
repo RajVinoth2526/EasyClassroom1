@@ -22,17 +22,19 @@ export async function StudentRegistration(
   gender,
   district,
   course,
-  faculty
+  faculty,
+  image
 ) {
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     const currentUser = firebase.auth().currentUser;
 
-    const db = firebase.firestore();
-    
+
     let year = new Date().getFullYear();
 
     const academyYear = (year -1) +'|' +year;
+
+    const db = firebase.firestore();
 
     db.collection("users").doc(currentUser.uid).set({
       email: currentUser.email,
@@ -48,6 +50,20 @@ export async function StudentRegistration(
       academyYear : academyYear,
     });
 
+    const response = await fetch(image);
+    const blob = await response.blob();
+  
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("profileImage/" + currentUser.uid);
+    const snapshot = await ref.put(blob);
+
+    
+    
+
+    
+
 
     
     const db1 = firebase.firestore();
@@ -56,6 +72,7 @@ export async function StudentRegistration(
       id: currentUser.uid,
       firstName: firstName,
       lastName: lastName,
+      ProfileUrl : image     
       
     });
   } catch (err) {

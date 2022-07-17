@@ -6,7 +6,11 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  Alert,
+  BackHandler
 } from "react-native";
+
+
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -48,6 +52,9 @@ function TabNavigation() {
 
   const [role, setRole] = useState("");
 
+
+  
+
   useEffect(() => {
     async function getUserInfo() {
       let doc = await firebase
@@ -86,6 +93,9 @@ function TabNavigation() {
         <Tab.Screen
           name="Home"
           component={LecturerHomeScreen}
+
+         
+
           options={{
             tabBarIcon: ({ focused }) => (
               <View
@@ -450,7 +460,7 @@ function TabNavigation() {
 
   return (
     <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="03befc" size="large" />
+      <ActivityIndicator color="#03befc" size="large" />
     </View>
   );
 }

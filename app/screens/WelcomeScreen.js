@@ -6,10 +6,40 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Image,
+  BackHandler
 } from "react-native";
 import React from "react";
+import {
+  useFocusEffect
+ } from '@react-navigation/native';
 
 export default function WelcomeScreen({ navigation }) {
+
+
+  useFocusEffect(
+    React.useCallback(() => {    
+      const onBackPress = () => {
+        BackHandler.exitApp();
+        // Return true to stop default back navigaton
+        // Return false to keep default back navigaton
+        return true;
+      };
+ 
+      // Add Event Listener for hardwareBackPress
+      BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress
+      );
+ 
+      return () => {
+        // Once the Screen gets blur Remove Event Listener
+        BackHandler.removeEventListener(
+          'hardwareBackPress',
+          onBackPress
+        );
+      };
+    }, []),
+  );
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>

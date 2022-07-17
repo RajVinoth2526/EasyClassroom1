@@ -29,6 +29,30 @@ export default function PostScreen({ navigation }) {
 
   let currentUserUID = firebase.auth().currentUser.uid;
 
+
+
+  function Edit(PostID, PostUserID) {
+    if (currentUserUID == PostUserID) {
+      Alert.alert(
+        "Edit Post",
+        "",
+
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "Edit", onPress: () => editNotice(PostID) },
+          { text: "Delete", onPress: () => Delete(PostID) },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      Alert.alert("only Your can edit your own post ");
+    }
+  }
+
   function editNotice(ID) {
     navigation.navigate("EditNotice", { PostId: ID, Type: NoticeType });
   }
@@ -81,42 +105,44 @@ export default function PostScreen({ navigation }) {
     navigation.navigate("AddNotice", { type: NoticeType });
   };
 
-  useEffect(() => {
-    async function fetchSubjects() {
-      const data = [];
+  async function fetchSubjects() {
+    const data = [];
 
-      const db = firebase.firestore();
-      const querySnapshot = await db.collection("Notices").get();
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        const dataObj = doc.data();
-        if (dataObj.type == "Department") {
-          data.push(doc.data());
-        }
-      });
+    const db = firebase.firestore();
+    const querySnapshot = await db.collection("Notices").get();
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      const dataObj = doc.data();
+      if (dataObj.type == "Department") {
+        data.push(doc.data());
+      }
+    });
 
-      setSubjects(data);
+    setSubjects(data);
+  }
+
+  async function getUserInfo() {
+    let doc = await firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUserUID)
+      .get();
+
+    if (!doc.exists) {
+      Alert.alert("No user data found!");
+    } else {
+      let dataObj = doc.data();
+      setRole(dataObj.role);
     }
-
+  }
+  getUserInfo();
+  useEffect(() => {
+   
     fetchSubjects();
   }, []);
 
   useEffect(() => {
-    async function getUserInfo() {
-      let doc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUserUID)
-        .get();
-
-      if (!doc.exists) {
-        Alert.alert("No user data found!");
-      } else {
-        let dataObj = doc.data();
-        setRole(dataObj.role);
-      }
-    }
-    getUserInfo();
+    
   });
 
   const generateRandomBrightestHSLColor = () => {
@@ -130,8 +156,220 @@ export default function PostScreen({ navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  if (role == "Lecturer") {
+  const MINUTE_MS = 500;
+  useEffect(() => {
+    const interval = setInterval(() => {
+  
+      fetchSubjects();
+      getUserInfo();
+      RefreshPage();
+     
+    }, MINUTE_MS);
+  
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [])
+
+
+  function RefreshPage(){
+
+    if (role == "Lecturer") {
+      return (
+        <View style = {styles.container}>
+        <ScrollView style={styles.scrollScreen}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
+          <Text style={{ fontSize: 20 }}>
+            <Octicons name="note" size={25} color="#34dbeb" /> Department
+            Noticeboard
+          </Text>
+        </View>
+  
+       
+  
+       
+  
+        <FlatList
+          data={subjects}
+          renderItem={({ item }) => (
+            <View style={[styles.Box]}>
+              <View style={styles.head}>
+                <Image
+                  source={{ uri: item.ProfileUrl }}
+                  style={{
+                    marginLeft: "5%",
+                    marginTop: "2%",
+                    height: 41,
+                    width: 41,
+                    borderWidth: 1.5,
+  
+                    borderRadius: 50,
+                  }}
+                />
+  
+                <Text style={styles.Name}>
+                  {item.firstName} {item.lastName}
+                </Text>
+  
+                <View  style ={{marginLeft :'38%',marginTop:'2%'}}>
+                  <TouchableOpacity onPress={() => Edit(item.id, item.UserID)}>
+                    <AntDesign name="edit" size={20} color="#03dffc" />
+                    <Text style={{ fontSize: 8 }}>Edit</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+  
+  
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.Msg}>
+                    <Text style={styles.msg}>{item.notice}</Text>
+                    
+  
+                    <Text style={styles.msgText}>{item.DateTime}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </ScrollView>
+
+          <View style={styles.AddIcon}>
+          <TouchableOpacity onPress={handlePress}>
+            <MaterialIcons name="add-circle" size={70} color="#03dffc" />
+          </TouchableOpacity>
+        </View>
+        </View>
+  
+         
+      );
+    } else if (role == "Demo") {
+      return (
+        <ScrollView style={styles.scrollScreen}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
+          <Text style={{ fontSize: 20 }}>
+            <Octicons name="note" size={25} color="#34dbeb" /> Department
+            Noticeboard
+          </Text>
+        </View>
+  
+       
+  
+       
+  
+        <FlatList
+          data={subjects}
+          renderItem={({ item }) => (
+            <View style={[styles.Box]}>
+              <View style={styles.head}>
+                <Image
+                  source={{ uri: item.ProfileUrl }}
+                  style={{
+                    marginLeft: "5%",
+                    marginTop: "2%",
+                    height: 41,
+                    width: 41,
+                    borderWidth: 1.5,
+  
+                    borderRadius: 50,
+                  }}
+                />
+  
+                <Text style={styles.Name}>
+                  {item.firstName} {item.lastName}
+                </Text>
+  
+               
+              </View>
+  
+  
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.Msg}>
+                    <Text style={styles.msg}>{item.notice}</Text>
+                    
+  
+                    <Text style={styles.msgText}>{item.DateTime}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </ScrollView>    
+    );
+    }else if (role == "Student") {
+      return (
+        <ScrollView style={styles.scrollScreen}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
+          <Text style={{ fontSize: 20 }}>
+            <Octicons name="note" size={25} color="#34dbeb" /> Department
+            Noticeboard
+          </Text>
+        </View>
+  
+       
+  
+       
+  
+        <FlatList
+          data={subjects}
+          renderItem={({ item }) => (
+            <View style={[styles.Box]}>
+              <View style={styles.head}>
+                <Image
+                  source={{ uri: item.ProfileUrl }}
+                  style={{
+                    marginLeft: "5%",
+                    marginTop: "2%",
+                    height: 41,
+                    width: 41,
+                    borderWidth: 1.5,
+  
+                    borderRadius: 50,
+                  }}
+                />
+  
+                <Text style={styles.Name}>
+                  {item.firstName} {item.lastName}
+                </Text>
+  
+               
+              </View>
+  
+  
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.Msg}>
+                    <Text style={styles.msg}>{item.notice}</Text>
+                   
+  
+                    <Text style={styles.msgText}>{item.DateTime}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </ScrollView>    
+    );
+    }
+  
+  
     return (
+      <View style={styles.Loadingcontainer}>
+        <ActivityIndicator color="#03befc" size="large" />
+      </View>
+    );
+    
+  }
+
+  if (role == "Lecturer") {
+    
+    return (
+      <View style = {styles.container}>
       <ScrollView style={styles.scrollScreen}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -143,11 +381,7 @@ export default function PostScreen({ navigation }) {
         </Text>
       </View>
 
-      <View style={styles.AddIcon}>
-        <TouchableOpacity onPress={handlePress}>
-          <MaterialIcons name="add-circle" size={50} color="#03dffc" />
-        </TouchableOpacity>
-      </View>
+      
 
      
 
@@ -194,6 +428,13 @@ export default function PostScreen({ navigation }) {
             keyExtractor={(item, index) => index.toString()}
           />
         </ScrollView>
+
+        <View style={styles.AddIcon}>
+        <TouchableOpacity onPress={handlePress}>
+          <MaterialIcons name="add-circle" size={70} color="#03dffc" />
+        </TouchableOpacity>
+      </View>
+        </View>
 
        
     );
@@ -328,8 +569,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   AddIcon: {
-    alignSelf: "flex-end",
-    marginRight: "5%",
+   alignSelf:'flex-end',
+   position:'absolute',
+   bottom:'20%',
+   marginRight:'5%'
   },
   scrollScreen: {
     height:'100%',
@@ -368,8 +611,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   Box: {
-    marginBottom: 15,
-    marginTop: 15,
+    marginBottom: '1%',
+    marginTop: '1%',
     marginLeft: 5,
     marginRight: 5,
     backgroundColor: "white",

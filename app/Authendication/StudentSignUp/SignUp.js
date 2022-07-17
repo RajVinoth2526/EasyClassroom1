@@ -8,12 +8,16 @@ import {
   Keyboard,
   StyleSheet,
   SafeAreaView,
+  Image,
+  ActivityIndicator
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StudentRegistration } from "../../../API/firebaseMethods/firebaseMethod";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
+
+import IMAGE from "../../assets/profile-placeholder.png";
 
 export default function StudentSignUp({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -29,6 +33,9 @@ export default function StudentSignUp({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
+  const [image, setImage] = useState(exampleImageUri);
+  const [isLoading, setisLoading] = useState(false);
 
   const emptyState = () => {
     setFirstName("");
@@ -72,6 +79,8 @@ export default function StudentSignUp({ navigation }) {
     } else if (password !== confirmPassword) {
       Alert.alert("Password does not match!");
     } else {
+     
+      setisLoading(true);
       StudentRegistration(
         email,
         password,
@@ -82,12 +91,26 @@ export default function StudentSignUp({ navigation }) {
         gender,
         district,
         course,
-        faculty
-      );
+        faculty,
+        image
+      ).then(() => {
+        setisLoading(false);
+       
+      })
       navigation.navigate("Loading");
       emptyState();
     }
   };
+
+
+  if(isLoading == true){
+    return(
+    <View style={styles.Loadingcontainer}>
+      <Text>Creating New account</Text>
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>

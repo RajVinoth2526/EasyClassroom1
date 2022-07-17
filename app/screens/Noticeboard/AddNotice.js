@@ -48,7 +48,7 @@ export default function AddNoticeScreen({ navigation, route }) {
       Alert.alert("title required");
     } else {
       CreateNotice(id, notice, title, type,ProfileUrl);
-      navigation.replace("Dashboard");
+      navigation.goBack();
       Alert.alert("Notice Uploaded!");
     }
   };

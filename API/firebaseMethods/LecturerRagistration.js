@@ -11,11 +11,13 @@ export async function LecturerRegistration(
   faculty,
   department,
   district, 
-  id
+  id,
+  image
 ) {
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     const currentUser = firebase.auth().currentUser;
+
 
     const db = firebase.firestore();
     db.collection("users").doc(currentUser.uid).set({
@@ -29,12 +31,24 @@ export async function LecturerRegistration(
       district: district,
       role: "Lecturer",
     });
+
+    const response = await fetch(image);
+    const blob = await response.blob();
+  
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("profileImage/" + currentUser.uid);
+    const snapshot = await ref.put(blob);
+
+   
     const db1 = firebase.firestore();
     db1.collection("Lecturer").doc(currentUser.uid).set({
      
       id: currentUser.uid,
       firstName: firstName,
       lastName: lastName,
+      ProfileUrl : image     
       
     });
   } catch (err) {

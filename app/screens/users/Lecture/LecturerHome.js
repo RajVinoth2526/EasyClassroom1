@@ -1,6 +1,8 @@
 import React from "react";
-
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  useFocusEffect
+ } from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity ,BackHandler} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -9,6 +11,32 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 
 export default function LecturerHomeScreen({ navigation }) {
+
+
+  useFocusEffect(
+    React.useCallback(() => {    
+      const onBackPress = () => {
+        BackHandler.exitApp();
+        // Return true to stop default back navigaton
+        // Return false to keep default back navigaton
+        return true;
+      };
+ 
+      // Add Event Listener for hardwareBackPress
+      BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress
+      );
+ 
+      return () => {
+        // Once the Screen gets blur Remove Event Listener
+        BackHandler.removeEventListener(
+          'hardwareBackPress',
+          onBackPress
+        );
+      };
+    }, []),
+  );
   return (
    
       <ScrollView style={styles.scrollScreen}>

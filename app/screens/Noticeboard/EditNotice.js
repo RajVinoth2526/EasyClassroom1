@@ -39,19 +39,19 @@ export default function EditNoticeScreen({ navigation, route }) {
   const handlePress = () => {
      if(!title1  ){
       EditNotice(PostId, notice1, title, Type);
-      navigation.replace("Dashboard");
+      navigation.goBack();
       Alert.alert("notice Updated!!");
     }if(!notice1){
       EditNotice(PostId, notice, title1, Type);
-      navigation.replace("Dashboard");
+      navigation.goBack();
       Alert.alert("notice Updated!!");
     }if(!notice1 && !title1){
       EditNotice(PostId, notice, title, Type);
-      navigation.replace("Dashboard");
+      navigation.goBack();
       Alert.alert("notice Updated!!");
     }if(notice1 && title1){
       EditNotice(PostId, notice1, title1, Type);
-      navigation.replace("Dashboard");
+      navigation.goBack();
       Alert.alert("notice Updated!!");
 
     }

@@ -1,16 +1,45 @@
 import React from "react";
 
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity ,BackHandler} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import {
+  useFocusEffect
+ } from '@react-navigation/native';
+
 
 export default function StudentHomeScreen({ navigation }) {
+
+  useFocusEffect(
+    React.useCallback(() => {    
+      const onBackPress = () => {
+        BackHandler.exitApp();
+        // Return true to stop default back navigaton
+        // Return false to keep default back navigaton
+        return true;
+      };
+ 
+      // Add Event Listener for hardwareBackPress
+      BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress
+      );
+ 
+      return () => {
+        // Once the Screen gets blur Remove Event Listener
+        BackHandler.removeEventListener(
+          'hardwareBackPress',
+          onBackPress
+        );
+      };
+    }, []),
+  );
   return (
-    <View style={styles.container}>
+   
       <ScrollView style={styles.scrollScreen}>
         <View style={[styles.homeContent, { backgroundColor: "#bef7df" }]}>
           <TouchableOpacity
@@ -79,7 +108,7 @@ export default function StudentHomeScreen({ navigation }) {
           </Text>
         </View>
       </ScrollView>
-    </View>
+ 
   );
 }
 
@@ -92,11 +121,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   scrollScreen: {
-    marginTop: 5,
-    marginRight: 10,
-    marginBottom: 115,
-    borderRadius: 10,
-    marginLeft: 10,
+    
+    height:'60%',
+    width:'100%',
+    alignSelf:'center',
+    marginBottom: "35%",
+    borderBottomLeftRadius:20,
+    borderBottomRightRadius:20,
     backgroundColor: "white",
     marginHorizontal: 1,
     shadowColor: "#000",

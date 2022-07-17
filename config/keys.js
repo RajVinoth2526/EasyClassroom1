@@ -1,10 +1,10 @@
 export default {
   firebaseConfig: {
-    apiKey: "AIzaSyCJRH1iIuV9mgIBriM3pp5qtr0HyCMXiUk",
-    authDomain: "easy-classroom-c072c.firebaseapp.com",
-    projectId: "easy-classroom-c072c",
-    storageBucket: "easy-classroom-c072c.appspot.com",
-    messagingSenderId: "233509446060",
-    appId: "1:233509446060:web:fa252064c194b44dd9da09",
+    apiKey: "AIzaSyB3T0xSnwS31ZsUmkqXWEfrrwml2zb2uGQ",
+    authDomain: "easyclassroom1-6cd39.firebaseapp.com",
+    projectId: "easyclassroom1-6cd39",
+    storageBucket: "easyclassroom1-6cd39.appspot.com",
+    messagingSenderId: "891357778183",
+    appId: "1:891357778183:web:5bd1f1b25591bd0ebb75a2"
   },
 };

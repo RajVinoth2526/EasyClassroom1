@@ -17,8 +17,11 @@ import "firebase/firestore";
 
 export default function ContactScreen({ navigation }) {
 
+  
+
     const role1 = "Lecturer";
     const role2 = "Demonstrator";
+    const role3 = "Student";
     const role4 = "Admin";
 
   
@@ -60,6 +63,16 @@ export default function ContactScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
+      <View
+        style={[
+          styles.select,
+         
+        ]}
+      >
+        <TouchableOpacity onPress={() => handlePress(role3)}>
+          <Text style={styles.selectText}>Student</Text>
+        </TouchableOpacity>
+      </View>
       <View
         style={[
           styles.select,
