@@ -112,7 +112,7 @@ export default function UpdateProfile({ navigation }) {
       );
 
       emptyState1();
-      Alert.alert("Prpfile Updated!");
+      Alert.alert("Profile Updated!");
 
       navigation.replace("Dashboard");
     }
