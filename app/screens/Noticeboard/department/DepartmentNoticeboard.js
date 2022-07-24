@@ -60,7 +60,7 @@ export default function PostScreen({ navigation }) {
   function deleteNotice(id) {
     DeleteNotice(id);
     Alert.alert("Notice deleted!");
-    navigation.replace("Dashboard");
+   
   }
 
   function ButtonEdit(PostID, PostUserID) {

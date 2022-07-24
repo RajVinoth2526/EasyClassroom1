@@ -29,13 +29,20 @@ import EditPostScreen from "../screens/Post/EditPost";
 import PostScreen from "../screens/Post/PostScreen";
 import EditNoticeScreen from "../screens/Noticeboard/EditNotice";
 import TimeTableScreen from "../screens/TimeTable/TimeTableScreen";
-import ClassroomWelcome from "../screens/Classroom/welcome";
+import ClassroomWelcome from "../screens/Classroom/ClassroomWelcome";
 import ResultsScreen from "../screens/Results/ResultsScreen";
 import AddResultsScreen from "../screens/Results/AddResults";
 import ContactScreen from "../screens/Chat/ContactsScreen";
 import SelectContactScreen from "../screens/Chat/SelectContactScreen";
 import ChatBoxScreen from "../screens/Chat/ChatBoxScreen";
-
+import ForgotPasswordScreen from "../screens/Password/ForgotPassword";
+import ChangePassword from "../screens/Password/ChangePassword";
+import LecturerClassroomScreen from "../screens/Classroom/LecturerClassroomScreen";
+import AddCourse from "../screens/Classroom/AddCourse";
+import EntrolCourseScreen from "../screens/Classroom/EntrolCourseScreen";
+import CourseScreen from "../screens/Classroom/CourseScreen";
+import AddAcademyYear from "../screens/Classroom/AddAcademyYear";
+import CourseContent from "../screens/Classroom/CourseContent";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -166,12 +173,12 @@ export default function App() {
           component={ClassroomWelcome}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={"Results"}
           component={ResultsScreen}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={"AddResults"}
           component={AddResultsScreen}
           options={{ headerShown: false }}
@@ -181,7 +188,7 @@ export default function App() {
           component={ContactScreen}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={"SelectContact"}
           component={SelectContactScreen}
           options={{ headerShown: false }}
@@ -189,6 +196,48 @@ export default function App() {
         <Stack.Screen
           name={"ChatBox"}
           component={ChatBoxScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ForgotPassword"}
+          component={ForgotPasswordScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ChangePassword"}
+          component={ChangePassword}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"LecturerClassroom"}
+          component={LecturerClassroomScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"AddCourse"}
+          component={AddCourse}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name={"CourseScreen"}
+          component={CourseScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"EntrollScreen"}
+          component={EntrolCourseScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"AcademyYear"}
+          component={AddAcademyYear}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name={"CourseContent"}
+          component={CourseContent}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

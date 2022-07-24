@@ -9,6 +9,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 export default function LecturerHomeScreen({ navigation }) {
 
@@ -47,7 +52,7 @@ export default function LecturerHomeScreen({ navigation }) {
             }}
           >
             <Text style={styles.homeContentText}>
-              <Entypo name="book" size={24} color="black" /> Classroom
+              <Entypo name="book" size={35} color="black" /> Classroom
             </Text>
           </TouchableOpacity>
         </View>
@@ -62,7 +67,7 @@ export default function LecturerHomeScreen({ navigation }) {
               {" "}
               <MaterialCommunityIcons
                 name="table-clock"
-                size={25}
+                size={35}
                 color="black"
               />{" "}
               Time Table
@@ -79,7 +84,7 @@ export default function LecturerHomeScreen({ navigation }) {
             <Text style={styles.homeContentText}>
               <MaterialCommunityIcons
                 name="text-box-multiple"
-                size={25}
+                size={35}
                 color="black"
               />{" "}
               Noticeboard
@@ -89,13 +94,13 @@ export default function LecturerHomeScreen({ navigation }) {
         
         <View style={[styles.homeContent, { backgroundColor: "#f0bdbd" }]}>
           <Text style={styles.homeContentText}>
-            <FontAwesome name="calendar" size={24} color="black" /> Calender
+            <FontAwesome name="calendar" size={35} color="black" /> Calender
           </Text>
         </View>
 
         <View style={[styles.homeContent, { backgroundColor: "#e2bdf0" }]}>
           <Text style={styles.homeContentText}>
-            <MaterialIcons name="payment" size={24} color="black" /> Pay
+            <MaterialIcons name="payment" size={35} color="black" /> Pay
           </Text>
         </View>
       </ScrollView>
@@ -105,23 +110,15 @@ export default function LecturerHomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 15,
-    paddingTop: 30,
-    alignItems:'center',
-
-    backgroundColor: "white",
+    flex:1,
+   
+   
   },
   scrollScreen: {
+    flex :1,
     
-    height:'60%',
-    width:'100%',
+    width:wp('100%'),
     alignSelf:'center',
-    marginBottom: "35%",
-    borderBottomLeftRadius:20,
-    borderBottomRightRadius:20,
-    backgroundColor: "white",
-    marginHorizontal: 1,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -132,25 +129,24 @@ const styles = StyleSheet.create({
     elevation: 0.5,
   },
   homeContent: {
-    marginTop: 10,
     alignSelf: "center",
-    marginBottom: 15,
+    justifyContent:'center',
+    alignItems: "center",
+    marginTop: hp('0.5%'),
+    borderBottomColor:'#34dbeb',
+    borderBottomWidth:0.8,
+    borderBottomRightRadius:6,
+    borderBottomLeftRadius:6,
+    marginBottom:hp('0.5%'),
     backgroundColor: "#f2ffff",
-    height: 120,
-    width: 290,
+    height: hp('18%'),
+    width:wp('96%'),
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 2,
-    shadowRadius: 5,
-    elevation: 8,
+   
   },
   homeContentText: {
     alignSelf: "center",
-    marginTop: 35,
-    fontSize: 28,
+    fontSize: hp('4.5%'),
+    fontWeight:'600'
   },
 });

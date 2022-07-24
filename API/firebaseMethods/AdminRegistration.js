@@ -14,6 +14,9 @@ export async function AdminRegistration(
   id,
   image
 ) {
+
+
+  
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     const currentUser = firebase.auth().currentUser;
@@ -50,8 +53,14 @@ export async function AdminRegistration(
       ProfileUrl : image      
     });
 
+
+    return true;
+
     
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
+    return false;
+  
+    
   }
 }

@@ -752,7 +752,7 @@ const styles = StyleSheet.create({
   textinput: {
     marginLeft: 20,
     marginTop: -8,
-    color: "#92939",
+    color: "blue",
     fontSize: 14,
     padding: 5,
     width: "110%",

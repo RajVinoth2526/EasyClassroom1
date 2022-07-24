@@ -16,7 +16,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { DeletePost } from "../../../API/firebaseMethods/firebaseMethod";
 import IMAGE from '../../assets/profile-placeholder.png';
-
+import { useIsFocused } from "@react-navigation/native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -30,7 +31,7 @@ export default function PostScreen({ navigation }) {
  
   
 
-  let currentUserUID = firebase.auth().currentUser.uid;
+  const currentUser = firebase.auth().currentUser;
 
   function printId(ID ) {
     navigation.navigate("EditPost", { PostID: ID });
@@ -38,12 +39,15 @@ export default function PostScreen({ navigation }) {
 
   function deletePost(id) {
     DeletePost(id);
+    fetchSubjects();
+    getUserInfo();
+    RefreshPage();
     Alert.alert("Post deleted!");
-    navigation.replace("Dashboard");
+    
   }
 
   function Edit(PostID, PostUserID) {
-    if (currentUserUID == PostUserID) {
+    if (currentUser.uid == PostUserID) {
       Alert.alert(
         "Edit Post",
         "",
@@ -86,19 +90,7 @@ export default function PostScreen({ navigation }) {
 
   
 
-  useEffect(() => {
-    firebase
-      .storage()
-      .ref()
-      .child("profileImage/" + currentUserUID) //name in storage in firebase console
-      .getDownloadURL()
-      .then((url) => {
-        setImage(url);
-       
-      })
-      .catch((e) => console.log("Errors while downloading => ", e));
-  }, []);
-
+ 
 
   
 
@@ -106,7 +98,7 @@ export default function PostScreen({ navigation }) {
     let doc = await firebase
       .firestore()
       .collection("users")
-      .doc(currentUserUID)
+      .doc(currentUser.uid)
       .get();
 
     if (!doc.exists) {
@@ -118,8 +110,8 @@ export default function PostScreen({ navigation }) {
   }
 
   async function fetchSubjects() {
+   
     const data = [];
-    
     const db = firebase.firestore();
     const querySnapshot = await db.collection("Posts").get();
     querySnapshot.forEach((doc) => {
@@ -136,7 +128,7 @@ export default function PostScreen({ navigation }) {
   useEffect(() => {
     
     getUserInfo();
-  });
+  },[]);
 
   useEffect(() => {
     
@@ -144,9 +136,8 @@ export default function PostScreen({ navigation }) {
   }, []);
 
 
-  const generateRandomBrightestHSLColor = () => {
-    return "hsla(" + ~~(360 * Math.random()) + "," + "80%," + "90%,2)";
-  };
+  
+  
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -156,7 +147,19 @@ export default function PostScreen({ navigation }) {
   }, []);
 
 
-  const MINUTE_MS = 500;
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    fetchSubjects();
+    getUserInfo();
+    RefreshPage();
+  },[isFocused]);
+
+
+  
+
+
+  const MINUTE_MS = 100000000;
 
 useEffect(() => {
   const interval = setInterval(() => {
@@ -211,19 +214,14 @@ function RefreshPage(){
                     }}
                   />
                 
-
+                <View style={{  flexDirection: "column",}}>
                 <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
                 </Text>
-
-                <View style ={{marginLeft :'38%',marginTop:'2%'}} >
-                  <TouchableOpacity
-                    onPress={() => Edit(item.Postid, item.UserId)}
-                  >
-                    <AntDesign name="edit" size={20} color="#03dffc" />
-                    <Text style={{ fontSize: 8 }}>Edit</Text>
-                  </TouchableOpacity>
+                <Text style={{ marginLeft:'10%', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
                 </View>
+
+                
                 </View>
                 
                 
@@ -258,7 +256,15 @@ function RefreshPage(){
                   <Text style={styles.msg}>{item.message}</Text>
                   
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                  
+                </View>
+                <View style ={{alignSelf:'flex-start' ,marginLeft : '5%',marginBottom:'5%', marginTop:'5%'}} >
+                  <TouchableOpacity
+                    onPress={() => Edit(item.Postid, item.UserId)}
+                  >
+                    <AntDesign name="edit" size={20} color="#03dffc" />
+                    <Text style={{ fontSize: 8 }}>Edit</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             )}
@@ -322,9 +328,12 @@ function RefreshPage(){
                   />
                 
 
+                <View style={{  flexDirection: "column",}}>
                 <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
                 </Text>
+                <Text style={{ marginLeft:'10%', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                </View>
 
                 
                 </View>
@@ -361,7 +370,7 @@ function RefreshPage(){
                   <Text style={styles.msg}>{item.message}</Text>
                   
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                  
                 </View>
               </View>
             )}
@@ -408,9 +417,12 @@ function RefreshPage(){
                   />
                 
 
+                <View style={{  flexDirection: "column",}}>
                 <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
                 </Text>
+                <Text style={{ marginLeft:'10%', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                </View>
 
                 
                 </View>
@@ -447,7 +459,7 @@ function RefreshPage(){
                   <Text style={styles.msg}>{item.message}</Text>
                   
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                  
                 </View>
               </View>
             )}
@@ -466,7 +478,6 @@ function RefreshPage(){
       <ActivityIndicator color="#03befc" size="large" />
     </View>
   );
-  
 
 }
 
@@ -508,19 +519,14 @@ function RefreshPage(){
                     }}
                   />
                 
-
+                <View style={{  flexDirection: "column",}}>
                 <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
                 </Text>
-
-                <View style ={{marginLeft :'38%',marginTop:'2%'}} >
-                  <TouchableOpacity
-                    onPress={() => Edit(item.Postid, item.UserId)}
-                  >
-                    <AntDesign name="edit" size={20} color="#03dffc" />
-                    <Text style={{ fontSize: 8 }}>Edit</Text>
-                  </TouchableOpacity>
+                <Text style={{ marginLeft:'10%', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
                 </View>
+
+                
                 </View>
                 
                 
@@ -536,8 +542,8 @@ function RefreshPage(){
                     borderWidth:1.5,
                     marginBottom: 30,
                     borderRadius: 4,
-                    height: 200,
-                    width: 300,
+                    height: hp('28%'),
+                    width: wp('85%'),
                     alignSelf: "center",
                     shadowColor: "#000",
                     shadowOffset: {
@@ -555,7 +561,15 @@ function RefreshPage(){
                   <Text style={styles.msg}>{item.message}</Text>
                   
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                  
+                </View>
+                <View style ={{alignSelf:'flex-start' ,marginLeft : '5%',marginBottom:'5%', marginTop:'5%'}} >
+                  <TouchableOpacity
+                    onPress={() => Edit(item.Postid, item.UserId)}
+                  >
+                    <AntDesign name="edit" size={20} color="#03dffc" />
+                    <Text style={{ fontSize: 8 }}>Edit</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             )}
@@ -619,9 +633,12 @@ function RefreshPage(){
                   />
                 
 
+                <View style={{  flexDirection: "column",}}>
                 <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
                 </Text>
+                <Text style={{ marginLeft:'10%', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                </View>
 
                 
                 </View>
@@ -658,7 +675,7 @@ function RefreshPage(){
                   <Text style={styles.msg}>{item.message}</Text>
                   
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                  
                 </View>
               </View>
             )}
@@ -705,9 +722,12 @@ function RefreshPage(){
                   />
                 
 
+                <View style={{  flexDirection: "column",}}>
                 <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
                 </Text>
+                <Text style={{ marginLeft:'10%', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                </View>
 
                 
                 </View>
@@ -744,7 +764,7 @@ function RefreshPage(){
                   <Text style={styles.msg}>{item.message}</Text>
                   
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
+                  
                 </View>
               </View>
             )}
@@ -767,33 +787,22 @@ function RefreshPage(){
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 15,
-    paddingTop: 30,
-
-    backgroundColor: "white",
+  
+flex:1
+   
   },
   AddIcon: {
-   
+  
    position:'absolute',
-   bottom:'25%',
    alignSelf:'flex-end',
-   marginRight:'5%'
+   
+   marginTop: hp('65%')
   },
   scrollScreen: {
-    borderRadius: 10,
-    width: "100%",
-    marginBottom: "35%",
-    backgroundColor: "white",
-    marginHorizontal: 1,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 10,
-    elevation: 0.001,
+    height:hp('100%'),
+    width: wp("100%"),
+    
+   
   },
   homeContent: {
     alignSelf: "center",
@@ -819,25 +828,18 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   Box: {
-    marginBottom: '1%',
-    marginTop: '1%',
+    marginTop: hp('1%'),
     alignSelf :'center',
-    width:'95%',
+    width:wp('99%'),
     backgroundColor: "white",
     borderRadius: 5,
     marginHorizontal: 1,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 8,
+   
   },
   Msg: {
     marginLeft: '5%',
+    marginBottom:'5%',
     marginRight: '5%',
     marginTop:'5%',
    
@@ -848,17 +850,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   title: {
-    marginTop: '5%',
+    marginTop: hp('1%'),
     alignSelf:'flex-start',
-    marginLeft:'5%',
-    marginBottom:'5%',
-    fontSize: 20,
+    marginLeft:wp('8%'),
+    marginBottom:hp('3%'),
+    fontSize: hp('2.5%'),
     fontWeight: "bold",
   },
   Name: {
    alignSelf:'center',
+   marginTop:'5%',
    marginLeft :'5%',
-   fontSize : 18
+   fontSize : 15
   },
   head :{
     flex : 1,
@@ -870,7 +873,7 @@ const styles = StyleSheet.create({
     borderBottomEndRadius:15
   },
   msg: {
-    fontSize: 18,
+    fontSize: hp('2%'),
     borderWidth :1,
     borderColor:'#03dffc',
     borderRadius :10,
@@ -885,8 +888,8 @@ const styles = StyleSheet.create({
   },
   avatar: {
    
-    height:200,
-    width :300,
+    height:hp('28%'),
+    width :wp('85%'),
     alignSelf:'center',
     borderRadius:10,
     shadowColor: "#000",
@@ -894,9 +897,9 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.5,
+    shadowOpacity: 10,
     shadowRadius: 5,
-    elevation: 8,
+    elevation: 15,
   },
  
 });

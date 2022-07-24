@@ -9,6 +9,10 @@ import {
   FlatList,
   ActivityIndicator
 } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
@@ -56,7 +60,7 @@ export default function SelectContactScreen({ navigation, route }) {
   if (ROLE == "Lecturer") {
     return (
       <View style={styles.container}>
-         <Text style = {{fontSize :30 ,marginBottom :"3%",marginLeft:'2%'}}>Contacts</Text>
+         <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold',marginTop:hp('5%')}}>Contacts</Text>
         <ScrollView>
           <FlatList
             data={subjects}
@@ -64,18 +68,20 @@ export default function SelectContactScreen({ navigation, route }) {
               <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
               <View style={[styles.Box]}>
                 <View style={styles.head}>
-                  <Image
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      marginLeft: "5%",
-                      marginTop: "2%",
-                      height: 41,
-                      width: 41,
-                      borderWidth: 1.5,
+                <View style = {styles.avatar}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        
+                       
+                        height: hp('5.2%'),
+                        width: wp('11%'),
+                        borderWidth: 1.5,
 
-                      borderRadius: 50,
-                    }}
-                  />
+                        borderRadius: 50,
+                      }}
+                    />
+                    </View>
 
                   <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
@@ -92,7 +98,7 @@ export default function SelectContactScreen({ navigation, route }) {
   }if (ROLE == "Demonstrator") {
     return (
       <View style={styles.container}>
-         <Text style = {{fontSize :30 ,marginBottom :"3%",marginLeft:'2%'}}>Contacts</Text>
+         <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold',marginTop:hp('5%')}}>Contacts</Text>
         <ScrollView>
           <FlatList
             data={subjects}
@@ -100,18 +106,20 @@ export default function SelectContactScreen({ navigation, route }) {
               <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
               <View style={[styles.Box]}>
                 <View style={styles.head}>
-                  <Image
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      marginLeft: "5%",
-                      marginTop: "2%",
-                      height: 41,
-                      width: 41,
-                      borderWidth: 1.5,
+                <View style = {styles.avatar}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        
+                       
+                        height: hp('5.2%'),
+                        width: wp('11%'),
+                        borderWidth: 1.5,
 
-                      borderRadius: 50,
-                    }}
-                  />
+                        borderRadius: 50,
+                      }}
+                    />
+                    </View>
 
                   <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
@@ -129,7 +137,7 @@ export default function SelectContactScreen({ navigation, route }) {
   if (ROLE == "Student") {
     return (
       <View style={styles.container}>
-         <Text style = {{fontSize :30 ,marginBottom :"3%",marginLeft:'2%'}}>Contacts</Text>
+         <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold',marginTop:hp('5%')}}>Contacts</Text>
         <ScrollView>
           <FlatList
             data={subjects}
@@ -137,18 +145,20 @@ export default function SelectContactScreen({ navigation, route }) {
               <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
               <View style={[styles.Box]}>
                 <View style={styles.head}>
-                  <Image
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      marginLeft: "5%",
-                      marginTop: "2%",
-                      height: 41,
-                      width: 41,
-                      borderWidth: 1.5,
+                <View style = {styles.avatar}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        
+                       
+                        height: hp('5.2%'),
+                        width: wp('11%'),
+                        borderWidth: 1.5,
 
-                      borderRadius: 50,
-                    }}
-                  />
+                        borderRadius: 50,
+                      }}
+                    />
+                    </View>
 
                   <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
@@ -167,7 +177,7 @@ export default function SelectContactScreen({ navigation, route }) {
   if (ROLE == "Admin") {
     return (
       <View style={styles.container}>
-         <Text style = {{fontSize :30 ,marginBottom :"3%",marginLeft:'2%'}}>Contacts</Text>
+         <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold',marginTop:hp('5%')}}>Contacts</Text>
         <ScrollView>
           <FlatList
             data={subjects}
@@ -175,18 +185,20 @@ export default function SelectContactScreen({ navigation, route }) {
               <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
                 <View style={[styles.Box]}>
                   <View style={styles.head}>
+                    <View style = {styles.avatar}>
                     <Image
                       source={{ uri: item.ProfileUrl }}
                       style={{
-                        marginLeft: "5%",
-                        marginTop: "2%",
-                        height: 41,
-                        width: 41,
+                        
+                       
+                        height: hp('5.2%'),
+                        width: wp('11%'),
                         borderWidth: 1.5,
 
                         borderRadius: 50,
                       }}
                     />
+                    </View>
 
                     <Text style={styles.Name}>
                       {item.firstName} {item.lastName}
@@ -208,22 +220,22 @@ export default function SelectContactScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
-    paddingTop: 50,
+   backgroundColor:'white'
+   
   },
   AddIcon: {
     position: "absolute",
     alignSelf: "flex-end",
-    bottom: 150,
-    marginRight: "5%",
+    bottom: hp('8%'),
+   
   },
   Box: {
-    marginBottom: "5%",
-    marginTop: "1%",
+    marginBottom:hp('1%'),
     alignSelf: "center",
     alignItems: "flex-start",
-    width: "90%",
-    padding: 8,
+    width: wp("95%"),
+    height:hp('9%'),
+    justifyContent:'center',
     backgroundColor: "#c7f5ff",
     borderRadius: 5,
     marginHorizontal: 1,
@@ -235,41 +247,19 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 5,
-    elevation: 8,
-  },
-
-  pic: {
-    alignSelf: "center",
-    marginTop: 10,
-  },
-  title: {
-    marginTop: "5%",
-    alignSelf: "flex-start",
-    marginLeft: "5%",
-    marginBottom: "5%",
-    fontSize: 20,
-    fontWeight: "bold",
+    elevation: 5,
   },
   Name: {
     alignSelf: "center",
-    marginLeft: "5%",
-    fontSize: 18,
+    marginLeft: wp('5%'),
+    fontSize: hp('2.4%'),
+    fontWeight:'400'
   },
   head: {
     flex: 1,
     flexDirection: "row",
-  },
-HEAD:{
-    flex:1,
-    flexDirection:'row'
-},
-
-  msg: {
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#03dffc",
-    borderRadius: 10,
-    padding: 10,
+    justifyContent:'center',
+    marginLeft:hp('2%')
   },
   Loadingcontainer: {
     flex: 1,
@@ -278,17 +268,17 @@ HEAD:{
     backgroundColor: "#ffffff",
   },
   avatar: {
-    height: 200,
-    width: 300,
+    height: hp('5.2%'),
+     width: wp('11%'),
     alignSelf: "center",
-    borderRadius: 10,
+    borderRadius: 50,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 8,
+    shadowOpacity: 20,
+    shadowRadius: 60,
+    elevation: 15,
   },
 });

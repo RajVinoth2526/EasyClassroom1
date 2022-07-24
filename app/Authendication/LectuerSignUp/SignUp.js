@@ -78,23 +78,28 @@ export default function SignUp({ navigation }) {
      
 
       setisLoading(true);
-      LecturerRegistration(
+     const flag = LecturerRegistration(
         email,
         password,
         lastName,
         firstName,
         gender,
-        district,
         faculty,
         department,
+        district, 
         id,
         image
+
+
+       
       ).then(() => {
         setisLoading(false);
        
       })
-      navigation.navigate("Loading");
-      emptyState();
+      if(flag == true){
+        navigation.navigate("Loading");
+        emptyState();
+      }
     }
   };
 
@@ -166,25 +171,32 @@ export default function SignUp({ navigation }) {
           </View>
 
           <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Faculty</Text>
+            <Text style={styles.cardtext}>
+              <Text>{faculty ? ` faculty is ${faculty}` : "Select faculty"}</Text>
+            </Text>
             <View style={styles.action}>
-              <TextInput
-                style={styles.textinput}
-                placeholder="Enter your Faculty"
-                value={faculty}
-                onChangeText={(faculty) => setFaculty(faculty)}
+              <RNPickerSelect
+                onValueChange={(faculty) => setFaculty(faculty)}
+                items={[
+                  { label: "Science", value: "Science" },
+                  { label: "Medical", value: "Medical" },
+                  { label: "Managment", value: "Managment" },
+                ]}
               />
             </View>
           </View>
-
           <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Department</Text>
+            <Text style={styles.cardtext}>
+              <Text>{department ? ` ${department}` : "Select department"}</Text>
+            </Text>
             <View style={styles.action}>
-              <TextInput
-                style={styles.textinput}
-                placeholder="Department"
-                value={department}
-                onChangeText={(department) => setDepartment(department)}
+              <RNPickerSelect
+                onValueChange={(department) => setDepartment(department)}
+                items={[
+                  { label: "Computer Science", value: "Computer Science" },
+                  { label: "Physical Science", value: "Physical SCience" },
+                  { label: "Bio SCience", value: "Bio SCience" },
+                ]}
               />
             </View>
           </View>
@@ -361,5 +373,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     alignSelf: "center",
     paddingTop: 7,
+  },
+  
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 });

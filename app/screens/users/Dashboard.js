@@ -7,9 +7,8 @@ import {
   Image,
   ActivityIndicator,
   Alert,
-  BackHandler
+  BackHandler,
 } from "react-native";
-
 
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,6 +16,10 @@ import { Entypo } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import * as firebase from "firebase";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -52,9 +55,6 @@ function TabNavigation() {
 
   const [role, setRole] = useState("");
 
-
-  
-
   useEffect(() => {
     async function getUserInfo() {
       let doc = await firebase
@@ -80,33 +80,35 @@ function TabNavigation() {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            position: "absolute",
-            bottom: 30,
-            left: 20,
-            right: 20,
             backgroundColor: "#ffffff",
-            borderRadius: 15,
-            height: 80,
+            height: hp("10%"),
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
           },
         }}
       >
         <Tab.Screen
           name="Home"
           component={LecturerHomeScreen}
-
-         
-
           options={{
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="home" size={30} color="#34dbeb" height={5} />
-                <Text style={{ color: "black" }}>Home</Text>
+                <FontAwesome name="home" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Home
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -122,11 +124,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="newspaper-o" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Post</Text>
+                <FontAwesome name="newspaper-o" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Post
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -142,11 +152,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <Entypo name="chat" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Chat</Text>
+                <Entypo name="chat" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Chat
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -155,19 +173,27 @@ function TabNavigation() {
         />
 
         <Tab.Screen
-          name="Search"
-          component={LecturerSearchScreen}
+          name="Settings"
+          component={SettingsScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="search" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Search</Text>
+                <Ionicons name="ios-settings" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Settings
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -182,13 +208,10 @@ function TabNavigation() {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            position: "absolute",
-            bottom: 25,
-            left: 20,
-            right: 20,
             backgroundColor: "#ffffff",
-            borderRadius: 15,
-            height: 90,
+            height: hp("10%"),
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
           },
         }}
       >
@@ -201,11 +224,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="home" size={30} color="#34dbeb" height={5} />
-                <Text style={{ color: "black" }}>Home</Text>
+                <FontAwesome name="home" size={35} color="#34dbeb" height={5} />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Home
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -222,11 +253,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="newspaper-o" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Post</Text>
+                <FontAwesome name="newspaper-o" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Post
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -243,11 +282,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <Entypo name="chat" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Chat</Text>
+                <Entypo name="chat" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Chat
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -256,19 +303,27 @@ function TabNavigation() {
         />
 
         <Tab.Screen
-          name="Search"
-          component={StudentSearchScreen}
+          name="Settings"
+          component={SettingsScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="search" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Search</Text>
+                <Ionicons name="ios-settings" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Settings
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -283,13 +338,10 @@ function TabNavigation() {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            position: "absolute",
-            bottom: 25,
-            left: 20,
-            right: 20,
             backgroundColor: "#ffffff",
-            borderRadius: 15,
-            height: 90,
+            height: hp("10%"),
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
           },
         }}
       >
@@ -302,11 +354,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
                 <FontAwesome name="home" size={30} color="#34dbeb" height={5} />
-                <Text style={{ color: "black" }}>Home</Text>
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Home
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -322,11 +382,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="newspaper-o" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Post</Text>
+                <FontAwesome name="newspaper-o" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Post
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -342,11 +410,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <Entypo name="chat" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Chat</Text>
+                <Entypo name="chat" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Chat
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -355,19 +431,27 @@ function TabNavigation() {
         />
 
         <Tab.Screen
-          name="Search"
-          component={DemoSearchScreen}
+          name="Settings"
+          component={SettingsScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="search" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Search</Text>
+                <Ionicons name="ios-settings" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Settings
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -382,13 +466,10 @@ function TabNavigation() {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            position: "absolute",
-            bottom: 25,
-            left: 20,
-            right: 20,
             backgroundColor: "#ffffff",
-            borderRadius: 15,
-            height: 90,
+            height: hp("10%"),
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
           },
         }}
       >
@@ -401,11 +482,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="home" size={30} color="#34dbeb" height={5} />
-                <Text style={{ color: "black" }}>Home</Text>
+                <FontAwesome name="home" size={35} color="#34dbeb" height={5} />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Home
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -422,11 +511,19 @@ function TabNavigation() {
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <Entypo name="chat" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Chat</Text>
+                <Entypo name="chat" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Chat
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -435,19 +532,27 @@ function TabNavigation() {
         />
 
         <Tab.Screen
-          name="Search"
-          component={AdminSearchScreen}
+          name="Settings"
+          component={SettingsScreen}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  top: 10,
+                  top: 1,
                 }}
               >
-                <FontAwesome name="search" size={24} color="#34dbeb" />
-                <Text style={{ color: "black" }}>Search</Text>
+                <Ionicons name="ios-settings" size={35} color="#34dbeb" />
+                <Text
+                  style={{
+                    color: "#6e6c6b",
+                    fontSize: hp("1.8%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Settings
+                </Text>
               </View>
             ),
             headerShown: false,
@@ -465,7 +570,7 @@ function TabNavigation() {
   );
 }
 
-export default function AdminDashboard({ navigation }) {
+export default function Dashboard({ navigation }) {
   const handlePress = () => {
     loggingOut();
     navigation.replace("Home");
@@ -491,8 +596,6 @@ export default function AdminDashboard({ navigation }) {
           unmountOnBlur: true,
         }}
       />
-
-      <Draw.Screen name="Setting" component={SettingsScreen} />
     </Draw.Navigator>
   );
 }

@@ -86,7 +86,7 @@ export default function AddPostScreen({ navigation }) {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
     });
     
     setImage(result.uri);
@@ -109,7 +109,7 @@ export default function AddPostScreen({ navigation }) {
   if(isLoading == true){
     return(
     <View style={styles.Loadingcontainer}>
-      <Text>Image Uploading Please wait!</Text>
+      <Text>Please wait!</Text>
       <ActivityIndicator color="#03befc" size="large" />
     </View>
     );

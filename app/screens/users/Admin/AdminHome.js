@@ -10,7 +10,10 @@ import { Entypo } from "@expo/vector-icons";
 import {
   useFocusEffect
  } from '@react-navigation/native';
-
+ import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 export default function AdminHomeScreen({ navigation }) {
 
   useFocusEffect(
@@ -41,9 +44,15 @@ export default function AdminHomeScreen({ navigation }) {
     <View style={styles.container}>
       <ScrollView style={styles.scrollScreen}>
         <View style={[styles.homeContent, { backgroundColor: "#bef7df" }]}>
+        <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("AcademyYear");
+            }}
+          >
           <Text style={styles.homeContentText}>
             <Entypo name="book" size={24} color="black" /> Courses
           </Text>
+        </TouchableOpacity>
         </View>
 
         <View style={[styles.homeContent, { backgroundColor: "#f1fae8" }]}>
@@ -111,20 +120,15 @@ export default function AdminHomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 15,
-    paddingTop: 30,
-
-    backgroundColor: "white",
+    flex:1,
+   
+   
   },
   scrollScreen: {
-    marginTop: 5,
-    marginRight: 10,
-    marginBottom: 115,
-    borderRadius: 10,
-    marginLeft: 10,
-    backgroundColor: "white",
-    marginHorizontal: 1,
+    flex :1,
+    
+    width:wp('100%'),
+    alignSelf:'center',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -136,25 +140,23 @@ const styles = StyleSheet.create({
   },
   homeContent: {
     alignSelf: "center",
+    justifyContent:'center',
     alignItems: "center",
-    marginTop: 10,
-    marginBottom: 15,
+    marginTop: hp('0.5%'),
+    borderBottomColor:'black',
+    borderBottomWidth:0.5,
+    borderBottomRightRadius:6,
+    borderBottomLeftRadius:6,
+    marginBottom:hp('0.5%'),
     backgroundColor: "#f2ffff",
-    height: 120,
-    width: 290,
+    height: hp('18%'),
+    width:wp('96%'),
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 2,
-    shadowRadius: 5,
-    elevation: 8,
+   
   },
   homeContentText: {
     alignSelf: "center",
-    marginTop: 30,
-    fontSize: 30,
+    fontSize: hp('4.5%'),
+    fontWeight:'600'
   },
 });

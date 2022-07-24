@@ -1,4 +1,4 @@
-import React, { useState, useEffect , } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,11 +10,9 @@ import {
   SafeAreaView,
   Image,
   FlatList,
-  BackHandler
+  BackHandler,
 } from "react-native";
-import {
-  useFocusEffect
- } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Entypo } from "@expo/vector-icons";
 import CodeInput from "react-native-confirmation-code-input";
@@ -26,9 +24,12 @@ import uuid from "react-native-uuid";
 import { StoreSendMessage } from "../../../API/firebaseMethods/firebaseMethod";
 import { StoreReceiveMessage } from "../../../API/firebaseMethods/firebaseMethod";
 import { StoreReceivedID } from "../../../API/firebaseMethods/firebaseMethod";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 export default function ChatBoxScreen({ navigation, route }) {
-  
   const { ReceiverID } = route.params;
   const { ReceiverUrl } = route.params;
   const { ReceiverFirstName } = route.params;
@@ -41,10 +42,9 @@ export default function ChatBoxScreen({ navigation, route }) {
   const [role, setRole] = useState("");
   const [messages, setMessages] = useState("");
   const [messages1, setMessages1] = useState("");
-  
+
   const [type1, setType1] = useState("msg");
   const [type2, setType2] = useState("replay");
-  
 
   const ID = uuid.v4();
 
@@ -176,258 +176,318 @@ export default function ChatBoxScreen({ navigation, route }) {
     fetchSubjects();
   }
 
-  
-
- 
-
-
   useFocusEffect(
-    React.useCallback(() => {    
+    React.useCallback(() => {
       const onBackPress = () => {
-        navigation.navigate('Chat');
+        navigation.navigate("Chat");
         // Return true to stop default back navigaton
         // Return false to keep default back navigaton
         return true;
       };
- 
+
       // Add Event Listener for hardwareBackPress
-      BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress
-      );
- 
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
       return () => {
         // Once the Screen gets blur Remove Event Listener
-        BackHandler.removeEventListener(
-          'hardwareBackPress',
-          onBackPress
-        );
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
-    }, []),
+    }, [])
   );
 
+  function RefreshPage() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={[styles.Box]}>
+          <View style={styles.HEAD}>
+           <View style ={styles.avatar}>
+                    <Image
+                      source={{ uri: ReceiverUrl }}
+                      style={{
+                        
+                       
+                        height: hp('5.2%'),
+                        width: wp('11%'),
+                        borderWidth: 1.5,
 
-function RefreshPage(){
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={[styles.Box]}>
-        <View style={styles.HEAD}>
-          <Image
-            source={{ uri: ReceiverUrl }}
-            style={{
-              marginLeft: "5%",
-              height: 41,
-              width: 41,
-              borderWidth: 1.5,
+                        borderRadius: 50,
+                      }}
+                    />
+                    </View>
 
-              borderRadius: 50,
-            }}
-          />
-
-          <Text style={styles.Name}>
-            {ReceiverFirstName} {ReceiverLastName}
-          </Text>
+            <Text style={styles.Name}>
+              {ReceiverFirstName} {ReceiverLastName}
+            </Text>
+          </View>
         </View>
-      </View>
-      <ScrollView
-        style={{ width: "95%", alignSelf: "center", marginBottom: "25%" }}
-      >
-        
-
-        <FlatList
-          data={messages}
-          renderItem={({ item }) => (
-
-            <View>
-            {
-            item.type == 'msg'
-               ?
-               <View style = {styles.message}>
-              <Text style={{fontSize:18,alignSelf:'center' ,paddingLeft:8,paddingRight:8,paddingTop:5}}>{item.message}</Text> 
-              <Text style={{fontSize:8 ,alignSelf:'center',color :'#8f8c8c',paddingTop :3,paddingBottom :4 ,paddingLeft:5,paddingRight:5}}>{item.dateAndTime}</Text>
+        <ScrollView
+          style={{ width: wp('93%'), alignSelf: "center", marginBottom: hp("10%") }}
+        >
+          <FlatList
+            data={messages}
+            renderItem={({ item }) => (
+              <View>
+                {item.type == "msg" ? (
+                  <View style={styles.message}>
+                    <Text
+                      style={{
+                        fontSize: hp('2%'),
+                        alignSelf: "center",
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        paddingTop: 5,
+                      }}
+                    >
+                      {item.message}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: hp('1%'),
+                        alignSelf: "center",
+                        color: "#8f8c8c",
+                        paddingTop: 3,
+                        paddingBottom: 4,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                    >
+                      {item.dateAndTime}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={styles.message1}>
+                    <Text
+                      style={{
+                        fontSize: hp('2%'),
+                        alignSelf: "center",
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        paddingTop: 5,
+                      }}
+                    >
+                      {item.message}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: hp('1%'),
+                        alignSelf: "center",
+                        color: "#8f8c8c",
+                        paddingTop: 3,
+                        paddingBottom: 4,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                    >
+                      {item.dateAndTime}
+                    </Text>
+                  </View>
+                )}
               </View>
-               :
-               <View style = {styles.message1}>
-             <Text style={{fontSize:18,alignSelf:'center' ,paddingLeft:8,paddingRight:8 ,paddingTop:5}}>{item.message}</Text> 
-              <Text style={{fontSize:8 ,alignSelf:'center',color :'#8f8c8c', paddingTop :3,paddingBottom :4 ,paddingLeft:5,paddingRight:5}}>{item.dateAndTime}</Text>
-
-              </View>
-            }
-        </View>
-            
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </ScrollView>
-      <View
-        style={{
-          position: "absolute",
-          bottom: 20,
-          flexDirection: "row",
-          alignSelf: "center",
-        }}
-      >
-        <View style={styles.action}>
-          <TextInput
-            style={styles.textinput}
-            placeholder="Type here"
-            autoComplete="off"
-            value={message}
-            multiline={true}
-            numberOfLines={1}
-            textAlignVertical="top"
-            onChangeText={(message) => setMessage(message)}
+            )}
+            keyExtractor={(item, index) => index.toString()}
           />
-        </View>
-
-        <View style={styles.iconAdd}>
-          <TouchableOpacity onPress={handlePress}>
-            <FontAwesome
-              name="send"
-              size={30}
-              color="#38deff"
-              style={{ alignSelf: "center" }}
+        </ScrollView>
+        <View
+          style={{
+            position: "absolute",
+            bottom: hp('2.7%'),
+            flexDirection: "row",
+            alignSelf: "center",
+            justifyContent:'center'
+          }}
+        >
+          <View style={styles.action}>
+            <TextInput
+              style={styles.textinput}
+              placeholder="Type here"
+              autoComplete="off"
+              value={message}
+              multiline={true}
+              numberOfLines={1}
+              textAlignVertical="top"
+              onChangeText={(message) => setMessage(message)}
             />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+          </View>
 
-  
-  
-}
+          <View style={styles.iconAdd}>
+            <TouchableOpacity onPress={handlePress}>
+              <FontAwesome
+                name="send"
+                size={30}
+                color="#38deff"
+                style={{ alignSelf: "center" }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   const MINUTE_MS = 500;
 
-useEffect(() => {
-  const interval = setInterval(() => {
-   refresh();
-   RefreshPage();
-   
-  }, MINUTE_MS);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refresh();
+      RefreshPage();
+    }, MINUTE_MS);
 
-  return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-}, [])
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, []);
 
+  if (message != "" || message == "") {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={[styles.Box]}>
+          <View style={styles.HEAD}>
+           <View style ={styles.avatar}>
+                    <Image
+                      source={{ uri: ReceiverUrl }}
+                      style={{
+                        
+                       
+                        height: hp('5.2%'),
+                        width: wp('11%'),
+                        borderWidth: 1.5,
 
+                        borderRadius: 50,
+                      }}
+                    />
+                    </View>
 
-
- 
-
-if( message != "" || message == ""){
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={[styles.Box]}>
-        <View style={styles.HEAD}>
-          <Image
-            source={{ uri: ReceiverUrl }}
-            style={{
-              marginLeft: "5%",
-              height: 41,
-              width: 41,
-              borderWidth: 1.5,
-
-              borderRadius: 50,
-            }}
-          />
-
-          <Text style={styles.Name}>
-            {ReceiverFirstName} {ReceiverLastName}
-          </Text>
+            <Text style={styles.Name}>
+              {ReceiverFirstName} {ReceiverLastName}
+            </Text>
+          </View>
         </View>
-      </View>
-      <ScrollView
-        style={{ width: "95%", alignSelf: "center", marginBottom: "25%" }}
-      >
-        
-
-        <FlatList
-          data={messages}
-          renderItem={({ item }) => (
-
-            <View>
-            {
-            item.type == 'msg'
-               ?
-               <View style = {styles.message}>
-              <Text style={{fontSize:18,alignSelf:'center' ,paddingLeft:8,paddingRight:8,paddingTop:5}}>{item.message}</Text> 
-              <Text style={{fontSize:8 ,alignSelf:'center',color :'#8f8c8c',paddingTop :3,paddingBottom :4 ,paddingLeft:5,paddingRight:5}}>{item.dateAndTime}</Text>
+        <ScrollView
+          style={{ width: wp('93%'), alignSelf: "center", marginBottom: hp("10%") }}
+        >
+          <FlatList
+            data={messages}
+            renderItem={({ item }) => (
+              <View>
+                {item.type == "msg" ? (
+                  <View style={styles.message}>
+                    <Text
+                      style={{
+                        fontSize: hp('2%'),
+                        alignSelf: "center",
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        paddingTop: 5,
+                      }}
+                    >
+                      {item.message}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: hp('1%'),
+                        alignSelf: "center",
+                        color: "#8f8c8c",
+                        paddingTop: 3,
+                        paddingBottom: 4,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                    >
+                      {item.dateAndTime}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={styles.message1}>
+                    <Text
+                      style={{
+                        fontSize: hp('2%'),
+                        alignSelf: "center",
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        paddingTop: 5,
+                      }}
+                    >
+                      {item.message}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: hp('1%'),
+                        alignSelf: "center",
+                        color: "#8f8c8c",
+                        paddingTop: 3,
+                        paddingBottom: 4,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                    >
+                      {item.dateAndTime}
+                    </Text>
+                  </View>
+                )}
               </View>
-               :
-               <View style = {styles.message1}>
-             <Text style={{fontSize:18,alignSelf:'center' ,paddingLeft:8,paddingRight:8 ,paddingTop:5}}>{item.message}</Text> 
-              <Text style={{fontSize:8 ,alignSelf:'center',color :'#8f8c8c', paddingTop :3,paddingBottom :4 ,paddingLeft:5,paddingRight:5}}>{item.dateAndTime}</Text>
-
-              </View>
-            }
-        </View>
-            
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </ScrollView>
-      <View
-        style={{
-          position: "absolute",
-          bottom: 20,
-          flexDirection: "row",
-          alignSelf: "center",
-        }}
-      >
-        <View style={styles.action}>
-          <TextInput
-            style={styles.textinput}
-            placeholder="Type here"
-            autoComplete="off"
-            value={message}
-            multiline={true}
-            numberOfLines={1}
-            textAlignVertical="top"
-            onChangeText={(message) => setMessage(message)}
+            )}
+            keyExtractor={(item, index) => index.toString()}
           />
-        </View>
-
-        <View style={styles.iconAdd}>
-          <TouchableOpacity onPress={handlePress}>
-            <FontAwesome
-              name="send"
-              size={30}
-              color="#38deff"
-              style={{ alignSelf: "center" }}
+        </ScrollView>
+        <View
+          style={{
+            position: "absolute",
+            bottom: hp('2.7%'),
+            flexDirection: "row",
+            alignSelf: "center",
+            justifyContent:'center'
+          }}
+        >
+          <View style={styles.action}>
+            <TextInput
+              style={styles.textinput}
+              placeholder="Type here"
+              autoComplete="off"
+              value={message}
+              multiline={true}
+              numberOfLines={1}
+              textAlignVertical="top"
+              onChangeText={(message) => setMessage(message)}
             />
-          </TouchableOpacity>
+          </View>
+
+          <View style={styles.iconAdd}>
+            <TouchableOpacity onPress={handlePress}>
+              <FontAwesome
+                name="send"
+                size={30}
+                color="#38deff"
+                style={{ alignSelf: "center" }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <View style={styles.Loadingcontainer}>
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
   );
-      }
-
-      return(
-        <View style={styles.Loadingcontainer}>
-        <ActivityIndicator color="#03befc" size="large" />
-      </View>
-      );
-
-
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    paddingTop: 10,
+  
   },
   Box: {
-    marginBottom: "5%",
+    marginTop:hp('1%'),
+    marginBottom: hp("2%"),
     alignSelf: "center",
-    width: "95%",
-    
-    padding: 15,
+    width: wp("98%"),
+    height:hp('10%'),
     backgroundColor: "#9ae1f5",
     borderRadius: 5,
-    borderWidth :2,
-    borderColor:'#0ab4f7',
+    borderWidth: 2,
+    borderColor: "#0ab4f7",
+    justifyContent:'center',
     marginHorizontal: 1,
     borderRadius: 10,
     shadowColor: "#000",
@@ -435,22 +495,24 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.5,
+    shadowOpacity: 1,
     shadowRadius: 5,
     elevation: 8,
   },
   Name: {
     alignSelf: "center",
-    marginLeft: "5%",
-    fontSize: 18,
+    marginLeft: hp("2%"),
+    fontSize: hp('2.5%'),
+    fontWeight:'500'
   },
   HEAD: {
+    marginLeft:wp('5%'),
     flexDirection: "row",
+    
   },
 
   textinput: {
-    marginLeft: 10,
-    marginRight: 10,
+    width:wp('75%'),
     borderWidth: 2,
     borderRadius: 5,
     borderColor: "#0ab4f7",
@@ -469,25 +531,39 @@ const styles = StyleSheet.create({
   },
 
   action: {
-    width: "85%",
+    width: wp('80%'),
   },
   iconAdd: {
     alignSelf: "center",
+    
   },
   message: {
     alignSelf: "flex-end",
     borderWidth: 2,
     borderColor: "blue",
-    marginBottom: "3%",
+    marginBottom: hp("1.5%"),
     borderRadius: 15,
-   
   },
   message1: {
     alignSelf: "flex-start",
     borderWidth: 2,
     borderColor: "purple",
-    marginBottom: "3%",
+    marginBottom: hp("1.5%"),
     borderRadius: 15,
-   
+  },
+  
+  avatar: {
+    height: hp('5.2%'),
+     width: wp('11%'),
+    alignSelf: "center",
+    borderRadius: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 20,
+    shadowRadius: 55,
+    elevation: 15,
   },
 });

@@ -13,7 +13,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import CodeInput from "react-native-confirmation-code-input";
 import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 export default function VerifyRole({ navigation }) {
   const role1 = "Lecturer";
   const role2 = "Demonstrator";
@@ -69,19 +72,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   head: {
-    marginTop: 120,
+    marginTop: hp("14%"),
+    marginBottom: hp("6%"),
+    justifyContent: "center",
     alignSelf: "center",
   },
   headText: {
-    fontSize: 40,
+    fontSize: hp("5%"),
+    fontWeight:'bold'
   },
   select: {
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: hp("2%"),
+    justifyContent: "center",
     borderRadius: 20,
     alignItems: "center",
-    height: 60,
-    width: "70%",
+    height: hp("9%"),
+    width: wp("70%"),
     shadowColor: "#000",
     backgroundColor: "#34dbeb",
     shadowOffset: {
@@ -94,15 +100,15 @@ const styles = StyleSheet.create({
   },
   selectText: {
     alignSelf: "center",
-    fontSize: 25,
-    marginTop: 10,
+    fontSize: hp("3.5"),
+    fontWeight:'bold'
   },
   inlineText: {
-    marginTop: 5,
-    fontSize: 15,
-    color: "blue",
+    fontSize: hp("2%"),
+    color: "red",
+    fontWeight:'bold'
   },
   selectSignIn: {
-    marginTop: 40,
+    marginTop: hp("8%"),
   },
 });

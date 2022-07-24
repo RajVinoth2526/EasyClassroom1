@@ -9,7 +9,8 @@ import {
   Keyboard,
   StyleSheet,
   SafeAreaView,
-  ActivityIndicator
+  ActivityIndicator,
+  KeyboardAvoidingView,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CodeInput from "react-native-confirmation-code-input";
@@ -17,7 +18,10 @@ import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import * as firebase from "firebase";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 export default function Pin({ navigation }) {
   const [pin, setPin] = useState("");
   const [lectuerPin, setLecturerPin] = useState("");
@@ -71,103 +75,109 @@ export default function Pin({ navigation }) {
     }
   };
 
-  if(flag == "true"){
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
+
+  if (flag == "true") {
+    return (
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            source={require("../../assets/logo.png")}
+          ></Image>
+          <Text style={styles.text}>TIME TO LEARN</Text>
+        </View>
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}
+        >
+          <View style={styles.head}>
+            <Text style={styles.headText}>Enter PIN</Text>
+          </View>
+          <View style={styles.pinEntry}>
+            <SmoothPinCodeInput
+              placeholder={
+                <View
+                  style={{
+                    width: wp("6%"),
+                    height: hp("3%"),
+
+                    marginTop: hp("1%"),
+                    marginBottom: hp("5%"),
+                    borderRadius: 10,
+                    opacity: 0.5,
+                    backgroundColor: "#7ecbf7",
+                  }}
+                ></View>
+              }
+              mask={
+                <View
+                  style={{
+                    width: wp("6%"),
+                    height: hp("3%"),
+                    borderRadius: 25,
+                    backgroundColor: "#0378ff",
+                  }}
+                ></View>
+              }
+              cellSize={40}
+              keyboardType={"default"}
+              cellSpacing={0.001}
+              codeLength={6}
+              maskDelay={200}
+              password={true}
+              cellStyle={null}
+              cellStyleFocused={null}
+              value={pin}
+              onTextChange={(pin) => setPin(pin)}
+            />
+          </View>
+        </KeyboardAvoidingView>
+        <View style={styles.enterButton}>
+          <TouchableOpacity onPress={handlePin}>
+            <Text style={styles.enterText}>Verify</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          source={require("../../assets/logo.png")}
-        ></Image>
-        <Text style={styles.text}>TIME TO LEARN</Text>
-      </View>
-      <ScrollView style={{ height: 100 }}>
-        <View style={styles.head}>
-          <Text style={styles.headText}>Enter PIN</Text>
-        </View>
-        <View style={styles.pinEntry}>
-          <SmoothPinCodeInput
-            placeholder={
-              <View
-                style={{
-                  width: 15,
-                  height: 15,
-
-                  marginTop: "50%",
-                  marginBottom: "120%",
-                  borderRadius: 10,
-                  opacity: 0.5,
-                  backgroundColor: "#7ecbf7",
-                }}
-              ></View>
-            }
-            mask={
-              <View
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: 25,
-                  backgroundColor: "#0378ff",
-                }}
-              ></View>
-            }
-            cellSize={40}
-            keyboardType={"default"}
-            cellSpacing={0.001}
-            codeLength={6}
-            maskDelay={200}
-            password={true}
-            cellStyle={null}
-            cellStyleFocused={null}
-            value={pin}
-            onTextChange={(pin) => setPin(pin)}
-          />
-        </View>
-      </ScrollView>
-      <View style={styles.enterButton}>
-        <TouchableOpacity onPress={handlePin}>
-          <Text style={styles.enterText}>Verify</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={styles.Loadingcontainer}>
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
   );
-}
-
-return(
-  <View style={styles.Loadingcontainer}>
-  <ActivityIndicator color="#03befc" size="large" />
-</View>
-);
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
+
     alignItems: "center",
     backgroundColor: "#ffffff",
   },
   head: {
-    marginTop: "10%",
-    marginBottom: "10%",
+    marginTop: hp("1%"),
+    marginBottom: hp("1%"),
     alignItems: "center",
   },
   headText: {
     alignSelf: "center",
-    fontSize: 40,
+    fontSize: hp("6%"),
+    fontWeight:'bold'
   },
   pinEntry: {
-    marginTop: "10%",
-    marginBottom: "20%",
+    marginTop: hp("3%"),
+    marginBottom: hp("3%"),
   },
   enterButton: {
     backgroundColor: "#7ecbf7",
-
-    width: 150,
-    height: 50,
+    justifyContent: "center",
+    marginTop: hp("8%"),
+    width: wp("50%"),
+    height: hp("10%"),
     borderRadius: 20,
-    marginBottom: "10%",
+    marginBottom: hp("5%"),
     alignSelf: "center",
     shadowColor: "#000",
     backgroundColor: "#34dbeb",
@@ -181,22 +191,22 @@ const styles = StyleSheet.create({
   },
 
   enterText: {
-    marginTop: 5,
     alignSelf: "center",
-    fontSize: 25,
+    fontSize: hp("4%"),
+    fontWeight:'bold'
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: wp("55%"),
+    height: hp("30%"),
   },
   logoContainer: {
-    top: 20,
-    marginBottom: 70,
+    marginTop: hp("1%"),
+    marginBottom: hp("5%"),
     alignItems: "center",
-    padding: 10,
   },
   text: {
-    marginTop: -20,
+    fontSize: hp("2%"),
+    fontWeight:'bold'
   },
   Loadingcontainer: {
     flex: 1,

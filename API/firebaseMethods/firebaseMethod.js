@@ -75,8 +75,11 @@ export async function StudentRegistration(
       ProfileUrl : image     
       
     });
+
+    return true;
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
+    return false;
   }
 }
 
@@ -106,6 +109,115 @@ export async function StoreSendMessage(
       firstName : firstName,
       lastName : lastName,
       ProfileUrl : ProfileUrl,
+      created: firebase.firestore.FieldValue.serverTimestamp()
+
+    });
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+
+
+
+export async function StoreCourse(
+  id,
+  userId,
+  faculty,
+  department,
+  level,
+  year,
+  course,
+  CourseID,
+  CourseNameID,
+  title,
+  instruction,
+  document
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("Courses-"+faculty).doc(department).collection(level).doc(year).collection(CourseID).doc(CourseID).collection(userId).doc(id).set({
+     
+      Id: id,
+      userId : userId,
+      course:course, 
+      CourseNameID:CourseNameID,
+      dateAndTime : dateAndTime,
+      title : title,
+      instruction : instruction,
+      document : document,
+      created: firebase.firestore.FieldValue.serverTimestamp()
+
+    });
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+export async function StoreCourseName(
+  userId,
+  faculty,
+  department,
+  level,
+  year,
+  course,
+  CourseID,
+  CourseNameID,
+  password
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("CoursesName-"+faculty).doc(department).collection(level).doc(year).collection("CourseNames").doc(CourseID).set({
+     
+  
+      userId:userId,
+      CourseID:CourseID,
+      CourseNameID:CourseNameID,
+      course:course, 
+      dateAndTime : dateAndTime,
+      EntrollKey :password,
+      created: firebase.firestore.FieldValue.serverTimestamp()
+
+    });
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+
+export async function StoreAcademyYear(
+  id,
+  Year
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("AcademyYearForStudents").doc(id).set({
+     
+      Id: id,
+      year : Year,
+      dateAndTime : dateAndTime,
+      
       created: firebase.firestore.FieldValue.serverTimestamp()
 
     });
@@ -165,7 +277,7 @@ export async function StoreReceivedID(
 
   
   const db1 = firebase.firestore();
-    db1.collection(ReceiverID+"senders").doc(ID).set({
+    db1.collection("Conversations").doc(ReceiverID).collection("Chats").doc(ID).set({
      
       ID : ID,
       firstName: firstName,
@@ -175,25 +287,86 @@ export async function StoreReceivedID(
   
 }
 
+export async function StudentEntroll(
+  userID,
+  CourseID,
+
+
+ 
+) {
+ try {
+
+      const db1 = firebase.firestore();
+      db1.collection("entrollment").doc(userID).collection("course").doc(CourseID).set({
+       
+        userID:userID,
+        CourseID : CourseID,
+       
+      });
+     
+    } catch (err) {
+      Alert.alert("There is something wrong!!!!", err.message);
+    }
+  
+}
+
+export async function StoreCourseLink(
+  id,
+  url,
+
+
+ 
+) {
+ try {
+
+
+
+  const response = await fetch(url);
+    const blob = await response.blob();
+  
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("CourseLink/" + id);
+    const snapshot = await ref.put(blob);
+
+     
+    } catch (err) {
+      Alert.alert("There is something wrong!!!!", err.message);
+    }
+  
+}
+
 
 export async function UpdateUserDetails(
   id,
   firstName,
   lastName,
-  ProfileUrl,
   role,
  
 ) {
 
+  
+
 
   const currentUser = firebase.auth().currentUser;
+
+ 
+  const  image  = await firebase
+  .storage()
+  .ref()
+  .child("profileImage/" + currentUser.uid) //name in storage in firebase console
+  .getDownloadURL();
+
+  console.log(image +"nothing");
+
   const db1 = firebase.firestore();
     db1.collection(role).doc(id).update({
      
       id: id,
       firstName: firstName,
       lastName: lastName,
-      ProfileUrl : ProfileUrl
+      ProfileUrl : image
     });
   
 }
@@ -405,8 +578,10 @@ export async function GetImage(userId) {
 export async function signIn(email, password) {
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password);
+    return true;
   } catch (err) {
     Alert.alert("There is something wrong!", err.message);
+    return false;
   }
 }
 export async function UpdateStudent(

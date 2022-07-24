@@ -205,7 +205,7 @@ export default function TimeTableScreen({ navigation }) {
                 <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image1 }}
                   style={{
                     borderRadius: 3,
@@ -240,7 +240,7 @@ export default function TimeTableScreen({ navigation }) {
               <ImageModal
                 swipeToDismiss={true}
                 resizeMode="contain"
-                imageBackgroundColor="#000000"
+                imageBackgroundColor="white"
                 source={{ uri: image2 }}
                 style={{
                   borderRadius: 3,
@@ -273,7 +273,7 @@ export default function TimeTableScreen({ navigation }) {
               <ImageModal
                 swipeToDismiss={true}
                 resizeMode="contain"
-                imageBackgroundColor="#000000"
+                imageBackgroundColor="white"
                 source={{ uri: image3 }}
                 style={{
                   borderRadius: 3,
@@ -319,7 +319,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image1 }}
                   style={{
                     borderRadius: 3,
@@ -352,7 +352,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image2 }}
                   style={{
                     borderRadius: 3,
@@ -385,7 +385,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image3 }}
                   style={{
                     borderRadius: 3,
@@ -431,7 +431,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image1 }}
                   style={{
                     borderRadius: 3,
@@ -464,7 +464,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image2}}
                   style={{
                     borderRadius: 3,
@@ -496,7 +496,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image3 }}
                   style={{
                     borderRadius: 3,
@@ -542,7 +542,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image1 }}
                   style={{
                     borderRadius: 3,
@@ -585,7 +585,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image2 }}
                   style={{
                     borderRadius: 3,
@@ -627,7 +627,7 @@ export default function TimeTableScreen({ navigation }) {
             <ImageModal
                   swipeToDismiss={true}
                   resizeMode="contain"
-                  imageBackgroundColor="#000000"
+                  imageBackgroundColor="white"
                   source={{ uri: image3 }}
                   style={{
                     borderRadius: 3,
@@ -695,8 +695,7 @@ const styles = StyleSheet.create({
 
   Box: {
     alignSelf:'center',
-    marginBottom: '2%',
-    marginTop: '5%',
+    marginTop: '2%',
     width:'95%',
     backgroundColor: "#b1dffc",
     borderRadius: 5,
@@ -721,9 +720,7 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginTop: 20,
-    borderRightColor:'black',
     borderRadius:3,
-    borderWidth:1,
     marginBottom: 30,
     borderRadius: 3,
     alignSelf: "center",
