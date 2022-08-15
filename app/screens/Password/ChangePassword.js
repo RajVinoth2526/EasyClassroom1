@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   BackHandler,
+  StatusBar
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import * as firebase from "firebase";
@@ -28,6 +29,11 @@ export default function ChangePassword({ navigation }) {
 
   async function Password(oldPassword, password) {
     const user = firebase.auth().currentUser;
+
+    React.useEffect(() => {
+      StatusBar.setBackgroundColor('#cdaffa'); 
+      StatusBar.setTranslucent(true)
+     }, []);
 
     await firebase
       .auth()
@@ -70,18 +76,33 @@ export default function ChangePassword({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+<View style = {{backgroundColor:'white',height:hp('12%')}}>
+
+<View style = {{backgroundColor:'#cdaffa',height:hp('12%'),borderBottomRightRadius:60 , justifyContent:'center'}}>
+  <Text style = {{alignSelf:'center', fontSize:hp('4%'), fontWeight:'bold'}}>Change Password</Text>
+</View>
+
+
+</View>
+<View style = {{backgroundColor:'#cdaffa',height:hp('12%')}}>
+
+<View style = {{backgroundColor:'white',height:hp('12%'),borderTopLeftRadius:60}}>
+</View>
+
+
+</View>
+
+<View style={{alignSelf:'center' ,marginBottom:hp('4%')}}>
+          <FontAwesome5 name="user-lock" size={hp('12%')} color="#cdaffa" />
+          </View>
      
 
      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
 
-      <View style ={{alignSelf:'center',marginTop:hp('10%'),marginBottom:hp('5%')}}>
-      <View style={{alignSelf:'center' ,marginBottom:hp('4%')}}>
-          <FontAwesome5 name="user-lock" size={70} color="#34dbeb" />
-          </View>
-            <Text style={{fontSize:hp('4%') ,fontWeight:'bold'}}>Change Password</Text>
-          </View>
+      
           
-        <ScrollView style={{ height: hp('25%') }}>
+        <ScrollView style={{ height: hp('33%') }}>
           
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>Old Password</Text>
@@ -110,10 +131,12 @@ export default function ChangePassword({ navigation }) {
           </View>
           
         </ScrollView>
-        <TouchableOpacity style={styles.buttonLogin} onPress={handlePress}>
+       
+      </KeyboardAvoidingView>
+
+      <TouchableOpacity style={styles.buttonLogin} onPress={handlePress}>
         <Text style={styles.buttontext}>Reset</Text>
       </TouchableOpacity>
-      </KeyboardAvoidingView>
 
       
     </View>
@@ -123,7 +146,6 @@ export default function ChangePassword({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    padding: 10,
     backgroundColor: "#ffffff",
   },
 
@@ -160,11 +182,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   action: {
-    marginTop: 1,
-
+   marginTop:hp('0.5%'),
+   width:wp('80%'),
     borderRadius: 10,
-    paddingBottom: 1,
-    marginBottom: 15,
+    marginBottom: hp('2%'),
 
     backgroundColor: "white",
     shadowColor: "#000",
@@ -185,11 +206,11 @@ const styles = StyleSheet.create({
   },
 
   buttonLogin: {
-    backgroundColor: "#8be5f7",
+    backgroundColor: "#cdaffa",
     alignSelf: "center",
     height: hp('7%'),
     borderRadius: 9,
-    marginTop: hp('8%'),
+    marginTop: hp('4%'),
     justifyContent:'center',
     width:wp('55%'),
     alignItems: "center",
@@ -218,14 +239,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
 
-  logo: {
-    width: 200,
-    height: 200,
-  },
-  Loadingcontainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-  },
+  
 });

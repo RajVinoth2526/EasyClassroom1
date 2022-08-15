@@ -6,205 +6,52 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  StatusBar,
+  ActivityIndicator
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import * as firebase from "firebase";
 import { Foundation } from "@expo/vector-icons";
 import { color } from "react-native-reanimated";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 export default function ResultsScreen({ navigation }) {
   const [level1, setLevel1] = useState([]);
-  const [level1GPA, setLevel1GPA] = useState("");
+  const [level1GPA, setLevel1GPA] = useState(0);
   const [level2, setLevel2] = useState([]);
-  const [level2GPA, setLevel2GPA] = useState("");
+  const [level2GPA, setLevel2GPA] = useState(0);
   const [level3, setLevel3] = useState([]);
-  const [level3GPA, setLevel3GPA] = useState("");
-  const [CumGPA, setCumGPA] = useState("");
+  const [level3GPA, setLevel3GPA] = useState(0);
+  var [cumGap, setCumGap] = useState(0);
   const [academyYear, setAcademyYear] = useState("");
   const [indexNumber, setIndexNumber] = useState("");
   const [isLoading, setisLoading] = useState(false);
 
   let currentUserUID = firebase.auth().currentUser.uid;
 
-  function fetchLevelData(){
-    
-    fetchLevel1Data();
-    fetchLevel2Data();
-    fetchLevel3Data();
-    
-    
-  }
-
-  function CumlativeGPA(){
-
-    var CumulGPA  = (level1GPA + level1GPA + level3GPA)/3;
-    setCumGPA(CumulGPA);
-  }
-
-
-
-
-   
-
-
-
-  async function fetchLevel1Data() {
-    const data = [];
-
-    const db = firebase.firestore();
-    const querySnapshot = await db.collection(academyYear);
-    const querySnapshot1 = await querySnapshot
-      .doc("Level1")
-      .collection(indexNumber)
-      .get();
-    querySnapshot1.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      data.push(doc.data());
-    });
-
-    setLevel1(data);
-  }
-
-  async function fetchLevel2Data() {
-    const data = [];
-
-    const db = firebase.firestore();
-    const querySnapshot = await db.collection(academyYear);
-    const querySnapshot1 = await querySnapshot
-      .doc("Level2")
-      .collection(indexNumber)
-      .get();
-    querySnapshot1.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      data.push(doc.data());
-    });
-
-    setLevel2(data);
-  }
-
-  async function fetchLevel3Data() {
-    const data = [];
-
-    const db = firebase.firestore();
-    const querySnapshot = await db.collection(academyYear);
-    const querySnapshot1 = await querySnapshot
-      .doc("Level3")
-      .collection(indexNumber)
-      .get();
-    querySnapshot1.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      data.push(doc.data());
-    });
-
-    setLevel3(data);
-  }
-
-
-  function getGPALevel1(){
-
-    var gpa1 = 0;
-    var credits = 0;
-
-    {level1.map(item => {
-      
-
-      var x = Number(item.credits)
-      if(item.result == 'A'){
-        
-        gpa1 += 4*x;
-        credits += x;
-      }else if(item.result == 'A-'){
-        gpa1 += 3.67*x;
-        credits += x;
-
-      }
-
-      var GPA1 = gpa1/credits;
-      console.log(credits +" "+ gpa1);
-      setLevel1GPA(GPA1); 
-
-
-
-    })};
-
-  }
-
-  function getGPALevel2(){
-
-    var gpa1 = 0;
-    var credits = 0;
-
-    {level2.map(item => {
-      
-
-      var x = Number(item.credits)
-      if(item.result == 'A'){
-        
-        gpa1 += 4*x;
-        credits += x;
-      }else if(item.result == 'A-'){
-        gpa1 += 3.67*x;
-        credits += x;
-
-      }
-
-      var GPA1 = gpa1/credits;
-      console.log(credits +" "+ gpa1);
-      setLevel2GPA(GPA1); 
-
-
-
-    })};
-
-  }
-
-  function getGPALevel3(){
-
-    var gpa1 = 0;
-    var credits = 0;
-
-    {level3.map(item => {
-      
-
-      var x = Number(item.credits)
-      if(item.result == 'A'){
-        
-        gpa1 += 4*x;
-        credits += x;
-      }else if(item.result == 'A-'){
-        gpa1 += 3.67*x;
-        credits += x;
-
-      }
-
-      var GPA1 = gpa1/credits;
-      console.log(credits +" "+ gpa1);
-      setLevel3GPA(GPA1); 
-
-
-
-    })};
-
-  }
-
-
-
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
 
   
+ 
 
-  useEffect(() => {
-    fetchLevel1Data();
-    fetchLevel2Data();
-    fetchLevel3Data();
+  function CumlativeGPA(gpa1) {
+    cumGap += gpa1/3;
+    var n = cumGap.toFixed(3)
+    setCumGap(n);
+   
     
-    
-    
-  }, []);
+  }
+
 
   useEffect(() => {
     async function getUserInfo() {
-     
       let doc = await firebase
         .firestore()
         .collection("users")
@@ -215,94 +62,335 @@ export default function ResultsScreen({ navigation }) {
         Alert.alert("No user data found!");
       } else {
         let dataObj = doc.data();
-        setAcademyYear(dataObj.academyYear);
-        setIndexNumber(dataObj.indexNumber);
+       
+        fetchLevel1Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty,dataObj.course);
+        fetchLevel2Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty,dataObj.course);
+        fetchLevel3Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty, dataObj.course);
+
       }
     }
     getUserInfo();
-    getGPALevel1();
-    getGPALevel2();
-    getGPALevel3();
-    CumlativeGPA();
     
-   
-  });
+  },[]);
 
+  async function fetchLevel1Data(academyYear,indexNumber,faculty,course) {
+    const data = [];
+
+    const db = firebase.firestore();
+    const querySnapshot = await db.collection(faculty+'-result');
+    const querySnapshot1 = await querySnapshot
+      .doc(course)
+      .collection(academyYear)
+      .doc("Level1")
+      .collection(indexNumber)
+      .get();
+    querySnapshot1.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      data.push(doc.data());
+    });
+
+    setLevel1(data);
+    getGPALevel1(data);
+    
+
+  }
+
+  async function fetchLevel2Data(academyYear,indexNumber,faculty,course) {
+    const data = [];
+
+    const db = firebase.firestore();
+    const querySnapshot = await db.collection(faculty+'-result');
+    const querySnapshot1 = await querySnapshot
+      .doc(course)
+      .collection(academyYear)
+      .doc("Level2")
+      .collection(indexNumber)
+      .get();
+    querySnapshot1.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      data.push(doc.data());
+    });
+
+    setLevel2(data);
+    getGPALevel2(data);
+  }
+
+  async function fetchLevel3Data(academyYear,indexNumber,faculty,course) {
+    const data = [];
+
+    const db = firebase.firestore();
+    const querySnapshot = await db.collection(faculty+'-result');
+    const querySnapshot1 = await querySnapshot
+      .doc(course)
+      .collection(academyYear)
+      .doc("Level3")
+      .collection(indexNumber)
+      .get();
+    querySnapshot1.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      data.push(doc.data());
+    });
+
+    setLevel3(data);
+    getGPALevel3(data);
+  }
+
+  function getGPALevel1(data) {
+    var gpa1 = 0;
+    var credits = 0;
+
+    {
+      data.map((item) => {
+        var x = Number(item.credits);
+        if (item.result == "A+") {
+          gpa1 += 4.0 * x;
+          credits += x;
+        } else if (item.result == "A") {
+          gpa1 += 4.0 * x;
+          credits += x;
+        } else if (item.result == "A-") {
+          gpa1 += 3.7 * x;
+          credits += x;
+        } else if (item.result == "B+") {
+          gpa1 += 3.3 * x;
+          credits += x;
+        } else if (item.result == "B") {
+          gpa1 += 3.0 * x;
+          credits += x;
+        } else if (item.result == "B-") {
+          gpa1 += 2.7 * x;
+          credits += x;
+        } else if (item.result == "C+") {
+          gpa1 += 2.3 * x;
+          credits += x;
+        } else if (item.result == "C") {
+          gpa1 += 2.0 * x;
+          credits += x;
+        } else if (item.result == "C-") {
+          gpa1 += 1.7 * x;
+          credits += x;
+        } else if (item.result == "D+") {
+          gpa1 += 1.3 * x;
+          credits += x;
+        } else if (item.result == "D") {
+          gpa1 += 1.0 * x;
+          credits += x;
+        } else {
+          gpa1 += 0.0 * x;
+          credits += x;
+        }
+
+        var GPA1 = gpa1 / credits;
+        
+        setLevel1GPA(GPA1);
+        CumlativeGPA(GPA1);
+        console.log(credits + " " + gpa1);
+        
+      });
+    }
+
+  }
+
+  function getGPALevel2(data) {
+    var gpa1 = 0;
+    var credits = 0;
+
+    {
+      data.map((item) => {
+        var x = Number(item.credits);
+        if (item.result == "A+") {
+          gpa1 += 4.0 * x;
+          credits += x;
+        } else if (item.result == "A") {
+          gpa1 += 4.0 * x;
+          credits += x;
+        } else if (item.result == "A-") {
+          gpa1 += 3.7 * x;
+          credits += x;
+        } else if (item.result == "B+") {
+          gpa1 += 3.3 * x;
+          credits += x;
+        } else if (item.result == "B") {
+          gpa1 += 3.0 * x;
+          credits += x;
+        } else if (item.result == "B-") {
+          gpa1 += 2.7 * x;
+          credits += x;
+        } else if (item.result == "C+") {
+          gpa1 += 2.3 * x;
+          credits += x;
+        } else if (item.result == "C") {
+          gpa1 += 2.0 * x;
+          credits += x;
+        } else if (item.result == "C-") {
+          gpa1 += 1.7 * x;
+          credits += x;
+        } else if (item.result == "D+") {
+          gpa1 += 1.3 * x;
+          credits += x;
+        } else if (item.result == "D") {
+          gpa1 += 1.0 * x;
+          credits += x;
+        } else {
+          gpa1 += 0.0 * x;
+          credits += x;
+        }
+
+        var GPA1 = gpa1 / credits;
+        console.log(credits + " " + gpa1);
+        setLevel2GPA(GPA1);
+        CumlativeGPA(GPA1);
+
+      });
+    }
+
+    return level1GPA;
+  }
+
+  function getGPALevel3(data) {
+    var gpa1 = 0;
+    var credits = 0;
+
+    {
+      data.map((item) => {
+        var x = Number(item.credits);
+        if (item.result == "A+") {
+          gpa1 += 4.0 * x;
+          credits += x;
+        } else if (item.result == "A") {
+          gpa1 += 4.0 * x;
+          credits += x;
+        } else if (item.result == "A-") {
+          gpa1 += 3.7 * x;
+          credits += x;
+        } else if (item.result == "B+") {
+          gpa1 += 3.3 * x;
+          credits += x;
+        } else if (item.result == "B") {
+          gpa1 += 3.0 * x;
+          credits += x;
+        } else if (item.result == "B-") {
+          gpa1 += 2.7 * x;
+          credits += x;
+        } else if (item.result == "C+") {
+          gpa1 += 2.3 * x;
+          credits += x;
+        } else if (item.result == "C") {
+          gpa1 += 2.0 * x;
+          credits += x;
+        } else if (item.result == "C-") {
+          gpa1 += 1.7 * x;
+          credits += x;
+        } else if (item.result == "D+") {
+          gpa1 += 1.3 * x;
+          credits += x;
+        } else if (item.result == "D") {
+          gpa1 += 1.0 * x;
+          credits += x;
+        } else {
+          gpa1 += 0.0 * x;
+          credits += x;
+        }
+
+        var GPA1 = gpa1 / credits;
+        console.log(credits + " " + gpa1);
+        setLevel3GPA(GPA1);
+
+        CumlativeGPA(GPA1);
+        setisLoading(true);
+
+      });
+    }
+  }
 
   
+if(isLoading == true){
 
-  
   return (
     <View style={styles.container}>
-      <View style={styles.GPA}>
-        <View style = {{  flexDirection: "row",}}>
-        <View style={styles.CUMGPA}>
-          <Text>Cumulative GPA</Text>
-          <Text style ={{alignSelf :'center' ,fontWeight: "bold",color :'blue'}}>{CumGPA}</Text>
-          
-        </View>
-
-        <View style={{ marginTop :'15%' }}>
-        <TouchableOpacity onPress={fetchLevelData}>
-          <View style={{ alignSelf: "center" }}>
-            <Foundation name="refresh" size={40} color="blue" />
-          </View>
-          <Text style={{ alignSelf: "center", fontSize: 10 }}>
-            refresh here
+      <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+              Results Sheet
           </Text>
-        </TouchableOpacity>
-
+        </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
       </View>
 
-      </View>
-
-        <View style={styles.tableContainer}>
-          <View style={styles.tableRowHeader}>
-            <View style={styles.tableColumnHeaderGPA}>
-              <Text style={styles.textHeader}>GPA</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Level1</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>{level1GPA}</Text>
-            </View>
-          </View>
-
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Level2</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>{level2GPA}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Level3</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>{level3GPA}</Text>
-            </View>
+      <View style={styles.GPA}>
+       
+          <View style={styles.CUMGPA}>
+            <Text style = {{fontSize:hp('2%'),fontWeight:'bold',alignSelf :'center'}} >Cumulative GPA</Text>
+            <Text
+              style={{ alignSelf: "center", fontWeight: "bold", color: "#4c0370" }}
+            >
+              {cumGap}
+            </Text>
           </View>
 
          
+        <View style ={{marginLeft:wp('7%')}}>
+          <View 
+          style = {{borderColor: "#cdaffa",
+                    justifyContent:'center',
+                   width:wp('40%'),
+                   borderRadius: 40,
+                   backgroundColor: "#e9c8fa",
+                   marginBottom:hp('1%'),
+                   borderWidth:2}}>
+            <Text style={{alignSelf:'center'}}>Level1    -  {level1GPA}</Text>
+          </View>
 
-  
+          <View 
+          style = {{borderColor: "#cdaffa",
+                    justifyContent:'center',
+                   width:wp('40%'),
+                   borderRadius: 40,
+                   marginBottom:hp('1%'),
+                   backgroundColor: "#e9c8fa",
+                   borderWidth:2}}>
+            <Text  style={{alignSelf:'center'}}>Level2    -  {level2GPA}</Text>
+          </View>
+          <View 
+          style = {{borderColor: "#cdaffa",
+                    justifyContent:'center',
+                   width:wp('40%'),
+                   borderRadius: 40,
+                   marginBottom:hp('1%'),
+                   backgroundColor: "#e9c8fa",
+                   borderWidth:2}}>
+            <Text  style={{alignSelf:'center'}}>Level3    -  {level3GPA}</Text>
+          </View>
         </View>
 
-       
-      
-        
-       
+
 
        
-     
       </View>
-     
+
       <ScrollView style={styles.scrollScreen}>
+        <Text style = {{alignSelf:'center' ,fontSize:hp('2%'),fontWeight :'bold',marginTop:hp('2%')}}> Rsults</Text>
         <View style={styles.tableContainer}>
           <View style={styles.tableRowHeader}>
             <View style={styles.tableColumnHeader}>
@@ -394,28 +482,33 @@ export default function ResultsScreen({ navigation }) {
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
-
-      
       </ScrollView>
     </View>
+  );
+
+}
+
+  return(
+    <View style={styles.Loadingcontainer}>
+    <ActivityIndicator color="#cdaffa" size="large" />
+  </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
+  
 
     backgroundColor: "white",
   },
   GPA: {
-    alignContent:'center',
-    width: "100%",
-    height: "45%",
+    alignContent: "center",
+    alignSelf:'center',
+    width: wp("100%"),
+    height: hp("30%"),
     borderRadius: 5,
     backgroundColor: "white",
-    marginBottom :'5%',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -426,13 +519,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   GPAL: {
-    marginLeft:'10%',
-    width : '100%',
-    height : '20%',
-    borderWidth:2,
-    borderColor:'#3495eb',
+    marginLeft: "10%",
+    width: "98%",
+    height: "20%",
+    borderWidth: 2,
+    borderColor: "#3495eb",
     borderRadius: 5,
-    alignSelf:'center',
+    alignSelf: "center",
     backgroundColor: "white",
     marginBottom: "5%",
     backgroundColor: "#b1dffc",
@@ -446,17 +539,18 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   CUMGPA: {
-    padding: 40,
-    marginLeft : '5%',
-    marginRight:'10%',
-    borderWidth:3,
-    borderColor:'#3495eb',
+    width:wp('60%'),
+    height:hp('10%'),
+    justifyContent:'center',
+    marginBottom:hp('3%'),
+    alignSelf:'center',
+    marginLeft: wp('4%'),
+    marginRight: wp('10%'),
+    borderWidth: 3,
+    borderColor: "#cdaffa",
     borderRadius: 60,
-    backgroundColor: "white",
-    
-    marginBottom: "5%",
-    backgroundColor: "#b1dffc",
-    marginTop: "5%",
+    backgroundColor: "#e9c8fa",
+    marginTop: hp('1%'),
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -467,9 +561,10 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   scrollScreen: {
-    marginTop: "4%",
-    width: "100%",
-    height: "75%",
+    marginTop: hp('3%'),
+   
+    width: wp('100%'),
+    height: hp('75%'),
     backgroundColor: "white",
     borderRadius: 5,
     marginHorizontal: 1,
@@ -489,28 +584,28 @@ const styles = StyleSheet.create({
   },
   tableColumnHeader: {
     alignItems: "center",
-    backgroundColor: "#b1dffc",
+    backgroundColor: "#e9c8fa",
     flex: 5,
-    padding:10,
+    padding: 10,
     justifyContent: "center",
   },
   tableColumnHeaderGPA: {
     alignItems: "center",
-    backgroundColor: "#3495eb",
+    backgroundColor: "#e9c8fa",
     flex: 5,
-    padding:10,
+    padding: 10,
     justifyContent: "center",
   },
   tableColumnCourse: {
     alignItems: "center",
-    backgroundColor: "#d7e7f5",
+    backgroundColor: "#ecebed",
     flex: 3,
     justifyContent: "center",
     margin: 1,
   },
   tableColumnResult: {
     alignItems: "center",
-    backgroundColor: "#9ccdf7",
+    backgroundColor: "#d4a1ed",
     flex: 2,
     justifyContent: "center",
     margin: 1,
@@ -541,25 +636,27 @@ const styles = StyleSheet.create({
   tableRow: {
     flex: 5,
     flexDirection: "row",
-    maxHeight: 30,
+    maxHeight: hp('3.7%'),
   },
   tableRowHeader: {
     flex: 5,
     flexDirection: "row",
-    maxHeight: 40,
+    maxHeight: hp('10%'),
   },
   tableContainer: {
-    backgroundColor: "#3495eb",
+    backgroundColor: "#cdaffa",
+    marginTop:hp('3%'),
+    width:wp('96%'),
+    alignSelf:'center',
     borderRadius: 5,
-    marginBottom: "2%",
+    marginBottom: hp('2%'),
     flex: 1,
-    marginTop: 0,
     padding: 3,
   },
   textHeader: {
     color: "#000000",
     fontWeight: "bold",
-    fontSize:15,
+    fontSize: hp('2%'),
   },
   textHeaderSubTitle: {
     color: "#000000",
@@ -567,11 +664,17 @@ const styles = StyleSheet.create({
   },
   textLineItemHead: {
     color: "black",
-    fontSize:18,
+    fontSize: hp('2%'),
+    fontWeight:'500'
   },
   textLineItem: {
     color: "#878a8c",
-    fontSize:15,
-    
+    fontSize: hp('1.9%'),
+  }
+  ,Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 });

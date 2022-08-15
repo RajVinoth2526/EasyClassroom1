@@ -9,7 +9,8 @@ import {
   Image,
   ActivityIndicator,
   KeyboardAvoidingView,
-  BackHandler
+  BackHandler,
+  StatusBar
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import {
@@ -39,6 +40,12 @@ export default function SignIn({ navigation }) {
         alert("please enter valid email address");
       })
   }
+
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('#cdaffa'); 
+    StatusBar.setTranslucent(true)
+   }, []);
 
   const handlePress = () => {
     if (!email) {
@@ -73,6 +80,26 @@ export default function SignIn({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+      <View style = {{backgroundColor:'white',height:hp('12%')}}>
+
+      <View style = {{backgroundColor:'#cdaffa',height:hp('12%'),borderBottomRightRadius:60 , justifyContent:'center'}}>
+        <Text style = {{alignSelf:'center', fontSize:hp('4%'), fontWeight:'bold'}}>Reset Password</Text>
+      </View>
+
+
+      </View>
+      <View style = {{backgroundColor:'#cdaffa',height:hp('12%')}}>
+
+      <View style = {{backgroundColor:'white',height:hp('12%'),borderTopLeftRadius:60}}>
+      </View>
+
+
+      </View>
+
+      <View style={{alignSelf:'center' ,marginBottom:hp('5%')}}>
+          <FontAwesome5 name="user-lock" size={hp('11%')} color="#cdaffa" />
+          </View>
       
 
      
@@ -80,14 +107,10 @@ export default function SignIn({ navigation }) {
       
 
       <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-      <View style={{alignSelf:'center' ,marginBottom:hp('5%'),marginTop:hp('15%')}}>
-          <FontAwesome5 name="user-lock" size={65} color="#34dbeb" />
-          </View>
+      
      
-      <View style = {{marginTop:hp('5%'), marginBottom:hp('5%')}}>
-        <Text style = {{alignSelf:'center', fontSize:hp('4%'), fontWeight:'bold'}}>Reset Password</Text>
-      </View>
-        <ScrollView style={{ height: 175 }}>
+      
+        <ScrollView style={{ height: hp('25%') }}>
         
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>Email</Text>
@@ -120,49 +143,33 @@ export default function SignIn({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    padding: 10,
     backgroundColor: "#ffffff",
   },
 
   cardCont: {
+    justifyContent:'center',
+    alignSelf:'center',
    
-    marginLeft: 40,
-    padding: 5,
-    width: "80%",
+   marginLeft:hp('0.5%'),
+   width:wp('80%'),
   },
   text: {
    
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 12,
   },
 
   cardtext: {
-    fontSize: 18,
+    fontSize: hp('3%'),
     fontWeight: "bold",
-    marginBottom: 5,
-  },
-  inlineText: {
-    color: "blue",
-    marginTop:'10%',
-    alignSelf: "center",
-  },
-
-  logo: {
-    width: 150,
-    height: 150,
-  },
-  logoContainer: {
-    
-    marginBottom: '10%',
-    alignItems: "center",
-    padding: 10,
+    marginBottom: hp('2%'),
   },
   action: {
-    marginTop: 5,
-
-    borderRadius: 10,
-    paddingBottom: 5,
-    marginBottom: 20,
+    marginTop:hp('2%'),
+    height:hp('7%'),
+    borderRadius: 12,
+    
+    marginBottom: hp('3%'),
 
     backgroundColor: "white",
     shadowColor: "#000",
@@ -177,18 +184,19 @@ const styles = StyleSheet.create({
 
   textinput: {
     color: "black",
-    padding: 7,
-    fontSize: 20,
+    height:hp('6%'),
+    fontSize: hp('2.5%'),
     paddingLeft: 8,
   },
 
   buttonLogin: {
-    backgroundColor: "#8be5f7",
+    backgroundColor: "#cdaffa",
     alignSelf: "center",
-    height: 50,
+
+    height: hp('7%'),
     justifyContent:'center',
     borderRadius: 9,
-    width: "60%",
+    width: wp("60%"),
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {

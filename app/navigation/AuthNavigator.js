@@ -43,6 +43,8 @@ import EntrolCourseScreen from "../screens/Classroom/EntrolCourseScreen";
 import CourseScreen from "../screens/Classroom/CourseScreen";
 import AddAcademyYear from "../screens/Classroom/AddAcademyYear";
 import CourseContent from "../screens/Classroom/CourseContent";
+import EditCourseScreen from "../screens/Classroom/EditCourseScreen";
+import EditCourseContentScreen from "../screens/Classroom/EditCourseContentScreen";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -238,6 +240,16 @@ export default function App() {
          <Stack.Screen
           name={"CourseContent"}
           component={CourseContent}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name={"EditCourse"}
+          component={EditCourseScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"EditCourseContent"}
+          component={EditCourseContentScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

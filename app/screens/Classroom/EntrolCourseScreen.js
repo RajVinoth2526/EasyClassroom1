@@ -9,7 +9,8 @@ import {
   Image,
   ActivityIndicator,
   KeyboardAvoidingView,
-  BackHandler
+  BackHandler,
+  StatusBar
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
@@ -17,23 +18,33 @@ import Modal from "react-native-modal";
 import { color } from "react-native-reanimated";
 import * as firebase from "firebase";
 import "firebase/firestore";
-
-import {signInWithpasswordAndPassword, sendPasswordResetpassword,} from "firebase/auth";
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import { FontAwesome5 } from '@expo/vector-icons';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import {
+  signInWithpasswordAndPassword,
+  sendPasswordResetpassword,
+} from "firebase/auth";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { StudentEntroll } from "../../../API/firebaseMethods/firebaseMethod";
-export default function EntrolCourseScreen({ navigation,route }) {
-
+export default function EntrolCourseScreen({ navigation, route }) {
   const { Faculty } = route.params;
   const { Department } = route.params;
   const { Level } = route.params;
   const { CourseName } = route.params;
   const { CoursenameID } = route.params;
   const { UserID } = route.params;
-  
-    const { Password } = route.params;
-    const { CourseID } = route.params;
-    const [password, setPassword] = useState("");
+
+  const { Password } = route.params;
+  const { CourseID } = route.params;
+  const [password, setPassword] = useState("");
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   const currentUser = firebase.auth().currentUser;
   console.log(Password);
@@ -42,47 +53,75 @@ export default function EntrolCourseScreen({ navigation,route }) {
     if (!password) {
       Alert.alert("password field is required.");
     }
-    
-    if(password == Password){
-        setPassword("");
-        StudentEntroll(currentUser.uid,CourseID);
-        navigation.navigate("CourseScreen",{Faculty : Faculty,Department : Department,Level :Level,CourseName:CourseName,CourseID : CourseID,CoursenameID:CoursenameID,UserID:USerID});
 
-    }else{
-        Alert.alert("wrong Key");
+    if (password == Password) {
+      setPassword("");
+      StudentEntroll(currentUser.uid, CourseID);
+      navigation.navigate("CourseScreen", {
+        Faculty: Faculty,
+        Department: Department,
+        Level: Level,
+        CourseName: CourseName,
+        CourseID: CourseID,
+        CoursenameID: CoursenameID,
+        UserID: UserID,
+      });
+    } else {
+      Alert.alert("wrong Key");
     }
-
-    
-  
-  
-   
-   
-
-   
   };
 
-
- 
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
   return (
     <View style={styles.container}>
-      
-
-     
-
-      
-
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-      <View style={{alignSelf:'center' ,marginBottom:'10%',marginTop:'30%'}}>
-          <FontAwesome5 name="user-lock" size={60} color="#34dbeb" />
+      <View style={{ backgroundColor: "white", height: hp("12%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("12%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Entroll Course
+            </Text>
           </View>
-     
-      <View style = {{marginTop:'5%', marginBottom:'15%'}}>
-        <Text style = {{alignSelf:'center', fontSize:35}}>Entroll Course</Text>
-      </View>
-        <ScrollView style={{ height: 175 }}>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("12%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+
+        <View
+          style={{
+            alignSelf: "center",
+            marginBottom: hp("3%"),
+            marginTop: hp("1%"),
+          }}
+        >
+          <FontAwesome5 name="user-lock" size={hp("12%")} color="#cdaffa" />
+        </View>
+
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+       
         
+        <ScrollView style={{ height: hp("25%") }}>
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>Entoll Key</Text>
             <View style={styles.action}>
@@ -95,49 +134,40 @@ export default function EntrolCourseScreen({ navigation,route }) {
               />
             </View>
           </View>
-      
-
-          
         </ScrollView>
-        </KeyboardAvoidingView>
-    
+      </KeyboardAvoidingView>
 
       <TouchableOpacity style={styles.buttonLogin} onPress={handlePress}>
         <Text style={styles.buttontext}>Entroll</Text>
       </TouchableOpacity>
-
-      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    padding: 10,
+    flex: 1,
+
     backgroundColor: "#ffffff",
   },
 
   cardCont: {
-   
-    marginLeft: 40,
-    padding: 5,
-    width: "80%",
+    marginLeft: wp("11%"),
+    width: wp("80%"),
   },
   text: {
-   
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: hp("2%"),
   },
 
   cardtext: {
-    fontSize: 18,
+    fontSize: hp("2.5%"),
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: hp("2%"),
   },
   inlineText: {
     color: "blue",
-    marginTop:'10%',
+    marginTop: "10%",
     alignSelf: "center",
   },
 
@@ -146,17 +176,16 @@ const styles = StyleSheet.create({
     height: 150,
   },
   logoContainer: {
-    
-    marginBottom: '10%',
+    marginBottom: "10%",
     alignItems: "center",
     padding: 10,
   },
   action: {
-    marginTop: 5,
+    marginTop: hp("1%"),
 
     borderRadius: 10,
-    paddingBottom: 5,
-    marginBottom: 20,
+
+    marginBottom: hp("4%"),
 
     backgroundColor: "white",
     shadowColor: "#000",
@@ -171,17 +200,17 @@ const styles = StyleSheet.create({
 
   textinput: {
     color: "black",
-    padding: 7,
-    fontSize: 20,
-    paddingLeft: 8,
+    height: hp("7%"),
+    marginLeft: wp("3%"),
+    fontSize: hp("2.5%"),
   },
 
   buttonLogin: {
-    backgroundColor: "#8be5f7",
+    backgroundColor: "#cdaffa",
     alignSelf: "center",
-    height: 50,
+    height: hp("8%"),
+    justifyContent: "center",
     borderRadius: 9,
-    paddingTop: 3,
     width: "60%",
     alignItems: "center",
     shadowColor: "#000",
@@ -195,10 +224,9 @@ const styles = StyleSheet.create({
   },
 
   buttontext: {
-    fontSize: 22,
+    fontSize: hp("3%"),
     fontWeight: "500",
     alignSelf: "center",
-    paddingTop: 2,
   },
 
   Loadingcontainer: {

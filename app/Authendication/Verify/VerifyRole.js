@@ -8,6 +8,7 @@ import {
   Keyboard,
   StyleSheet,
   SafeAreaView,
+  StatusBar
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CodeInput from "react-native-confirmation-code-input";
@@ -27,39 +28,48 @@ export default function VerifyRole({ navigation }) {
     navigation.navigate("Pin");
   };
 
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('#cdaffa'); 
+    StatusBar.setTranslucent(true)
+   }, []);
+
   return (
     <View style={styles.container}>
+      <View style = {{backgroundColor:'white',}}>
       <View style={styles.head}>
         <Text style={styles.headText}>Who You Are ?</Text>
       </View>
-
-      <View style={styles.select}>
-        <TouchableOpacity onPress={Verify}>
+      </View>
+      <View style = {{backgroundColor:'white' , height:hp('85%'),width:wp('100%'),borderTopLeftRadius:60}}>
+        <View style = {{alignSelf:'center' ,marginTop:hp('13%')}}>
+     
+        <TouchableOpacity onPress={Verify} style={styles.select}>
           <Text style={styles.selectText}>Lecturer</Text>
         </TouchableOpacity>
-      </View>
+     
 
-      <View style={styles.select}>
-        <TouchableOpacity onPress={Verify}>
+     
+        <TouchableOpacity onPress={Verify} style={styles.select}>
           <Text style={styles.selectText}>Demostrator</Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.select}>
-        <TouchableOpacity onPress={Verify}>
+      
+     
+        <TouchableOpacity onPress={Verify} style={styles.select}>
           <Text style={styles.selectText}>Student</Text>
         </TouchableOpacity>
-      </View>
+     
 
-      <View style={styles.select}>
-        <TouchableOpacity onPress={Verify}>
+    
+        <TouchableOpacity onPress={Verify} style={styles.select}>
           <Text style={styles.selectText}>Admin</Text>
         </TouchableOpacity>
-      </View>
+    
       <View style={styles.selectSignIn}>
         <TouchableOpacity onPress={() => navigation.navigate("Sign In")}>
           <Text style={styles.inlineText}>Already have an account?</Text>
         </TouchableOpacity>
+      </View>
+      </View>
       </View>
     </View>
   );
@@ -68,17 +78,20 @@ export default function VerifyRole({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#cdaffa",
     flex: 1,
   },
   head: {
-    marginTop: hp("14%"),
-    marginBottom: hp("6%"),
+    borderBottomRightRadius:60,
+    height:hp('15%'),
+    width:wp('100%'),
     justifyContent: "center",
     alignSelf: "center",
+    backgroundColor: "#cdaffa",
   },
   headText: {
-    fontSize: hp("5%"),
+    fontSize: hp("4.5%"),
+    alignSelf:'center',
     fontWeight:'bold'
   },
   select: {
@@ -89,7 +102,7 @@ const styles = StyleSheet.create({
     height: hp("9%"),
     width: wp("70%"),
     shadowColor: "#000",
-    backgroundColor: "#34dbeb",
+    backgroundColor: "#cdaffa",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -101,10 +114,11 @@ const styles = StyleSheet.create({
   selectText: {
     alignSelf: "center",
     fontSize: hp("3.5"),
-    fontWeight:'bold'
+    fontWeight:'600'
   },
   inlineText: {
     fontSize: hp("2%"),
+    alignSelf:'center',
     color: "red",
     fontWeight:'bold'
   },

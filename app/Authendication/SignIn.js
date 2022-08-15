@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   BackHandler,
+  StatusBar
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { signIn } from "../../API/firebaseMethods/firebaseMethod";
@@ -21,10 +22,17 @@ import {
 } from "react-native-responsive-screen";
 
 export default function SignIn({ navigation }) {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setisLoading] = useState(false);
   const [flag, setflag] = useState(false);
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('white'); 
+    StatusBar.setTranslucent(true)
+   }, []);
+
 
   const handlePress = () => {
     if (!email) {
@@ -44,6 +52,8 @@ export default function SignIn({ navigation }) {
     }
   };
 
+
+
   if (flag == true) {
     return (
       <View style={styles.Loadingcontainer}>
@@ -59,8 +69,9 @@ export default function SignIn({ navigation }) {
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
-          source={require("./../assets/logo.png")}
+          source={require("./../assets/ec.png")}
         ></Image>
+        <Text style = {{alignSelf:'center', color :'#cdaffa' ,fontWeight:'bold'}}>Easy Classroom</Text>
         <Text style={styles.text}>TIME TO LEARN</Text>
       </View>
 
@@ -141,14 +152,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   inlineText: {
-    color: "blue",
+    color: "#cdaffa",
     marginTop: hp("4%"),
     alignSelf: "center",
     fontWeight:'bold'
   },
 
   logoContainer: {
-    marginTop: hp("1%"),
+    marginTop: hp("5%"),
     alignItems: "center",
   },
   action: {
@@ -172,12 +183,12 @@ const styles = StyleSheet.create({
   textinput: {
     color: "black",
     height: hp("7%"),
-    fontSize: hp("2.8%"),
+    fontSize: hp("2.4%"),
     paddingLeft: 8,
   },
 
   buttonLogin: {
-    backgroundColor: "#34dbeb",
+    backgroundColor: "#cdaffa",
     justifyContent: "center",
     alignSelf: "center",
     height: hp("8%"),
@@ -209,7 +220,7 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: wp("40%"),
-    height: hp("27%"),
+    width: wp("50%"),
+    height: hp("20%"),
   }
 });

@@ -99,7 +99,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <FontAwesome name="home" size={35} color="#34dbeb" />
+                <FontAwesome name="home" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -127,7 +127,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <FontAwesome name="newspaper-o" size={35} color="#34dbeb" />
+                <FontAwesome name="newspaper-o" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -155,7 +155,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <Entypo name="chat" size={35} color="#34dbeb" />
+                <Entypo name="chat" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -184,7 +184,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <Ionicons name="ios-settings" size={35} color="#34dbeb" />
+                <Ionicons name="ios-settings" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -227,7 +227,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <FontAwesome name="home" size={35} color="#34dbeb" height={5} />
+                <FontAwesome name="home" size={35} color="#cdaffa" height={5} />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -256,7 +256,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <FontAwesome name="newspaper-o" size={35} color="#34dbeb" />
+                <FontAwesome name="newspaper-o" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -285,7 +285,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <Entypo name="chat" size={35} color="#34dbeb" />
+                <Entypo name="chat" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -314,7 +314,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <Ionicons name="ios-settings" size={35} color="#34dbeb" />
+                <Ionicons name="ios-settings" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -357,7 +357,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <FontAwesome name="home" size={30} color="#34dbeb" height={5} />
+                <FontAwesome name="home" size={30} color="#cdaffa" height={5} />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -385,7 +385,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <FontAwesome name="newspaper-o" size={35} color="#34dbeb" />
+                <FontAwesome name="newspaper-o" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -413,7 +413,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <Entypo name="chat" size={35} color="#34dbeb" />
+                <Entypo name="chat" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -442,7 +442,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <Ionicons name="ios-settings" size={35} color="#34dbeb" />
+                <Ionicons name="ios-settings" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -485,7 +485,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <FontAwesome name="home" size={35} color="#34dbeb" height={5} />
+                <FontAwesome name="home" size={35} color="#cdaffa" height={5} />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -514,7 +514,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <Entypo name="chat" size={35} color="#34dbeb" />
+                <Entypo name="chat" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -543,7 +543,7 @@ function TabNavigation() {
                   top: 1,
                 }}
               >
-                <Ionicons name="ios-settings" size={35} color="#34dbeb" />
+                <Ionicons name="ios-settings" size={35} color="#cdaffa" />
                 <Text
                   style={{
                     color: "#6e6c6b",
@@ -587,6 +587,19 @@ export default function Dashboard({ navigation }) {
           </DrawerContentScrollView>
         );
       }}
+      screenOptions={{
+        headerTintColor: "black",
+        headerStyle: {
+          backgroundColor: "#cdaffa"
+        }
+        ,
+        
+
+
+    }}
+
+    
+    
     >
       <Draw.Screen name="Easy Classroom" component={TabNavigation} />
       <Draw.Screen

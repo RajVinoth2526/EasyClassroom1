@@ -25,67 +25,71 @@ import * as firebase from "firebase";
 import { MaterialIcons } from "@expo/vector-icons";
 import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
 import { FontAwesome } from "@expo/vector-icons";
-import { EditNotice } from "../../../API/firebaseMethods/firebaseMethod";
+import { EditCourseName } from "../../../API/firebaseMethods/firebaseMethod";
 import { normalizeUnits } from "moment";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-export default function EditNoticeScreen({ navigation, route }) {
-  const [notice, setNotice] = useState("");
-  const [title, setTitle] = useState("");
-  const [notice1, setNotice1] = useState("");
-  const [title1, setTitle1] = useState("");
-  const { PostId } = route.params;
-  const {Type} = route.params;
+export default function EditCourseNameScreen({ navigation, route }) {
+ 
+  const [Course1, setCourse] = useState("");
+  const [CourseID1, setCourseId] = useState("");
+  const { UserId } = route.params;
+  const {ID} = route.params;
+  const {Course} = route.params;
+  const {CourseID} = route.params;
   const {Faculty} = route.params;
+  const {Level} = route.params;
+  const {Year} = route.params;
+  const {Department} = route.params;
  
   React.useEffect(() => {
     StatusBar.setBackgroundColor("#cdaffa");
     StatusBar.setTranslucent(true);
   }, []);
 
+  
+
+
+  function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+  charactersLength));
+   }
+   return result;
+  }
+  
+  const password = makeid(10);
+
+
+ 
+
   const handlePress = () => {
-     if(!title1  ){
-      EditNotice(PostId, notice1, title, Type,Faculty);
-      navigation.goBack();
-      Alert.alert("notice Updated!!");
-    }if(!notice1){
-      EditNotice(PostId, notice, title1, Type , Faculty);
-      navigation.goBack();
-      Alert.alert("notice Updated!!");
-    }if(!notice1 && !title1){
-      EditNotice(PostId, notice, title, Type , Faculty);
-      navigation.goBack();
-      Alert.alert("notice Updated!!");
-    }if(notice1 && title1){
-      EditNotice(PostId, notice1, title1, Type , Faculty);
-      navigation.goBack();
-      Alert.alert("notice Updated!!");
+     if(!Course1  ){
+      EditCourseName(UserId,Faculty,Department,Level,Year, Course,ID,CourseID1,password);
+      navigation.goBack({Level : Level ,Year : Year});
+     
+    }if(!CourseID1){
+      EditCourseName(UserId,Faculty,Department,Level,Year, Course1,ID,CourseID,password);
+      navigation.goBack({Level : Level ,Year : Year});
+    
+    }if(!Course1 && !CourseID1){
+      EditCourseName(UserId,Faculty,Department,Level,Year, Course,ID,CourseID,password);
+      navigation.navigate('LecturerClassroom',{Level : Level ,Year : Year});
+    
+    }if(Course1 && CourseID1){
+      EditCourseName(UserId,Faculty,Department,Level,Year, Course1,ID,CourseID1,password);
+      navigation.goBack({Level : Level ,Year : Year});
+      
 
     }
   };
 
-  useEffect(() => {
-    async function getUserInfo() {
-      let doc = await firebase
-        .firestore()
-        .collection(Faculty+"Notices")
-        .doc(PostId)
-        .get();
-
-      if (!doc.exists) {
-        Alert.alert("No user data found!");
-      } else {
-        let dataObj = doc.data();
-        setNotice(dataObj.notice);
-
-        setTitle(dataObj.title);
-      }
-    }
-    getUserInfo();
-  });
-
+ 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
   return (
@@ -106,7 +110,7 @@ export default function EditNoticeScreen({ navigation, route }) {
               fontWeight: "bold",
             }}
           >
-            Edit Notice
+            Course Details
           </Text>
         </View>
       </View>
@@ -135,31 +139,28 @@ export default function EditNoticeScreen({ navigation, route }) {
         
 
           <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Title</Text>
+            <Text style={styles.cardtext}>Course Name</Text>
             <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
                   editable={true}
-                  defaultValue ={title}
-                  multiline={true}
-                  numberOfLines={2}
+                  defaultValue ={Course}
+                
                   textAlignVertical="top"
-                  onChangeText={(title1) => setTitle1(title1)}
+                  onChangeText={(Course1) => setCourse(Course1)}
                 />
               </View>
           </View>
 
           < View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Content</Text>
+            <Text style={styles.cardtext}>Course ID</Text>
             <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
                   editable={true}
-                  defaultValue={notice}
-                  multiline={true}
-                  numberOfLines={10}
+                  defaultValue={CourseID}
                   textAlignVertical="top"
-                  onChangeText={(notice1) => setNotice1(notice1)}
+                  onChangeText={(CourseID1) => setCourseId(CourseID1)}
                 />
               </View>
           </View>
@@ -180,7 +181,7 @@ export default function EditNoticeScreen({ navigation, route }) {
         </ScrollView>
         </KeyboardAvoidingView>
         <TouchableOpacity style={styles.buttonSignup}  onPress={handlePress}>
-            <Text style={styles.SignUpText}>Upload</Text>
+            <Text style={styles.SignUpText}>Done</Text>
          </TouchableOpacity>
 
      

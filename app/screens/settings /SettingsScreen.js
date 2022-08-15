@@ -17,14 +17,35 @@ export default function SettingScreen({navigation}) {
   }
   return (
     <View style ={styles.container}>
-      <View style ={styles.head}>
-        <Text ><Ionicons name="ios-settings" size={60} color="#34dbeb" /></Text>
+      <View style={{ backgroundColor: "white", height: hp("12%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("12%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+         
+        </View>
       </View>
-      <View style = {styles.Box}>
-      <TouchableOpacity onPress={handlePress1}>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("12%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+      <View style ={styles.head}>
+        <Text ><Ionicons name="ios-settings" size={hp('9%')} color="#cdaffa" /></Text>
+      </View>
+      
+      <TouchableOpacity style = {styles.Box} onPress={handlePress1}>
         <Text style={{alignSelf:'center',fontSize:hp('2.5%')}}>Change password</Text>
       </TouchableOpacity>
-      </View>
+     
 
       <View style = {styles.Box}>
       <TouchableOpacity onPress={handlePress2}>
@@ -38,7 +59,8 @@ export default function SettingScreen({navigation}) {
 
 const styles = StyleSheet.create({
  container :{
-
+  flex:1,
+backgroundColor:'white'
 
  },
  Box:{
@@ -47,12 +69,11 @@ const styles = StyleSheet.create({
   height:hp('10%'),
   width:wp('60%'),
   borderRadius:15,
-  backgroundColor:'#8be5f7',
+  backgroundColor:'#e6c0fc',
  marginTop:hp('3%')
  },
  head:{
   alignSelf:'center',
-  marginTop:hp('14%'),
   marginBottom:hp('3%')
  }
 });

@@ -7,8 +7,13 @@ import {
   Image,
   TextInput,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  StatusBar
 } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
@@ -34,6 +39,10 @@ export default function Level3Screen({ navigation }) {
   const currentUser = firebase.auth().currentUser;
 
 
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
  
   
@@ -174,7 +183,7 @@ export default function Level3Screen({ navigation }) {
 
       return (
         <View style={styles.Loadingcontainer}>
-          <ActivityIndicator color="#03befc" size="large" />
+          <ActivityIndicator color="#cdaffa" size="large" />
         </View>
       );
 
@@ -209,40 +218,128 @@ export default function Level3Screen({ navigation }) {
   
 if(role == "Lecturer"){
   return(
-      <View style={styles.container}>
-      
-      <FlatList
-          data={AcademyYear}
-          
-          renderItem={
+    <ScrollView style = {{height:hp('100%'),width:wp('100%'),backgroundColor:'white'}}>
+
+<View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            AcademyYear
+          </Text>
+        </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+     
+    
+    <FlatList
+        data={AcademyYear}
+        
+        renderItem={
+            
+           
+            ({ item }) =>
+             (
               
-             
-              ({ item }) =>
-               (
-                 
-            <View style = {styles.box}>
-              <TouchableOpacity onPress={() => handlePress(item.year)}>
-              <Text style={{alignSelf:'center',paddingTop:15,fontSize:15}}>{item.year}</Text>
+              <TouchableOpacity style = {styles.box} onPress={() => handlePress(item.year)}>
+              <Text style={{fontSize:hp('3%'),alignSelf:'center'}}>{item.year}</Text>
               </TouchableOpacity>
-            </View>
-            )}
-          keyExtractor={(item, index) => index.toString()}
+         
+          )}
+        keyExtractor={(item, index) => index.toString()}
 
-        />
-      
-
-      
-    </View>
+      />
+    
+   
+    
+  </ScrollView>
   );
   
 
 }
 
-if(role == "Demo"){
+if(role == "Demonstrator"){
   return(
-      <View>
-          <Text>demo</Text>
+    <ScrollView style = {{height:hp('100%'),width:wp('100%'),backgroundColor:'white'}}>
+
+    <View style={{ backgroundColor: "white", height: hp("10%") }}>
+            <View
+              style={{
+                backgroundColor: "#cdaffa",
+                height: hp("10%"),
+                borderBottomRightRadius: 60,
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: hp("4%"),
+                  fontWeight: "bold",
+                }}
+              >
+                Courses
+              </Text>
+            </View>
+          </View>
+          <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+            <View
+              style={{
+                backgroundColor: "white",
+                height: hp("10%"),
+                borderTopLeftRadius: 60,
+              }}
+            ></View>
+          </View>
+    <FlatList
+    data={subjects}
+    
+    renderItem={
+        
+       
+        ({ item }) =>
+         (
+           
+      <View
+        style={[
+          styles.Box,{borderBottomColor:"black",borderBottomWidth:0.5}
+         
+        ]}
+      >
+        <TouchableOpacity onPress={() => CheckEntoll(item.CourseID,item.EntrollKey,item.course,item.CourseNameID,item.userId)}>
+        <View style = {[styles.smallBox ,{backgroundColor:generateRandomBrightestHSLColor()}]}>
+            <Text><Entypo name="book" size={hp('11%')} color="black" /></Text>
+            <Text style={{marginTop:hp('2%'),fontSize:hp('2.5%')}}>{item.course}</Text>
+            <Text style={{fontSize:hp('1.8%'),}}>{item.CourseNameID}</Text>
+
+        </View>
+        </TouchableOpacity>
+        <Text style={{color:'black' ,fontSize:hp('1%') ,alignSelf:'flex-end',marginRight:hp('2%'),marginTop:hp('2%')}}>{item.dateAndTime}</Text>
       </View>
+      )}
+    keyExtractor={(item, index) => index.toString()}
+
+  />
+</ScrollView>
   );
 
 }
@@ -250,37 +347,67 @@ if(role == "Demo"){
 if(role == "Student"){
   
   return(
-      <View>
-          <FlatList
-          data={subjects}
-          
-          renderItem={
-              
-             
-              ({ item }) =>
-               (
-                 
+    <ScrollView style = {{height:hp('100%'),width:wp('100%'),backgroundColor:'white'}}>
+
+    <View style={{ backgroundColor: "white", height: hp("10%") }}>
             <View
-              style={[
-                styles.Box,{borderBottomColor:"black",borderBottomWidth:0.5}
-               
-              ]}
+              style={{
+                backgroundColor: "#cdaffa",
+                height: hp("10%"),
+                borderBottomRightRadius: 60,
+                justifyContent: "center",
+              }}
             >
-              <TouchableOpacity onPress={() => CheckEntoll(item.CourseID,item.EntrollKey,item.course,item.CourseNameID,item.userId)}>
-              <View style = {[styles.smallBox ,{backgroundColor:generateRandomBrightestHSLColor()}]}>
-                  <Text><Entypo name="book" size={70} color="black" /></Text>
-                  <Text style={{marginTop:'5%',fontSize:20,padding:5,}}>{item.course}</Text>
-                  <Text style={{fontSize:10,}}>{item.CourseNameID}</Text>
-
-              </View>
-              </TouchableOpacity>
-              <Text style={{color:'black' ,fontSize:8 ,alignSelf:'flex-end',paddingRight:20,paddingTop:15}}>{item.dateAndTime}</Text>
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: hp("4%"),
+                  fontWeight: "bold",
+                }}
+              >
+                Courses
+              </Text>
             </View>
-            )}
-          keyExtractor={(item, index) => index.toString()}
+          </View>
+          <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+            <View
+              style={{
+                backgroundColor: "white",
+                height: hp("10%"),
+                borderTopLeftRadius: 60,
+              }}
+            ></View>
+          </View>
+    <FlatList
+    data={subjects}
+    
+    renderItem={
+        
+       
+        ({ item }) =>
+         (
+           
+      <View
+        style={[
+          styles.Box,{borderBottomColor:"black",borderBottomWidth:0.5}
+         
+        ]}
+      >
+        <TouchableOpacity onPress={() => CheckEntoll(item.CourseID,item.EntrollKey,item.course,item.CourseNameID,item.userId)}>
+        <View style = {[styles.smallBox ,{backgroundColor:generateRandomBrightestHSLColor()}]}>
+            <Text><Entypo name="book" size={hp('11%')} color="black" /></Text>
+            <Text style={{marginTop:hp('2%'),fontSize:hp('2.5%')}}>{item.course}</Text>
+            <Text style={{fontSize:hp('1.8%'),}}>{item.CourseNameID}</Text>
 
-        />
+        </View>
+        </TouchableOpacity>
+        <Text style={{color:'black' ,fontSize:hp('1%') ,alignSelf:'flex-end',marginRight:hp('2%'),marginTop:hp('2%')}}>{item.dateAndTime}</Text>
       </View>
+      )}
+    keyExtractor={(item, index) => index.toString()}
+
+  />
+</ScrollView>
   );
 
 }
@@ -288,7 +415,7 @@ if(role == "Student"){
 
   return (
       <View style={styles.Loadingcontainer}>
-        <ActivityIndicator color="#03befc" size="large" />
+        <ActivityIndicator color="#cdaffa" size="large" />
       </View>
     );
 
@@ -298,7 +425,7 @@ if(role == "Student"){
 
 
 const styles = StyleSheet.create({
- 
+   
   Loadingcontainer: {
     flex: 1,
     justifyContent: "center",
@@ -306,19 +433,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   container: {
-      alignItems: "center",
       backgroundColor: "white",
       flex: 1,
     },
-    select: {
-      marginTop: 20,
-      marginBottom: 10,
-      borderRadius: 20,
-      alignItems: "center",
-      height: 60,
-      width: "70%",
-      shadowColor: "#000",
-      backgroundColor: "#34dbeb",
+    Box :{
+      width:wp('100%'),
+      height:hp('38%'),
+      marginTop:hp('1%'),
+      borderRadius:15,
+      backgroundColor:"white",
+       shadowColor: "#000",
+  
       shadowOffset: {
         width: 0,
         height: 1,
@@ -327,33 +452,35 @@ const styles = StyleSheet.create({
       shadowRadius: 10,
       elevation: 8,
     },
-    Box :{
-      width:'100%',
-      marginTop:'2%',
-      borderRadius:15,
-     paddingBottom:10,
-
-      
-      backgroundColor:"white"
-    },
     smallBox:{
-      width:'100%',
+      width:wp('100%'),
       alignItems:'center',
+      height:hp('32%'),
       borderRadius:15,
-      padding:50,
-      marginTop:0
+      justifyContent:'center',
+
+
      
 
-    },
-    box :{
-      
-      
-      width:300,
-      height:50,
-      backgroundColor:'#34dbeb',
-      marginTop:'5%',
-      borderRadius:30
-
+    }
+    ,
+    box:{
+      backgroundColor:'#edaffa',
+      height:hp('9%'),
+      width:wp('80%'),
+      borderRadius:15,
+      marginBottom:hp('1%'),
+      alignSelf:'center',
+      justifyContent:'center',
+      shadowColor: "#000",
+  
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 1,
+      shadowRadius: 10,
+      elevation: 8,
     }
   
   });

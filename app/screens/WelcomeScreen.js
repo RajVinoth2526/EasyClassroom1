@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Image,
-  BackHandler
+  BackHandler,
+  
 } from "react-native";
 import React from "react";
 import {
   useFocusEffect
  } from '@react-navigation/native';
+ import { StatusBar } from 'react-native';
  import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 export default function WelcomeScreen({ navigation }) {
 
@@ -40,13 +42,18 @@ export default function WelcomeScreen({ navigation }) {
       };
     }, []),
   );
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('white'); 
+    StatusBar.setTranslucent(true)
+   }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
-          source={require("./../assets/logo.png")}
+          source={require("./../assets/ec.png")}
         ></Image>
+        <Text style = {{alignSelf:'center', color :'#cdaffa' ,fontWeight:'bold'}}>Easy Classroom</Text>
         <Text style={styles.text}> TIME TO LEARN </Text>
       </View>
     
@@ -82,7 +89,7 @@ const styles = StyleSheet.create({
   
   button: {
     
-    backgroundColor: "#34dbeb",
+    backgroundColor: "#cdaffa",
     marginBottom:hp('2%'),
     justifyContent:'center',
     alignItems: "center",

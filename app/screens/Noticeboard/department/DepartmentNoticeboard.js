@@ -10,7 +10,12 @@ import {
   ActivityIndicator,
   FlatList,
   Alert,
+  StatusBar
 } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,14 +27,34 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-export default function PostScreen({ navigation }) {
+export default function PostScreen({ navigation , route }) {
   const [subjects, setSubjects] = useState([]);
   const [role, setRole] = useState("");
   const NoticeType = "Department";
 
+  const {Faculty} = route.params;
+ 
   let currentUserUID = firebase.auth().currentUser.uid;
 
 
+  React.useEffect(() => {
+    fetchSubjects();
+    getUserInfo();
+    RefreshPage();
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchSubjects();
+      getUserInfo();
+      RefreshPage();
+      //Put your Data loading function here instead of my loadData()
+    });
+  
+    return unsubscribe;
+  }, [navigation]);
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   function Edit(PostID, PostUserID) {
     if (currentUserUID == PostUserID) {
@@ -54,13 +79,14 @@ export default function PostScreen({ navigation }) {
   }
 
   function editNotice(ID) {
-    navigation.navigate("EditNotice", { PostId: ID, Type: NoticeType });
+    navigation.navigate("EditNotice", { PostId: ID, Type: NoticeType ,Faculty : Faculty});
   }
 
   function deleteNotice(id) {
-    DeleteNotice(id);
-    Alert.alert("Notice deleted!");
-   
+    DeleteNotice(id,Faculty);
+    fetchSubjects();
+      getUserInfo();
+      RefreshPage();
   }
 
   function ButtonEdit(PostID, PostUserID) {
@@ -109,7 +135,7 @@ export default function PostScreen({ navigation }) {
     const data = [];
 
     const db = firebase.firestore();
-    const querySnapshot = await db.collection("Notices").get();
+    const querySnapshot = await db.collection(Faculty+"Notices").get();
     querySnapshot.forEach((doc) => {
       console.log(doc.id, " => ", doc.data());
       const dataObj = doc.data();
@@ -133,17 +159,15 @@ export default function PostScreen({ navigation }) {
     } else {
       let dataObj = doc.data();
       setRole(dataObj.role);
+      
     }
   }
   getUserInfo();
   useEffect(() => {
-   
     fetchSubjects();
   }, []);
 
-  useEffect(() => {
-    
-  });
+  useEffect(() => {});
 
   const generateRandomBrightestHSLColor = () => {
     return "hsla(" + ~~(360 * Math.random()) + "," + "80%," + "90%,2)";
@@ -156,272 +180,610 @@ export default function PostScreen({ navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  const MINUTE_MS = 500;
+  const MINUTE_MS = 10000000;
   useEffect(() => {
     const interval = setInterval(() => {
-  
       fetchSubjects();
       getUserInfo();
       RefreshPage();
-     
     }, MINUTE_MS);
-  
+
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  }, [])
+  }, []);
 
-
-  function RefreshPage(){
-
+  function RefreshPage() {
     if (role == "Lecturer") {
       return (
-        <View style = {styles.container}>
-        <ScrollView style={styles.scrollScreen}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
-          <Text style={{ fontSize: 20 }}>
-            <Octicons name="note" size={25} color="#34dbeb" /> Department
-            Noticeboard
-          </Text>
+        <View style={styles.container}>
+          
+          <ScrollView
+            style={styles.scrollScreen}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("3%"),
+                fontWeight: "bold",
+              }}
+            >
+              Department Noticboard
+            </Text>
+          </View>
         </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+           
   
-       
+            <FlatList
+              data={subjects}
+              renderItem={({ item }) => (
+                <View style={[styles.Box]}>
+                  <View style={styles.head}>
+                    <View style = {styles.avatar1}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        height: hp("5.2%"),
+                        width: wp("11%"),
+                        borderWidth: 1.5,
   
-       
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
   
-        <FlatList
-          data={subjects}
-          renderItem={({ item }) => (
-            <View style={[styles.Box]}>
-              <View style={styles.head}>
-                <Image
-                  source={{ uri: item.ProfileUrl }}
-                  style={{
-                    marginLeft: "5%",
-                    marginTop: "2%",
-                    height: 41,
-                    width: 41,
-                    borderWidth: 1.5,
-  
-                    borderRadius: 50,
-                  }}
-                />
-  
-                <Text style={styles.Name}>
-                  {item.firstName} {item.lastName}
-                </Text>
-  
-                <View  style ={{marginLeft :'38%',marginTop:'2%'}}>
-                  <TouchableOpacity onPress={() => Edit(item.id, item.UserID)}>
-                    <AntDesign name="edit" size={20} color="#03dffc" />
-                    <Text style={{ fontSize: 8 }}>Edit</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-  
+                    <View style={{ flexDirection: "column" }}>
+                      <Text style={styles.Name}>
+                        {item.firstName} {item.lastName}
+                      </Text>
+                      <Text
+                       style={{
+                        marginLeft: wp("5%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("0.5%"),
+                        fontSize: hp("1.1%"),
+                      }}
+                      >
+                        {item.DateTime}
+                      </Text>
+                    </View>
+                  </View>
   
                   <Text style={styles.title}>{item.title}</Text>
                   <View style={styles.Msg}>
                     <Text style={styles.msg}>{item.notice}</Text>
-                    
   
-                    <Text style={styles.msgText}>{item.DateTime}</Text>
+                    <View
+                      style={{
+                        alignSelf: "flex-start",
+                        marginLeft: wp("4%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("2%"),
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => Edit(item.id, item.UserID)}
+                      >
+                        <AntDesign name="edit" size={20} color="#cdaffa" />
+                        <Text style={{ fontSize: 8 }}>Edit</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+             <View style ={{height :hp('12%'),width:wp('100%')}}>
+
+              </View>
+          </ScrollView>
+  
+          <View style={styles.AddIcon}>
+            <TouchableOpacity onPress={handlePress}>
+              <MaterialIcons name="add-circle" size={hp('10%')} color="#cdaffa" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    } else if (role == "Demonstrator") {
+      return (
+       
+          <ScrollView
+            style={styles.scrollScreen}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+  
+  <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("3%"),
+                fontWeight: "bold",
+              }}
+            >
+              Department Noticboard
+            </Text>
+          </View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+           
+           
+  
+            <FlatList
+              data={subjects}
+              renderItem={({ item }) => (
+                <View style={[styles.Box]}>
+                  <View style={styles.head}>
+                    <View style = {styles.avatar1}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        height: hp("5.2%"),
+                        width: wp("11%"),
+                        borderWidth: 1.5,
+  
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
+  
+                    <View style={{ flexDirection: "column" }}>
+                      <Text style={styles.Name}>
+                        {item.firstName} {item.lastName}
+                      </Text>
+                      <Text
+                       style={{
+                        marginLeft: wp("5%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("0.5%"),
+                        fontSize: hp("1.1%"),
+                      }}
+                      >
+                        {item.DateTime}
+                      </Text>
+                    </View>
+                  </View>
+  
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.Msg}>
+                    <Text style={styles.msg}>{item.notice}</Text>
+  
+                   
                   </View>
                 </View>
               )}
               keyExtractor={(item, index) => index.toString()}
             />
           </ScrollView>
-
-          <View style={styles.AddIcon}>
-          <TouchableOpacity onPress={handlePress}>
-            <MaterialIcons name="add-circle" size={70} color="#03dffc" />
-          </TouchableOpacity>
-        </View>
-        </View>
   
-         
+          
+        
       );
-    } else if (role == "Demo") {
+    
+    } else if (role == "Student") {
       return (
-        <ScrollView style={styles.scrollScreen}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
-          <Text style={{ fontSize: 20 }}>
-            <Octicons name="note" size={25} color="#34dbeb" /> Department
-            Noticeboard
-          </Text>
+       
+        <ScrollView
+          style={styles.scrollScreen}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+            <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("3%"),
+                fontWeight: "bold",
+              }}
+            >
+              Department Noticboard
+            </Text>
+          </View>
         </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+           
+         
   
-       
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <View style = {styles.avatar1}>
+                  <Image
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      height: hp("5.2%"),
+                      width: wp("11%"),
+                      borderWidth: 1.5,
   
-       
+                      borderRadius: 50,
+                    }}
+                  />
+                </View>
   
-        <FlatList
-          data={subjects}
-          renderItem={({ item }) => (
-            <View style={[styles.Box]}>
-              <View style={styles.head}>
-                <Image
-                  source={{ uri: item.ProfileUrl }}
-                  style={{
-                    marginLeft: "5%",
-                    marginTop: "2%",
-                    height: 41,
-                    width: 41,
-                    borderWidth: 1.5,
-  
-                    borderRadius: 50,
-                  }}
-                />
-  
-                <Text style={styles.Name}>
-                  {item.firstName} {item.lastName}
-                </Text>
-  
-               
-              </View>
-  
-  
-                  <Text style={styles.title}>{item.title}</Text>
-                  <View style={styles.Msg}>
-                    <Text style={styles.msg}>{item.notice}</Text>
-                    
-  
-                    <Text style={styles.msgText}>{item.DateTime}</Text>
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text
+                     style={{
+                      marginLeft: wp("5%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("0.5%"),
+                      fontSize: hp("1.1%"),
+                    }}
+                    >
+                      {item.DateTime}
+                    </Text>
                   </View>
                 </View>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </ScrollView>    
-    );
-    }else if (role == "Student") {
-      return (
-        <ScrollView style={styles.scrollScreen}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
-          <Text style={{ fontSize: 20 }}>
-            <Octicons name="note" size={25} color="#34dbeb" /> Department
-            Noticeboard
-          </Text>
-        </View>
   
-       
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.notice}</Text>
   
-       
-  
-        <FlatList
-          data={subjects}
-          renderItem={({ item }) => (
-            <View style={[styles.Box]}>
-              <View style={styles.head}>
-                <Image
-                  source={{ uri: item.ProfileUrl }}
-                  style={{
-                    marginLeft: "5%",
-                    marginTop: "2%",
-                    height: 41,
-                    width: 41,
-                    borderWidth: 1.5,
-  
-                    borderRadius: 50,
-                  }}
-                />
-  
-                <Text style={styles.Name}>
-                  {item.firstName} {item.lastName}
-                </Text>
-  
-               
-              </View>
-  
-  
-                  <Text style={styles.title}>{item.title}</Text>
-                  <View style={styles.Msg}>
-                    <Text style={styles.msg}>{item.notice}</Text>
-                   
-  
-                    <Text style={styles.msgText}>{item.DateTime}</Text>
-                  </View>
+                 
                 </View>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </ScrollView>    
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
+  
+        
+      
     );
     }
   
+    else if(role == "Admin"){
+      return (
+       
+        <ScrollView
+          style={styles.scrollScreen}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+           <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("3%"),
+                fontWeight: "bold",
+              }}
+            >
+              Department Noticboard
+            </Text>
+          </View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+           
+  
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <View style = {styles.avatar1}>
+                  <Image
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      height: hp("5.2%"),
+                      width: wp("11%"),
+                      borderWidth: 1.5,
+  
+                      borderRadius: 50,
+                    }}
+                  />
+                </View>
+  
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text
+                     style={{
+                      marginLeft: wp("5%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("0.5%"),
+                      fontSize: hp("1.1%"),
+                    }}
+                    >
+                      {item.DateTime}
+                    </Text>
+                  </View>
+                </View>
+  
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.notice}</Text>
+  
+                  
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
+  
+        
+      
+    );
+  
+    }
   
     return (
       <View style={styles.Loadingcontainer}>
-        <ActivityIndicator color="#03befc" size="large" />
+        <ActivityIndicator color="#cdaffa" size="large" />
       </View>
     );
-    
   }
 
   if (role == "Lecturer") {
-    
     return (
-      <View style = {styles.container}>
-      <ScrollView style={styles.scrollScreen}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
-        <Text style={{ fontSize: 20 }}>
-          <Octicons name="note" size={25} color="#34dbeb" /> Department
-          Noticeboard
-        </Text>
+      <View style={styles.container}>
+        
+        <ScrollView
+          style={styles.scrollScreen}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("3%"),
+              fontWeight: "bold",
+            }}
+          >
+            Department Noticboard
+          </Text>
+        </View>
       </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+         
 
-      
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <View style = {styles.avatar1}>
+                  <Image
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      height: hp("5.2%"),
+                      width: wp("11%"),
+                      borderWidth: 1.5,
 
-     
+                      borderRadius: 50,
+                    }}
+                  />
+                </View>
 
-      <FlatList
-        data={subjects}
-        renderItem={({ item }) => (
-          <View style={[styles.Box]}>
-            <View style={styles.head}>
-              <Image
-                source={{ uri: item.ProfileUrl }}
-                style={{
-                  marginLeft: "5%",
-                  marginTop: "2%",
-                  height: 41,
-                  width: 41,
-                  borderWidth: 1.5,
-
-                  borderRadius: 50,
-                }}
-              />
-
-              <Text style={styles.Name}>
-                {item.firstName} {item.lastName}
-              </Text>
-
-              <View  style ={{marginLeft :'38%',marginTop:'2%'}}>
-                <TouchableOpacity onPress={() => Edit(item.id, item.UserID)}>
-                  <AntDesign name="edit" size={20} color="#03dffc" />
-                  <Text style={{ fontSize: 8 }}>Edit</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text
+                     style={{
+                      marginLeft: wp("5%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("0.5%"),
+                      fontSize: hp("1.1%"),
+                    }}
+                    >
+                      {item.DateTime}
+                    </Text>
+                  </View>
+                </View>
 
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.notice}</Text>
-                  
 
-                  <Text style={styles.msgText}>{item.DateTime}</Text>
+                  <View
+                    style={{
+                      alignSelf: "flex-start",
+                      marginLeft: wp("4%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("2%"),
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => Edit(item.id, item.UserID)}
+                    >
+                      <AntDesign name="edit" size={20} color="#cdaffa" />
+                      <Text style={{ fontSize: 8 }}>Edit</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+           <View style ={{height :hp('12%'),width:wp('100%')}}>
+
+</View>
+        </ScrollView>
+
+        <View style={styles.AddIcon}>
+          <TouchableOpacity onPress={handlePress}>
+            <MaterialIcons name="add-circle" size={hp('10%')} color="#cdaffa" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  } else if (role == "Demonstrator") {
+    return (
+     
+        <ScrollView
+          style={styles.scrollScreen}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+
+<View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("3%"),
+              fontWeight: "bold",
+            }}
+          >
+            Department Noticboard
+          </Text>
+        </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+         
+         
+
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <View style = {styles.avatar1}>
+                  <Image
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      height: hp("5.2%"),
+                      width: wp("11%"),
+                      borderWidth: 1.5,
+
+                      borderRadius: 50,
+                    }}
+                  />
+                </View>
+
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text
+                     style={{
+                      marginLeft: wp("5%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("0.5%"),
+                      fontSize: hp("1.1%"),
+                    }}
+                    >
+                      {item.DateTime}
+                    </Text>
+                  </View>
+                </View>
+
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.notice}</Text>
+
+                 
                 </View>
               </View>
             )}
@@ -429,133 +791,199 @@ export default function PostScreen({ navigation }) {
           />
         </ScrollView>
 
-        <View style={styles.AddIcon}>
-        <TouchableOpacity onPress={handlePress}>
-          <MaterialIcons name="add-circle" size={70} color="#03dffc" />
-        </TouchableOpacity>
-      </View>
-        </View>
-
-       
+        
+      
     );
-  } else if (role == "Demo") {
+  
+  } else if (role == "Student") {
     return (
-      <ScrollView style={styles.scrollScreen}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
-        <Text style={{ fontSize: 20 }}>
-          <Octicons name="note" size={25} color="#34dbeb" /> Department
-          Noticeboard
-        </Text>
+     
+      <ScrollView
+        style={styles.scrollScreen}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+          <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("3%"),
+              fontWeight: "bold",
+            }}
+          >
+            Department Noticboard
+          </Text>
+        </View>
       </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+         
+       
 
-     
+        <FlatList
+          data={subjects}
+          renderItem={({ item }) => (
+            <View style={[styles.Box]}>
+              <View style={styles.head}>
+                <View style = {styles.avatar1}>
+                <Image
+                  source={{ uri: item.ProfileUrl }}
+                  style={{
+                    height: hp("5.2%"),
+                    width: wp("11%"),
+                    borderWidth: 1.5,
 
-     
+                    borderRadius: 50,
+                  }}
+                />
+              </View>
 
-      <FlatList
-        data={subjects}
-        renderItem={({ item }) => (
-          <View style={[styles.Box]}>
-            <View style={styles.head}>
-              <Image
-                source={{ uri: item.ProfileUrl }}
-                style={{
-                  marginLeft: "5%",
-                  marginTop: "2%",
-                  height: 41,
-                  width: 41,
-                  borderWidth: 1.5,
-
-                  borderRadius: 50,
-                }}
-              />
-
-              <Text style={styles.Name}>
-                {item.firstName} {item.lastName}
-              </Text>
-
-             
-            </View>
-
-
-                <Text style={styles.title}>{item.title}</Text>
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.notice}</Text>
-                  
-
-                  <Text style={styles.msgText}>{item.DateTime}</Text>
+                <View style={{ flexDirection: "column" }}>
+                  <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                  </Text>
+                  <Text
+                   style={{
+                    marginLeft: wp("5%"),
+                    marginBottom: hp("1%"),
+                    marginTop: hp("0.5%"),
+                    fontSize: hp("1.1%"),
+                  }}
+                  >
+                    {item.DateTime}
+                  </Text>
                 </View>
               </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </ScrollView>    
-  );
-  }else if (role == "Student") {
-    return (
-      <ScrollView style={styles.scrollScreen}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      <View style={{ marginTop: 30, marginBottom: 15, alignSelf: "center" }}>
-        <Text style={{ fontSize: 20 }}>
-          <Octicons name="note" size={25} color="#34dbeb" /> Department
-          Noticeboard
-        </Text>
-      </View>
 
-     
+              <Text style={styles.title}>{item.title}</Text>
+              <View style={styles.Msg}>
+                <Text style={styles.msg}>{item.notice}</Text>
 
-     
-
-      <FlatList
-        data={subjects}
-        renderItem={({ item }) => (
-          <View style={[styles.Box]}>
-            <View style={styles.head}>
-              <Image
-                source={{ uri: item.ProfileUrl }}
-                style={{
-                  marginLeft: "5%",
-                  marginTop: "2%",
-                  height: 41,
-                  width: 41,
-                  borderWidth: 1.5,
-
-                  borderRadius: 50,
-                }}
-              />
-
-              <Text style={styles.Name}>
-                {item.firstName} {item.lastName}
-              </Text>
-
-             
-            </View>
-
-
-                <Text style={styles.title}>{item.title}</Text>
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.notice}</Text>
-                 
-
-                  <Text style={styles.msgText}>{item.DateTime}</Text>
-                </View>
+               
               </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </ScrollView>    
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </ScrollView>
+
+      
+    
   );
   }
 
+  else if(role == "Admin"){
+    return (
+     
+      <ScrollView
+        style={styles.scrollScreen}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+         <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("3%"),
+              fontWeight: "bold",
+            }}
+          >
+            Department Noticboard
+          </Text>
+        </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+         
+
+        <FlatList
+          data={subjects}
+          renderItem={({ item }) => (
+            <View style={[styles.Box]}>
+              <View style={styles.head}>
+                <View style = {styles.avatar1}>
+                <Image
+                  source={{ uri: item.ProfileUrl }}
+                  style={{
+                    height: hp("5.2%"),
+                    width: wp("11%"),
+                    borderWidth: 1.5,
+
+                    borderRadius: 50,
+                  }}
+                />
+              </View>
+
+                <View style={{ flexDirection: "column" }}>
+                  <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                  </Text>
+                  <Text
+                   style={{
+                    marginLeft: wp("5%"),
+                    marginBottom: hp("1%"),
+                    marginTop: hp("0.5%"),
+                    fontSize: hp("1.1%"),
+                  }}
+                  >
+                    {item.DateTime}
+                  </Text>
+                </View>
+              </View>
+
+              <Text style={styles.title}>{item.title}</Text>
+              <View style={styles.Msg}>
+                <Text style={styles.msg}>{item.notice}</Text>
+
+                
+              </View>
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </ScrollView>
+
+      
+    
+  );
+
+  }
 
   return (
     <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="#03befc" size="large" />
+      <ActivityIndicator color="#cdaffa" size="large" />
     </View>
   );
 }
@@ -563,35 +991,24 @@ export default function PostScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
-
-    backgroundColor: "white",
+    backgroundColor:'white',
   },
   AddIcon: {
-   alignSelf:'flex-end',
-   position:'absolute',
-   bottom:'20%',
-   marginRight:'5%'
+    position: "absolute",
+    alignSelf: "flex-end",
+
+    bottom:hp('1%')
   },
   scrollScreen: {
-    height:'100%',
-    backgroundColor: "white",
-    marginHorizontal: 1,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 10,
-    elevation: 0.001,
+    height: hp("100%"),
+    width: wp("100%"),
+    backgroundColor:"white"
   },
   homeContent: {
     alignSelf: "center",
     alignItems: "center",
     marginTop: 10,
-    marginBottom: 15,
+    marginBottom: "2%",
     backgroundColor: "#f2ffff",
     height: 120,
     width: 290,
@@ -611,10 +1028,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   Box: {
-    marginBottom: '1%',
-    marginTop: '1%',
-    marginLeft: 5,
-    marginRight: 5,
+    marginTop: hp("1%"),
+    marginBottom: hp("1%"),
+    alignSelf: "center",
+    width: wp("98%"),
+    
     backgroundColor: "white",
     borderRadius: 5,
     marginHorizontal: 1,
@@ -624,57 +1042,96 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.5,
+    shadowOpacity: 2,
     shadowRadius: 5,
     elevation: 8,
   },
+  homeContentText: {
+    alignSelf: "center",
+    marginTop: 30,
+    fontSize: 30,
+  },
   Msg: {
-    marginLeft: 30,
-    marginTop: 20,
-    marginRight: 30,
+    marginLeft: wp("4.5%"),
+    marginBottom: wp("3%"),
+    marginRight: wp("4.5%"),
+    marginTop: hp("1%"),
+    justifyContent:'center',
 
-    borderRadius: 2,
+    borderRadius: 5,
   },
   pic: {
     alignSelf: "center",
     marginTop: 10,
   },
   title: {
-    marginTop: 30,
+    marginTop: hp("3%"),
     alignSelf: "center",
-    fontSize: 25,
+    marginLeft: wp("8%"),
+    marginBottom: hp("2%"),
+    fontSize: hp("2.5%"),
+    fontWeight: "400",
+  },
+  Name: {
+    alignSelf: "center",
+    marginTop: hp("2%"),
+    marginLeft: hp("2%"),
+    fontSize: hp("2%"),
     fontWeight: "bold",
-  },
-  msgText: {
-    
-    alignSelf:'flex-end',
-    fontSize:10
-  },
-  msg: {
-    fontSize: 15,
-    marginBottom: 20,
-    marginLeft: 10,
-    marginRight: 5,
-  },
-  Loadingcontainer: {
-    flex: 1,
-
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
   },
   head: {
     flex: 1,
+    marginLeft: wp("4%"),
+    marginTop: hp("1%"),
     flexDirection: "row",
-    borderBottomColor: "#03dffc",
+    borderBottomColor: "#cdaffa",
     borderBottomWidth: 1,
     paddingBottom: 10,
     borderBottomStartRadius: 15,
     borderBottomEndRadius: 15,
   },
-  Name: {
-   alignSelf:'center',
-   marginLeft :'5%',
-   fontSize : 18
+  msg: {
+    fontSize: hp("1.8%"),
+    fontWeight: "350",
+    alignSelf:'center',
+    paddingLeft:5,
+    paddingRight:5
+   
+  
+  },
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+  },
+  avatar: {
+    height: hp("28%"),
+    width: wp("88%"),
+    alignSelf: "center",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 10,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  avatar1: {
+    height: hp("5.2%"),
+    backgroundColor:'white',
+    width: wp("11%"),
+    alignSelf: "center",
+    borderRadius: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 5,
+    shadowRadius: 55,
+    elevation: 10,
   },
 });

@@ -8,6 +8,7 @@ import {
   Keyboard,
   StyleSheet,
   SafeAreaView,
+  StatusBar
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Entypo } from "@expo/vector-icons";
@@ -25,37 +26,47 @@ export default function ContactScreen({ navigation }) {
   const role3 = "Student";
   const role4 = "Admin";
 
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('#cdaffa'); 
+    StatusBar.setTranslucent(true)
+   }, []);
+
   function handlePress(Role) {
     navigation.navigate("SelectContact", { ROLE: Role });
   }
 
   return (
     <View style={styles.container}>
+      <View style = {{backgroundColor:'white'}}>
       <View style={styles.head}>
         <Text style={styles.headText}>Chat With</Text>
       </View>
-
-      <View style={[styles.select, ,]}>
-        <TouchableOpacity onPress={() => handlePress(role1)}>
+      </View>
+      <View style = {{backgroundColor:'white',width:wp('100%'),height : hp('80%') , borderTopLeftRadius:60,justifyContent:'center',alignSelf:'center'}}>
+        <View style = {{alignSelf:'center'}}>
+     
+        <TouchableOpacity  style={[styles.select]} onPress={() => handlePress(role1)}>
           <Text style={styles.selectText}>Lecturer</Text>
         </TouchableOpacity>
-      </View>
+      
 
-      <View style={[styles.select]}>
-        <TouchableOpacity onPress={() => handlePress(role2)}>
+     
+        <TouchableOpacity  style={[styles.select]} onPress={() => handlePress(role2)}>
           <Text style={styles.selectText}>Demonstrator</Text>
         </TouchableOpacity>
-      </View>
+  
 
-      <View style={[styles.select]}>
-        <TouchableOpacity onPress={() => handlePress(role3)}>
+     
+        <TouchableOpacity   style={[styles.select]} onPress={() => handlePress(role3)}>
           <Text style={styles.selectText}>Student</Text>
         </TouchableOpacity>
-      </View>
-      <View style={[styles.select]}>
-        <TouchableOpacity onPress={() => handlePress(role4)}>
+    
+     
+        <TouchableOpacity   style={[styles.select]} onPress={() => handlePress(role4)}>
           <Text style={styles.selectText}>Admin</Text>
         </TouchableOpacity>
+    
+      </View>
       </View>
     </View>
   );
@@ -64,28 +75,32 @@ export default function ContactScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#cdaffa",
     flex: 1,
   },
   head: {
-    marginTop: hp("15%"),
-    marginBottom: hp("3%"),
+    width:wp('100%'),
+    justifyContent:'center',
+    height:hp('20%'),
+    backgroundColor:'#cdaffa',
+    borderBottomRightRadius:60,
     alignSelf: "center",
   },
   headText: {
     fontSize: hp("5.5%"),
+    alignSelf:'center',
     fontWeight: "bold",
   },
   select: {
-    marginTop: hp("3%"),
+    marginBottom: hp("2%"),
     borderRadius: 20,
     alignItems: "center",
     height: hp("10%"),
     width: wp("75%"),
     justifyContent: "center",
-    borderColor: "#64bdf5",
+    borderColor: "#c986f0",
     borderWidth: 2,
-    backgroundColor: "#76e2f5",
+    backgroundColor: "#e6c0fc",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

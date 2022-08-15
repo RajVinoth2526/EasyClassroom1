@@ -1,144 +1,167 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
 import {
   View,
   Text,
-  TextInput,
-  Alert,
-  ScrollView,
-  Keyboard,
   StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  Alert,
   SafeAreaView,
-  ActivityIndicator,
-  StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  keyboardVerticalOffset,
+  TouchableWithoutFeedback,
+  Keyboard,
+  StatusBar
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Entypo } from "@expo/vector-icons";
-import CodeInput from "react-native-confirmation-code-input";
-import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
-import "firebase/firestore";
-import * as firebase from "firebase";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Level1Screen from "./Level1Screen";
-import Level3Screen from "./Level3Screen";
-import Level2Screen from "./Level2Screen";
+import { ScrollView } from "react-native-gesture-handler";
+import * as ImagePicker from "expo-image-picker";
+import { FontAwesome5 } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
-import { MaterialIcons } from "@expo/vector-icons";
-import { StoreCourse } from "../../../API/firebaseMethods/firebaseMethod";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as DocumentPicker from 'expo-document-picker';
-import { StoreCourseLink } from "../../../API/firebaseMethods/firebaseMethod";
+import * as firebase from "firebase";
+//import { UploadPost } from '../../../../API/firebaseMethods/firebaseMethod';
+//import IMAGE from '../../../assets/photo.png';
+import { MaterialIcons } from "@expo/vector-icons";
+import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
+import { FontAwesome } from "@expo/vector-icons";
+import { UpdateStoreCourse } from "../../../API/firebaseMethods/firebaseMethod";
+import { normalizeUnits } from "moment";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-export default function CourseContent({ navigation,route }) {
 
-    const [ID] = useState(uuid.v4());
-    const [ID1] = useState(uuid.v4());
-    const [instruction, setinstruction] = useState("");
-    const [title, setTitle] = useState("");
-    const [document, setDocument] = useState("Upload Document");
-    const [isLoading, setisLoading] = useState(false);
+export default function EditCourseContentScreen({ navigation, route }) {
+
+  const [title1, setTitle] = useState("");
+  const [instruction1, setinstruction] = useState("");
+  const { UserID } = route.params;
+  const {ID} = route.params;
+  const {Course} = route.params;
+  const {CourseID} = route.params;
+  const {Faculty} = route.params;
+  const {Level} = route.params;
+  const {Year} = route.params;
+  const {Department} = route.params;
+  const {title} = route.params;
+  const {document} = route.params;
+  const {instruction} = route.params;
+  const {CourseNameID} = route.params;
+
+
+  console.log(UserID);
+
+  const [Document, setDocument] = useState(document);
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
+
+  const pickDocument = async () => {
+    let result = await DocumentPicker.getDocumentAsync({});
+
+
+    if (!result.cancelled) {
+      setisLoading(true);
+      StoreCourseLink(ID1,result.uri)
+        .then(() => {
+          setDocument(result.uri);
+          setisLoading(false);
+          console.log("Uploaded");
+        })
+        .catch((error) => {
+          Alert.alert("Error:", error.message);
+        });
+    }
+    
+   
+  };
+
+
   
 
 
-  const { Faculty } = route.params;
-  const { Department } = route.params;
-  const { Level } = route.params;
-  const { CourseID } = route.params;
-  const { CourseName } = route.params;
-  const { CoursenameID } = route.params;
-  const { Year } = route.params;
-  
-  console.log(Faculty);
-  console.log(Department);
-  console.log(Level);
-  console.log(CourseID);
-  console.log(CourseName);
-  console.log(CoursenameID);
-  console.log(Year);
+ 
 
-
-  const currentUser = firebase.auth().currentUser;
-
-  
-        const pickDocument = async () => {
-          let result = await DocumentPicker.getDocumentAsync({});
-
-
-          if (!result.cancelled) {
-            setisLoading(true);
-            StoreCourseLink(ID1,result.uri)
-              .then(() => {
-                setDocument(result.uri);
-                setisLoading(false);
-                console.log("Uploaded");
-              })
-              .catch((error) => {
-                Alert.alert("Error:", error.message);
-              });
-          }
-          
-         
-        };
-
-        React.useEffect(() => {
-          StatusBar.setBackgroundColor("#cdaffa");
-          StatusBar.setTranslucent(true);
-        }, []);
-       
-      
-      
-      
-
-  const handlePress =  async() => {
-
-    const Url = await firebase
-    .storage()
-    .ref()
-    .child("CourseLink/" + ID1) //name in storage in firebase console
-    .getDownloadURL()
-    .catch((e) => console.log("Errors while downloading => ", e));
-
-    if (!instruction) {
-      Alert.alert("Text required");
-    } else if (!title) {
-      Alert.alert("title required");
-    }else if(document == "Upload Document"){
-      Alert.alert("document empty");
-    } else {
-      navigation.goBack();
-      StoreCourse(
+  const handlePress = () => {
+     if(!title1  ){
+      UpdateStoreCourse(
         ID,
-        currentUser.uid,
+        UserID,
         Faculty,
         Department,
         Level,
         Year,
-        CourseName,
+        Course,
         CourseID,
-        CoursenameID,
+        CourseNameID,
+        title,
+        instruction1,
+        Document
+      );
+      navigation.goBack({Faculty :Faculty, Department : Department, Level : Level,Year : Year,CourseID:CourseID,CourseName:Course,CoursenameID:CourseNameID});
+ 
+     
+    }if(!instruction1){
+      UpdateStoreCourse(
+        ID,
+        UserID,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course,
+        CourseID,
+        CourseNameID,
+        title1,
+        instruction,
+        Document);
+        
+      navigation.goBack({Faculty :Faculty, Department : Department, Level : Level,Year : Year,CourseID:CourseID,CourseName:Course,CoursenameID:CourseNameID});
+    
+    }if(!title1 && !instruction1){
+      UpdateStoreCourse(
+        ID,
+        UserID,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course,
+        CourseID,
+        CourseNameID,
         title,
         instruction,
-        Url
-        
-        );
-     
-      Alert.alert("Uploaded!");
+        Document
+      );
+      navigation.navigate('CourseScreen',{Faculty :Faculty, Department : Department, Level : Level,Year : Year,CourseID:CourseID,CourseName:Course,CoursenameID:CourseNameID});
+    
+    }if(title1 && instruction1){
+      UpdateStoreCourse(
+         ID,
+        UserID,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course,
+        CourseID,
+        CourseNameID,
+        title1,
+        instruction1,
+        Document
+      );
+      navigation.goBack({Faculty :Faculty, Department : Department, Level : Level,Year : Year,CourseID:CourseID,CourseName:Course,CoursenameID:CourseNameID});
+      
+
     }
   };
-  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
-  if(isLoading == true){
-    return(
-    <View style={styles.Loadingcontainer}>
-      <Text>Please wait!</Text>
-      <ActivityIndicator color="#03befc" size="large" />
-    </View>
-    );
-  }
+
  
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
+
   return (
     
     <View style={styles.container}>
@@ -159,7 +182,7 @@ export default function CourseContent({ navigation,route }) {
               fontWeight: "bold",
             }}
           >
-            Create Chapter
+            edit Chapter
           </Text>
         </View>
       </View>
@@ -191,11 +214,11 @@ export default function CourseContent({ navigation,route }) {
               <TextInput
                 style={styles.textinput}
                 placeholder="Type here"
-                value={title}
+                defaultValue={title}
                 multiline={true}
-                numberOfLines={2}
+               
                 textAlignVertical="top"
-                onChangeText={(title) => setTitle(title)}
+                onChangeText={(title1) => setTitle(title1)}
               />
             </View>
           </View>
@@ -206,11 +229,11 @@ export default function CourseContent({ navigation,route }) {
               <TextInput
                 style={styles.textinput}
                 placeholder="Type here"
-                value={instruction}
+                defaultValue={instruction}
                 multiline={true}
-                numberOfLines={10}
+              
                 textAlignVertical="top"
-                onChangeText={(instruction) => setinstruction(instruction)}
+                onChangeText={(instruction1) => setinstruction(instruction1)}
               />
             </View>
           </View>
@@ -221,7 +244,7 @@ export default function CourseContent({ navigation,route }) {
 
           <View style={{flexDirection:"row"}}>
             <View style={{width:wp('70%'),marginLeft:wp('10%'),marginRight:wp('3%'),marginTop:hp('0.5%'),height:hp('5%'), borderRadius:25, backgroundColor:'#e9c8fa', justifyContent:'center'}}>
-            <Text style= {{fontSize:hp('1.8%'),fontWeight:'100' , color :'red', alignSelf:'center',paddingLeft:15,paddingRight:10}}>{document}</Text>
+            <Text style= {{fontSize:hp('1.8%'),fontWeight:'100' , color :'red', alignSelf:'center',paddingLeft:15,paddingRight:10}}>{Document}</Text>
             </View>
             
             <TouchableOpacity onPress={pickDocument}>

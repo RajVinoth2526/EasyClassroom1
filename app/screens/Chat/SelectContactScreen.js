@@ -7,7 +7,8 @@ import {
   Image,
   TextInput,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -23,6 +24,8 @@ export default function SelectContactScreen({ navigation, route }) {
   const [subjects, setSubjects] = useState([]);
   const { ROLE } = route.params;
 
+  const currentUser = firebase.auth().currentUser;
+
   useEffect(() => {
     async function fetchSubjects() {
       const data = [];
@@ -30,7 +33,7 @@ export default function SelectContactScreen({ navigation, route }) {
       const db = firebase.firestore();
       const querySnapshot = await db.collection(ROLE).get();
       querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+        if(doc.id != currentUser.uid )
         data.push(doc.data());
       });
 
@@ -45,145 +48,65 @@ export default function SelectContactScreen({ navigation, route }) {
     navigation.navigate("ChatBox",{ ReceiverID: id,ReceiverUrl : url,ReceiverFirstName : firstName,ReceiverLastName : lastName });
   };
 
+
+  if(subjects == '' && isLoading == false){
+
+    Alert.alert('No user Data here!');
+
+  }
+
   
 
   if(isLoading == true){
     return(
     <View style={styles.Loadingcontainer}>
       
-      <ActivityIndicator color="#03befc" size="large" />
+      <ActivityIndicator color="#cdaffa" size="large" />
     </View>
     );
   }
 
 
-  if (ROLE == "Lecturer") {
+ 
+
+
     return (
       <View style={styles.container}>
-         <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold',marginTop:hp('5%')}}>Contacts</Text>
-        <ScrollView>
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
-              <View style={[styles.Box]}>
-                <View style={styles.head}>
-                <View style = {styles.avatar}>
-                    <Image
-                      source={{ uri: item.ProfileUrl }}
-                      style={{
-                        
-                       
-                        height: hp('5.2%'),
-                        width: wp('11%'),
-                        borderWidth: 1.5,
-
-                        borderRadius: 50,
-                      }}
-                    />
-                    </View>
-
-                  <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                  </Text>
-                </View>
-              </View>
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </ScrollView>
+      <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            Contacts
+          </Text>
+        </View>
       </View>
-    );
-  }if (ROLE == "Demonstrator") {
-    return (
-      <View style={styles.container}>
-         <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold',marginTop:hp('5%')}}>Contacts</Text>
-        <ScrollView>
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
-              <View style={[styles.Box]}>
-                <View style={styles.head}>
-                <View style = {styles.avatar}>
-                    <Image
-                      source={{ uri: item.ProfileUrl }}
-                      style={{
-                        
-                       
-                        height: hp('5.2%'),
-                        width: wp('11%'),
-                        borderWidth: 1.5,
-
-                        borderRadius: 50,
-                      }}
-                    />
-                    </View>
-
-                  <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                  </Text>
-                </View>
-              </View>
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </ScrollView>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
       </View>
-    );
-  }
-  if (ROLE == "Student") {
-    return (
-      <View style={styles.container}>
-         <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold',marginTop:hp('5%')}}>Contacts</Text>
         <ScrollView>
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
-              <View style={[styles.Box]}>
-                <View style={styles.head}>
-                <View style = {styles.avatar}>
-                    <Image
-                      source={{ uri: item.ProfileUrl }}
-                      style={{
-                        
-                       
-                        height: hp('5.2%'),
-                        width: wp('11%'),
-                        borderWidth: 1.5,
-
-                        borderRadius: 50,
-                      }}
-                    />
-                    </View>
-
-                  <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                  </Text>
-                </View>
-              </View>
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </ScrollView>
-      </View>
-    );
-  }
-
-  if (ROLE == "Admin") {
-    return (
-      <View style={styles.container}>
-         <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold',marginTop:hp('5%')}}>Contacts</Text>
-        <ScrollView>
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
-                <View style={[styles.Box]}>
+              <TouchableOpacity style={[styles.Box]} onPress={() => handlePress(item.id,item.ProfileUrl,item.firstName,item.lastName)}>
+               
                   <View style={styles.head}>
                     <View style = {styles.avatar}>
                     <Image
@@ -204,7 +127,7 @@ export default function SelectContactScreen({ navigation, route }) {
                       {item.firstName} {item.lastName}
                     </Text>
                   </View>
-                </View>
+               
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -212,7 +135,7 @@ export default function SelectContactScreen({ navigation, route }) {
         </ScrollView>
       </View>
     );
-  }
+  
 
   
 }
@@ -236,7 +159,7 @@ const styles = StyleSheet.create({
     width: wp("95%"),
     height:hp('9%'),
     justifyContent:'center',
-    backgroundColor: "#c7f5ff",
+    backgroundColor: "#e6c0fc",
     borderRadius: 5,
     marginHorizontal: 1,
     borderRadius: 10,
@@ -272,6 +195,7 @@ const styles = StyleSheet.create({
      width: wp('11%'),
     alignSelf: "center",
     borderRadius: 50,
+    backgroundColor:'white',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

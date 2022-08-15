@@ -20,7 +20,10 @@ import "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -172,10 +175,36 @@ export default function UpdateProfile({ navigation }) {
   if (role == "Student") {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.editTextContainer}>
-          <AntDesign name="edit" size={30} color="#34dbeb" />
-          <Text style={styles.editText}>Edit Profile </Text>
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            Edit Profile
+          </Text>
         </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+
         <ScrollView
           style={styles.scrollView}
           refreshControl={
@@ -313,7 +342,7 @@ export default function UpdateProfile({ navigation }) {
           </View>
 
           <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress1}>
-            <MaterialCommunityIcons name="update" size={50} color="#02b2f2" />
+            <MaterialCommunityIcons name="update" size={hp('8%')} color="black" />
             <Text style={styles.updateText}>Update</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -322,10 +351,36 @@ export default function UpdateProfile({ navigation }) {
   } else if (role == "Lecturer") {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.editTextContainer}>
-          <AntDesign name="edit" size={30} color="#34dbeb" />
-          <Text style={styles.editText}>Edit Profile </Text>
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            Edit Profile
+          </Text>
         </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+
         <ScrollView style={styles.scrollView}>
           <View>
             <View style={styles.cardCont}>
@@ -434,8 +489,8 @@ export default function UpdateProfile({ navigation }) {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress2}>
-            <MaterialCommunityIcons name="update" size={50} color="#02b2f2" />
+          <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress1}>
+            <MaterialCommunityIcons name="update" size={hp('8%')} color="black" />
             <Text style={styles.updateText}>Update</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -444,10 +499,36 @@ export default function UpdateProfile({ navigation }) {
   } else if (role == "Demonstrator") {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.editTextContainer}>
-          <AntDesign name="edit" size={30} color="#34dbeb" />
-          <Text style={styles.editText}>Edit Profile </Text>
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            Edit Profile
+          </Text>
         </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+
         <ScrollView style={styles.scrollView}>
           <View>
             <View style={styles.cardCont}>
@@ -555,8 +636,8 @@ export default function UpdateProfile({ navigation }) {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress2}>
-            <MaterialCommunityIcons name="update" size={50} color="#02b2f2" />
+          <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress1}>
+            <MaterialCommunityIcons name="update" size={hp('8%')} color="black" />
             <Text style={styles.updateText}>Update</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -565,10 +646,36 @@ export default function UpdateProfile({ navigation }) {
   } else if (role == "Admin") {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.editTextContainer}>
-          <AntDesign name="edit" size={30} color="#34dbeb" />
-          <Text style={styles.editText}>Edit Profile </Text>
+       <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            Edit Profile
+          </Text>
         </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+
         <ScrollView style={styles.scrollView}>
           <View>
             <View style={styles.cardCont}>
@@ -676,8 +783,8 @@ export default function UpdateProfile({ navigation }) {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress2}>
-            <MaterialCommunityIcons name="update" size={50} color="#02b2f2" />
+          <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress1}>
+            <MaterialCommunityIcons name="update" size={hp('8%')} color="black" />
             <Text style={styles.updateText}>Update</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -687,7 +794,7 @@ export default function UpdateProfile({ navigation }) {
 
   return (
     <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="#03befc" size="large" />
+      <ActivityIndicator color="#cdaffa" size="large" />
     </View>
   );
 }
@@ -695,21 +802,17 @@ export default function UpdateProfile({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
-
     backgroundColor: "#ffffff",
   },
   datePickerStyle: {
     width: 200,
   },
   scrollView: {
-    marginTop: 20,
-    marginBottom: 25,
-    width: "100%",
+    marginBottom:hp('1%'),
+    width:wp('96%'),
     alignSelf: "center",
     borderRadius: 15,
-    backgroundColor: "#88e1fc",
+    backgroundColor: "#cdaffa",
     marginHorizontal: 1,
     shadowColor: "#000",
     shadowOffset: {
@@ -722,44 +825,43 @@ const styles = StyleSheet.create({
   },
 
   cardCont: {
-    marginTop: 10,
-    marginLeft: 20,
-    padding: 5,
-    width: "80%",
+    marginTop: hp('2%'),
+    
+    
   },
   editText: {
-    marginTop: -31,
-    marginLeft: 40,
-    fontSize: 25,
+   
+    fontSize: hp('4%'),
     fontWeight: "bold",
   },
   editTextContainer: {
     alignSelf: "center",
-    marginTop: 10,
-    marginLeft: 5,
+    marginTop: hp('3%'),
+
   },
 
   cardtext: {
-    marginLeft: 3,
-    fontSize: 20,
+    marginLeft: wp('5%'),
+    fontSize: hp('2.5%'),
     fontWeight: "bold",
-    marginBottom: 2,
+    marginBottom:hp('0.5%')
+   
   },
   action: {
-    marginTop: 10,
+    marginTop: hp('1%'),
+    width:wp('90%'),
+    alignSelf:'center'
   },
 
   textinput: {
-    marginLeft: 20,
-    marginTop: -8,
+    width:wp('89%'),
     color: "blue",
-    fontSize: 14,
-    padding: 5,
-    width: "110%",
+    paddingLeft:10,
+    fontSize: hp('2%'),
+    height:hp('6.5%'),
     borderRadius: 15,
-    paddingLeft: 10,
     alignSelf: "center",
-    backgroundColor: "#e3f8ff",
+    backgroundColor: "#e9c8fa",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -773,15 +875,15 @@ const styles = StyleSheet.create({
   buttonUpdate: {
     alignSelf: "center",
 
-    marginTop: 50,
+    marginTop: hp('5%'),
     marginBottom: 20,
     marginLeft: 20,
     marginTop: 10,
   },
 
   updateText: {
-    fontSize: 12,
-    color: "#02b2f2",
+    fontSize: hp('1.5%'),
+    color: "black",
     alignSelf: "center",
     fontWeight: "bold",
   },
@@ -795,7 +897,7 @@ const styles = StyleSheet.create({
 
   buttontext: {
     fontSize: 15,
-    fontWeight: "500",
+    fontWeight: "hp('5%')0",
     alignSelf: "center",
     paddingTop: 7,
   },

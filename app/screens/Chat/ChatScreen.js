@@ -8,7 +8,9 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  StatusBar,
+  Alert
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,6 +21,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { DeleteChat } from "../../../API/firebaseMethods/firebaseMethod";
 export default function ChatScreen({ navigation }) {
 
   const [isLoading, setisLoading] = useState(false);
@@ -52,7 +55,31 @@ export default function ChatScreen({ navigation }) {
     fetchSubjects();
   }, []);
 
-  
+  function delectChat(userId,Id){
+    DeleteChat(userId,Id);
+    //Alert.alert("nskgw");
+    fetchSubjects();
+    RefreshPage();
+
+
+
+  }
+
+  function Delete(id) {
+    Alert.alert(
+      "Delete Chat",
+      "Are you sure you want to delete the Chat?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => delectChat(currentUser.uid,id) },
+      ],
+      { cancelable: false }
+    );
+  }
   const handlePress = () => {
     navigation.navigate("contact");
   };
@@ -73,15 +100,15 @@ export default function ChatScreen({ navigation }) {
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handlePress1(item.ID,item.ProfileUrl,item.firstName,item.lastName)}>
-                <View style={[styles.Box]}>
+              <TouchableOpacity style={[styles.Box]} onLongPress={()=>Delete(item.ID)} onPress={() => handlePress1(item.ID,item.ProfileUrl,item.firstName,item.lastName)}>
+               
                   <View style={styles.head}>
                   <View style ={styles.avatar}>
                     <Image
                       source={{ uri: item.ProfileUrl }}
                       style={{
                         marginLeft: "5%",
-                        marginTop: "2%",
+                        marginTop: "2%", 
                         height: 41,
                         width: 41,
                         borderWidth: 1.5,
@@ -95,7 +122,7 @@ export default function ChatScreen({ navigation }) {
                       {item.firstName} {item.lastName}
                     </Text>
                   </View>
-                </View>
+            
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -106,7 +133,7 @@ export default function ChatScreen({ navigation }) {
         
         <Ionicons
           name="md-add-circle-sharp"
-          size={70}
+          size={hp('10%')}
           color="#03dffc"
           onPress={handlePress}
         />
@@ -155,6 +182,11 @@ export default function ChatScreen({ navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('#cdaffa'); 
+    StatusBar.setTranslucent(true)
+   }, []);
+
   
 
   if(isLoading == true){
@@ -187,8 +219,8 @@ export default function ChatScreen({ navigation }) {
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handlePress1(item.ID,item.ProfileUrl,item.firstName,item.lastName)}>
-                <View style={[styles.Box]}>
+              <TouchableOpacity style={[styles.Box]} onLongPress={()=>Delete(item.ID)} onPress={() => handlePress1(item.ID,item.ProfileUrl,item.firstName,item.lastName)}>
+               
                   <View style={styles.head}>
                     <View style ={styles.avatar}>
                     <Image
@@ -209,7 +241,7 @@ export default function ChatScreen({ navigation }) {
                       {item.firstName} {item.lastName}
                     </Text>
                   </View>
-                </View>
+             
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -220,8 +252,8 @@ export default function ChatScreen({ navigation }) {
         
         <Ionicons
           name="md-add-circle-sharp"
-          size={70}
-          color="#03dffc"
+          size={hp('10%')}
+          color="#cdaffa"
           onPress={handlePress}
         />
       </View>
@@ -258,7 +290,7 @@ const styles = StyleSheet.create({
     width: wp("95%"),
     height:hp('9%'),
     justifyContent:'center',
-    backgroundColor: "#c7f5ff",
+    backgroundColor: "#e3bbfa",
     borderRadius: 5,
     marginHorizontal: 1,
     borderRadius: 10,
@@ -280,7 +312,6 @@ const styles = StyleSheet.create({
   head: {
     flex: 1,
     flexDirection: "row",
-    justifyContent:'center',
     marginLeft:hp('2%')
   },
   Loadingcontainer: {
@@ -290,8 +321,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   avatar: {
-    height: hp('5.2%'),
-     width: wp('11%'),
+    backgroundColor:'white',
     alignSelf: "center",
     borderRadius: 50,
     shadowColor: "#000",
@@ -299,8 +329,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 20,
+    shadowOpacity: 5,
     shadowRadius: 55,
-    elevation: 15,
+    elevation: 10,
   },
 });

@@ -121,6 +121,44 @@ export async function StoreSendMessage(
 }
 
 
+export async function DeleteMessage(
+  id,
+  created,
+  type,
+  SenderID,
+  ReceiverID,
+  firstName,
+  lastName,
+  ProfileUrl
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("messages").doc(SenderID).collection(ReceiverID).doc(id).update({
+     
+      MessageId: id,
+      type : type,
+      ReceiverID : ReceiverID,
+      message:"message has deleted!",
+      dateAndTime : dateAndTime,
+      firstName : firstName,
+      lastName : lastName,
+      ProfileUrl : ProfileUrl,
+      created: created
+
+    });
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+
 
 
 export async function StoreCourse(
@@ -164,6 +202,72 @@ export async function StoreCourse(
   }
 }
 
+export async function UpdateStoreCourse(
+  id,
+  userId,
+  faculty,
+  department,
+  level,
+  year,
+  course,
+  CourseID,
+  CourseNameID,
+  title,
+  instruction,
+  document
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("Courses-"+faculty).doc(department).collection(level).doc(year).collection(CourseID).doc(CourseID).collection(userId).doc(id).update({
+     
+      Id: id,
+      userId : userId,
+      course:course, 
+      CourseNameID:CourseNameID,
+      dateAndTime : dateAndTime,
+      title : title,
+      instruction : instruction,
+      document : document,
+      created: firebase.firestore.FieldValue.serverTimestamp()
+
+    });
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+export async function DeleteStoreCourse(
+  id,
+  userId,
+  faculty,
+  department,
+  level,
+  year,
+  CourseID,
+ 
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("Courses-"+faculty).doc(department).collection(level).doc(year).collection(CourseID).doc(CourseID).collection(userId).doc(id).delete();
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
 export async function StoreCourseName(
   userId,
   faculty,
@@ -182,6 +286,69 @@ export async function StoreCourseName(
 
     const db1 = firebase.firestore();
     db1.collection("CoursesName-"+faculty).doc(department).collection(level).doc(year).collection("CourseNames").doc(CourseID).set({
+     
+  
+      userId:userId,
+      CourseID:CourseID,
+      CourseNameID:CourseNameID,
+      course:course, 
+      dateAndTime : dateAndTime,
+      EntrollKey :password,
+      created: firebase.firestore.FieldValue.serverTimestamp()
+
+    });
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+export async function DeleteStoreCourseName(
+  
+  faculty,
+  department,
+  level,
+  year,
+  CourseID,
+ 
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("CoursesName-"+faculty).doc(department).collection(level).doc(year).collection("CourseNames").doc(CourseID).delete();
+
+
+    
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+
+
+export async function EditCourseName(
+  userId,
+  faculty,
+  department,
+  level,
+  year,
+  course,
+  CourseID,
+  CourseNameID,
+  password
+) {
+  try {
+   
+    
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    const db1 = firebase.firestore();
+    db1.collection("CoursesName-"+faculty).doc(department).collection(level).doc(year).collection("CourseNames").doc(CourseID).update({
      
   
       userId:userId,
@@ -264,6 +431,10 @@ export async function StoreReceiveMessage(
   }
 }
 
+
+
+
+
 export async function StoreReceivedID(
   ReceiverID,
   ID,
@@ -278,13 +449,25 @@ export async function StoreReceivedID(
   
   const db1 = firebase.firestore();
     db1.collection("Conversations").doc(ReceiverID).collection("Chats").doc(ID).set({
-     
+      
       ID : ID,
       firstName: firstName,
       lastName: lastName,
       ProfileUrl : ProfileUrl
     });
   
+}
+
+
+
+export async function DeleteChat(ReceiverID,ID) {
+  try {
+    const db = firebase.firestore();
+    db.collection("Conversations").doc(ReceiverID).collection("Chats").doc(ID).delete();
+ 
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
 }
 
 export async function StudentEntroll(
@@ -376,13 +559,15 @@ export async function AddResults(
   RegistrationNumber,
   course,
   result,
-  credits
+  credits,
+  faculty,
+  department
 ) {
   try {
    
 
     const db = firebase.firestore();
-    db.collection(year).doc(level).collection(RegistrationNumber).doc(course).set({
+    db.collection(faculty+'-result').doc(department).collection(year).doc(level).collection(RegistrationNumber).doc(course).set({
       course :course,
       result : result,
       credits : credits,
@@ -392,7 +577,7 @@ export async function AddResults(
   }
 }
 
-export async function UploadPost(id, message, title,imageUrl,ProfileUrl) {
+export async function UploadPost(id, message, title,imageUrl,ProfileUrl,faculty) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -407,7 +592,7 @@ export async function UploadPost(id, message, title,imageUrl,ProfileUrl) {
     let dataObj = doc.data();
 
     const db = firebase.firestore();
-    db.collection("Posts").doc(id).set({
+    db.collection(faculty+"-Posts").doc(id).set({
       Postid: id,
       UserId: currentUser.uid,
       title: title,
@@ -424,7 +609,7 @@ export async function UploadPost(id, message, title,imageUrl,ProfileUrl) {
   }
 }
 
-export async function EditPost(id, message, title,image) {
+export async function EditPost(id, message, title,image,faculty) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -439,7 +624,7 @@ export async function EditPost(id, message, title,image) {
     let dataObj = doc.data();
 
     const db = firebase.firestore();
-    db.collection("Posts").doc(id).update({
+    db.collection(faculty+"-Posts").doc(id).update({
       Postid: id,
       UserId: currentUser.uid,
       title: title,
@@ -454,16 +639,16 @@ export async function EditPost(id, message, title,image) {
   }
 }
 
-export async function DeletePost(id) {
+export async function DeletePost(id,faculty) {
   try {
     const db = firebase.firestore();
-    db.collection("Posts").doc(id).delete();
+    db.collection(faculty+"-Posts").doc(id).delete();
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-export async function CreateNotice(id, notice, title, type,ProfileUrl) {
+export async function CreateNotice(id, notice, title, type,ProfileUrl ,faculty) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -478,7 +663,7 @@ export async function CreateNotice(id, notice, title, type,ProfileUrl) {
     let dataObj = doc.data();
 
     const db = firebase.firestore();
-    db.collection("Notices").doc(id).set({
+    db.collection(faculty+"Notices").doc(id).set({
       id: id,
       UserID: currentUser.uid,
       notice: notice,
@@ -494,7 +679,7 @@ export async function CreateNotice(id, notice, title, type,ProfileUrl) {
   }
 }
 
-export async function EditNotice(Noticeid, notice, title, type) {
+export async function EditNotice(Noticeid, notice, title, type , Faculty) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -509,7 +694,7 @@ export async function EditNotice(Noticeid, notice, title, type) {
     let dataObj = doc.data();
 
     const db = firebase.firestore();
-    db.collection("Notices").doc(Noticeid).update({
+    db.collection(Faculty+"Notices").doc(Noticeid).update({
       id: Noticeid,
       UserID: currentUser.uid,
       title: title,
@@ -524,10 +709,10 @@ export async function EditNotice(Noticeid, notice, title, type) {
   }
 }
 
-export async function DeleteNotice(id) {
+export async function DeleteNotice(id,Faculty) {
   try {
     const db = firebase.firestore();
-    db.collection("Notices").doc(id).delete();
+    db.collection(Faculty+"Notices").doc(id).delete();
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }

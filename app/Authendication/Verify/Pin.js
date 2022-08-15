@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   KeyboardAvoidingView,
+  StatusBar
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CodeInput from "react-native-confirmation-code-input";
@@ -29,6 +30,11 @@ export default function Pin({ navigation }) {
   const [studentPin, setStudentPin] = useState("");
   const [adminPin, setAdminPin] = useState("");
   const [flag, setFlag] = useState("");
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('white'); 
+    StatusBar.setTranslucent(true)
+   }, []);
 
   const emptyState = () => {
     setPin("");
@@ -83,9 +89,9 @@ export default function Pin({ navigation }) {
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require("../../assets/logo.png")}
+            source={require("../../assets/ec.png")}
           ></Image>
-          <Text style={styles.text}>TIME TO LEARN</Text>
+          
         </View>
         <KeyboardAvoidingView
           behavior="position"
@@ -106,7 +112,7 @@ export default function Pin({ navigation }) {
                     marginBottom: hp("5%"),
                     borderRadius: 10,
                     opacity: 0.5,
-                    backgroundColor: "#7ecbf7",
+                    backgroundColor: "#edaffa",
                   }}
                 ></View>
               }
@@ -116,7 +122,7 @@ export default function Pin({ navigation }) {
                     width: wp("6%"),
                     height: hp("3%"),
                     borderRadius: 25,
-                    backgroundColor: "#0378ff",
+                    backgroundColor: "#cdaffa",
                   }}
                 ></View>
               }
@@ -171,7 +177,7 @@ const styles = StyleSheet.create({
     marginBottom: hp("3%"),
   },
   enterButton: {
-    backgroundColor: "#7ecbf7",
+  
     justifyContent: "center",
     marginTop: hp("8%"),
     width: wp("50%"),
@@ -180,7 +186,7 @@ const styles = StyleSheet.create({
     marginBottom: hp("5%"),
     alignSelf: "center",
     shadowColor: "#000",
-    backgroundColor: "#34dbeb",
+    backgroundColor: "#cdaffa",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -197,10 +203,10 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: wp("55%"),
-    height: hp("30%"),
+    height: hp("27%"),
   },
   logoContainer: {
-    marginTop: hp("1%"),
+    marginTop: hp("3%"),
     marginBottom: hp("5%"),
     alignItems: "center",
   },
