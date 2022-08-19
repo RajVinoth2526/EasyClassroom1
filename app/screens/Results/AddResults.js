@@ -1,16 +1,53 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 
-import { View, Text, StyleSheet, TouchableOpacity,TextInput,Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity,TextInput,Alert,StatusBar,KeyboardAvoidingView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { AddResults } from "../../../API/firebaseMethods/firebaseMethod";
 import RNPickerSelect from "react-native-picker-select";
+import * as firebase from "firebase";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 export default function AddResultsScreen({ navigation }) {
     const [year, setYear] = useState("");
+    const [faculty, setFaculty] = useState("");
+    const [department, setDepartment] = useState("");
     const [level, setLevel] = useState("");
     const [course, setCourse] = useState("");
     const [result, setResult] = useState("");
     const [credits, setCredits] = useState("");
     const [RegistrationNumber, setRegistrationNumber] = useState("");
+
+
+    const currentUser = firebase.auth().currentUser;
+
+
+  async function getUserInfo() {
+    let doc = await firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUser.uid)
+      .get();
+
+    if (!doc.exists) {
+      Alert.alert("No user data found!");
+    } else {
+      let dataObj = doc.data();
+      
+      setFaculty(dataObj.faculty);
+      setDepartment(dataObj.department);
+     
+
+    }
+  }
+
+  useEffect(() => {
+   
+
+    getUserInfo();
+  }, []);
+
 
 
     const emptyState = () => {
@@ -21,7 +58,11 @@ export default function AddResultsScreen({ navigation }) {
         setRegistrationNumber("");
        
       };
-    
+      React.useEffect(() => {
+        StatusBar.setBackgroundColor("#cdaffa");
+        StatusBar.setTranslucent(true);
+      }, []);
+     
       const handlePress = () => {
         if (!year) {
           Alert.alert("year is required");
@@ -42,19 +83,49 @@ export default function AddResultsScreen({ navigation }) {
            RegistrationNumber,
            course,
            result,
-           credits
+           credits,
+           faculty,
+           department
           );
           Alert.alert(" Result Added successfully");
           emptyState();
         }
       };
+      const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
     
   return (
     <View style={styles.container}>
-        <View style = {{alignSelf :'center'}}>
-            <Text style ={{fontSize :20}}>Add Results</Text>
+         <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+             Add Results
+          </Text>
         </View>
-        <ScrollView>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
+        <ScrollView style={{height:hp('55%'),marginTop:hp('2%')}}>
         <View>
           
        
@@ -167,6 +238,7 @@ export default function AddResultsScreen({ navigation }) {
           </View>
 
         </ScrollView>
+        </KeyboardAvoidingView>
 
         <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
             <Text style={styles.SignUpText}>Add</Text>
@@ -178,79 +250,71 @@ export default function AddResultsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-   
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
 
     backgroundColor: "white",
-   
-
-    
   },
   datePickerStyle: {
     width: 200,
   },
   scrollView: {
-    marginTop: 20,
-    marginBottom: 10,
-    marginLeft: 25,
-    marginRight: 25,
-    borderRadius: 15,
+    height: hp("55%"),
+    width: wp("90%"),
+    alignSelf: "center",
+    borderRadius: 40,
+    marginBottom: hp("5%"),
     backgroundColor: "#ffffff",
-    marginHorizontal: 1,
+  },
+
+  cardCont: {
+    marginTop: hp("1%"),
+    alignSelf: "center",
+    width: wp("78%"),
+  },
+  text: {
+    alignSelf: "center",
+    marginTop: hp("4%"),
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+
+  cardtext: {
+    marginLeft: wp("1%"),
+    fontSize: hp("2.4%"),
+    fontWeight: "bold",
+    marginBottom: hp("1%"),
+  },
+  action: {
+    justifyContent: "center",
+    borderRadius: 10,
+    height: hp("6%"),
+    marginBottom: hp("1%"),
+    backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.9,
-    shadowRadius: 10,
-    elevation: 0.8,
-  },
-
-  cardCont: {
-    marginTop: 10,
-    marginLeft: 20,
-    padding: 5,
-    width: "80%",
-  },
-  text: {
-    marginBottom: 20,
-    fontSize: 25,
-    fontWeight: "bold",
-  },
-
-  cardtext: {
-    marginLeft: 3,
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 2,
-  },
-  action: {
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
-    paddingBottom: 5,
-    marginBottom: 5,
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 8,
   },
 
   textinput: {
-    marginLeft: 10,
+    marginLeft: wp("3%"),
     color: "black",
-    fontSize: 15,
+    fontSize: hp("2.2%"),
   },
 
   buttonSignup: {
-    backgroundColor: "#34dbeb",
+    backgroundColor: "#cdaffa",
+    justifyContent: "center",
     alignSelf: "center",
-    height: 50,
+    height: hp("8%"),
     borderRadius: 9,
-    marginTop: 80,
-    marginBottom: 20,
-    paddingTop: 3,
-    width: "70%",
-    marginTop: 10,
+    marginTop:hp('8%'),
+    marginBottom: hp("0.1%"),
+    width: "60%",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -258,19 +322,19 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.6,
     shadowRadius: 8,
-    elevation: 5,
+    elevation: 6,
   },
 
   SignUpText: {
-    fontSize: 20,
+    fontSize: hp("3%"),
     alignSelf: "center",
     fontWeight: "bold",
   },
 
   inlineText: {
-    color: "blue",
-    marginTop: 10,
-    marginBottom: 20,
+    color: "red",
+    marginTop: hp("1.5%"),
+    marginBottom: hp("4%"),
     alignSelf: "center",
   },
 
@@ -279,5 +343,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     alignSelf: "center",
     paddingTop: 7,
+  },
+
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 });

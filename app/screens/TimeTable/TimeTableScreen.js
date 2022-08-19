@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   FlatList,
   Alert,
+  StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,7 +22,10 @@ import * as ImagePicker from "expo-image-picker";
 import { UploadTimeTable } from "../../../API/firebaseMethods/firebaseMethod";
 import ImageModal from "react-native-image-modal";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -36,6 +40,11 @@ export default function TimeTableScreen({ navigation }) {
   const [image3, setImage3] = useState(exampleImageUri);
 
   let currentUserUID = firebase.auth().currentUser.uid;
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   const pickImage1 = async () => {
     // No permissions request is necessary for launching the image library
@@ -169,486 +178,513 @@ export default function TimeTableScreen({ navigation }) {
 
   if (role == "Lecturer") {
     return (
-     
-        <ScrollView showsHorizontalScrollIndicator={false} style={styles.scrollScreen}>
-          <View style={{ marginTop: 20, marginBottom: 20 }}>
-            <Text style={{ fontSize: 20, alignSelf: "center" }}>
-              {" "}
-              <MaterialCommunityIcons
-                name="table-clock"
-                size={25}
-                color="black"
-              />{" "}
+      <ScrollView style={styles.scrollScreen}>
+        <View style={{ backgroundColor: "white", height: hp("12%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("12%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
               Time Table
             </Text>
           </View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
           <View
-            style={[
-              styles.Box,
-              
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 1
-              </Text>
-            </View>
-            
-              <View style={styles.avatar}>
-                <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image1 }}
-                  style={{
-                    borderRadius: 3,
-                   
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-              </View>
-           
-          </View>
-          <View
-            style={[
-              styles.Box,
-            
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 2
-              </Text>
-            </View>
+            style={{
+              backgroundColor: "white",
+              height: hp("12%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
 
-            <View style={styles.avatar}>
-              <ImageModal
-                swipeToDismiss={true}
-                resizeMode="contain"
-                imageBackgroundColor="#000000"
-                source={{ uri: image2 }}
-                style={{
-                  borderRadius: 3,
-                  height: 200,
-                  width: 300,
-                }}
-              />
-            </View>
-          </View>
-          <View
-            style={[
-              styles.Box,
-             
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 3
-              </Text>
-            </View>
-
-            <View style={styles.avatar}>
-              <ImageModal
-                swipeToDismiss={true}
-                resizeMode="contain"
-                imageBackgroundColor="#000000"
-                source={{ uri: image3 }}
-                style={{
-                  borderRadius: 3,
-                  height: 200,
-                  width: 300,
-                }}
-              />
-            </View>
-          </View>
-        </ScrollView>
-      
-    );
-  } else if (role == "Demo") {
-    return (
-     
-        <ScrollView style={styles.scrollScreen}>
-          <View style={{ marginTop: 20, marginBottom: 20 }}>
-            <Text style={{ fontSize: 20, alignSelf: "center" }}>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
               {" "}
-              <Octicons name="note" size={25} color="#34dbeb" /> Time Table
+              Level 1
             </Text>
           </View>
-          <View
-            style={[
-              styles.Box,
-             
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 1
-              </Text>
-            </View>
 
-            <View style={styles.avatar}>
+          <View style={styles.avatar}>
             <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image1 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-            </View>
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image1 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
           </View>
-          <View
-            style={[
-              styles.Box,
-              
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 2
-              </Text>
-            </View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 2
+            </Text>
+          </View>
 
-            <View style={styles.avatar}>
+          <View style={styles.avatar}>
             <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image2 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-            </View>
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image2 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
           </View>
-          <View
-            style={[
-              styles.Box,
-            
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 3
-              </Text>
-            </View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 3
+            </Text>
+          </View>
 
-            <View style={styles.avatar}>
+          <View style={styles.avatar}>
             <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image3 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-            </View>
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image3 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
           </View>
-        </ScrollView>
-      
+        </View>
+      </ScrollView>
+    );
+  } else if (role == "Demonstrator") {
+    return (
+      <ScrollView style={styles.scrollScreen}>
+        <View style={{ backgroundColor: "white", height: hp("12%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("12%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Time Table
+            </Text>
+          </View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("12%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 1
+            </Text>
+          </View>
+
+          <View style={styles.avatar}>
+            <ImageModal
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image1 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
+          </View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 2
+            </Text>
+          </View>
+
+          <View style={styles.avatar}>
+            <ImageModal
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image2 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
+          </View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 3
+            </Text>
+          </View>
+
+          <View style={styles.avatar}>
+            <ImageModal
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image3 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
+          </View>
+        </View>
+      </ScrollView>
     );
   } else if (role == "Student") {
     return (
-     
-        <ScrollView style={styles.scrollScreen}>
-          <View style={{ marginTop: 20, marginBottom: 20 }}>
-            <Text style={{ fontSize: 20, alignSelf: "center" }}>
-              {" "}
-              <Octicons name="note" size={25} color="#34dbeb" /> Time Table
+      <ScrollView style={styles.scrollScreen}>
+        <View style={{ backgroundColor: "white", height: hp("12%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("12%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Time Table
             </Text>
           </View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
           <View
-            style={[
-              styles.Box,
-            
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 1
-              </Text>
-            </View>
-
-            <View style={styles.avatar}>
-            <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image1 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-            </View>
+            style={{
+              backgroundColor: "white",
+              height: hp("12%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 1
+            </Text>
           </View>
-          <View
-            style={[
-              styles.Box,
-              
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 2
-              </Text>
-            </View>
 
-            <View style={styles.avatar}>
+          <View style={styles.avatar}>
             <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image2}}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-            </View>
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image1 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
           </View>
-          <View
-            style={[
-              styles.Box,
-               ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 3
-              </Text>
-            </View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 2
+            </Text>
+          </View>
 
-            <View style={styles.avatar}>
+          <View style={styles.avatar}>
             <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image3 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-            </View>
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image2 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
           </View>
-        </ScrollView>
-     
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 3
+            </Text>
+          </View>
+
+          <View style={styles.avatar}>
+            <ImageModal
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image3 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
+          </View>
+        </View>
+      </ScrollView>
     );
   } else if (role == "Admin") {
     return (
-     
-        <ScrollView style={styles.scrollScreen}>
-          <View style={{ marginTop: 20, marginBottom: 20 }}>
-            <Text style={{ fontSize: 20, alignSelf: "center" }}>
-              {" "}
-              <Octicons name="note" size={25} color="#34dbeb" /> Time Table
+      <ScrollView style={styles.scrollScreen}>
+        <View style={{ backgroundColor: "white", height: hp("12%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("12%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Time Table
             </Text>
           </View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
           <View
-            style={[
-              styles.Box,
-            
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 1
-              </Text>
-            </View>
-
-            <View style={styles.avatar}>
-            <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image1 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-
-             
-            </View>
-            <View style={styles.uploadButton}>
-                <MaterialCommunityIcons
-                  onPress={pickImage1}
-                  name="image-plus"
-                  size={24}
-                  color="black"
-                />
-              </View>
+            style={{
+              backgroundColor: "white",
+              height: hp("12%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 1
+            </Text>
           </View>
-          <View
-            style={[
-              styles.Box,
-             
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 2
-              </Text>
-            </View>
 
-            <View style={styles.avatar}>
+          <View style={styles.avatar}>
             <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image2 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-              
-            </View>
-            <View style={styles.uploadButton}>
-                <MaterialCommunityIcons
-                  onPress={pickImage2}
-                  name="image-plus"
-                  size={24}
-                  color="black"
-                />
-              </View>
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image1 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
           </View>
-          <View
-            style={[
-              styles.Box,
-             
-            ]}
-          >
-            <View style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  alignItems: "flex-start",
-                  marginLeft: 30,
-                }}
-              >
-                {" "}
-                Level 3
-              </Text>
-            </View>
+          <View style={styles.uploadButton}>
+            <MaterialCommunityIcons
+              onPress={pickImage1}
+              name="image-plus"
+              size={hp("4%")}
+              color="black"
+            />
+          </View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 2
+            </Text>
+          </View>
 
-            <View style={styles.avatar}>
+          <View style={styles.avatar}>
             <ImageModal
-                  swipeToDismiss={true}
-                  resizeMode="contain"
-                  imageBackgroundColor="#000000"
-                  source={{ uri: image3 }}
-                  style={{
-                    borderRadius: 3,
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-
-              
-            </View>
-            <View style={styles.uploadButton}>
-                <MaterialCommunityIcons
-                  onPress={pickImage3}
-                  name="image-plus"
-                  size={24}
-                  color="black"
-                />
-              </View>
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image2 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
           </View>
-        </ScrollView>
-     
+          <View style={styles.uploadButton}>
+            <MaterialCommunityIcons
+              onPress={pickImage1}
+              name="image-plus"
+              size={hp("4%")}
+              color="black"
+            />
+          </View>
+        </View>
+        <View style={[styles.Box]}>
+          <View style={{ marginTop: hp("4%") }}>
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                fontWeight: "bold",
+                alignItems: "flex-start",
+                marginLeft: hp("3.5%"),
+              }}
+            >
+              {" "}
+              Level 3
+            </Text>
+          </View>
+
+          <View style={styles.avatar}>
+            <ImageModal
+              swipeToDismiss={true}
+              resizeMode="contain"
+              imageBackgroundColor="white"
+              source={{ uri: image3 }}
+              style={{
+                borderRadius: 3,
+                height: hp("28%"),
+                width: wp("83%"),
+              }}
+            />
+          </View>
+          <View style={styles.uploadButton}>
+            <MaterialCommunityIcons
+              onPress={pickImage1}
+              name="image-plus"
+              size={hp("4%")}
+              color="black"
+            />
+          </View>
+        </View>
+      </ScrollView>
     );
   }
 
@@ -676,13 +712,12 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   scrollScreen: {
-    
-    marginBottom: 20,
+    marginBottom: hp("1%"),
     borderRadius: 10,
-    width:'100%',
-    height: "100%",
+    width: wp("100%"),
+    height: hp("100%"),
     backgroundColor: "white",
-    marginHorizontal: 1,
+
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -694,13 +729,12 @@ const styles = StyleSheet.create({
   },
 
   Box: {
-    alignSelf:'center',
-    marginBottom: '2%',
-    marginTop: '5%',
-    width:'95%',
-    backgroundColor: "#b1dffc",
+    alignSelf: "center",
+    marginTop: hp("0.1%"),
+    width: wp("96%"),
+    backgroundColor: "#e9cdfa",
     borderRadius: 5,
-    marginHorizontal: 1,
+    marginBottom: hp("1%"),
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -720,11 +754,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   avatar: {
-    marginTop: 20,
-    borderRightColor:'black',
-    borderRadius:3,
-    borderWidth:1,
-    marginBottom: 30,
+    marginTop: hp("4%"),
+    borderRadius: 3,
+    marginBottom: hp("4%"),
     borderRadius: 3,
     alignSelf: "center",
     shadowColor: "#000",
@@ -734,11 +766,11 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 5,
-    elevation: 5,
+    elevation: 8,
   },
   uploadButton: {
     alignItems: "flex-end",
-    marginEnd: '10%',
-    marginBottom : '2%'
+    marginEnd: hp("3%"),
+    marginBottom: hp("2%"),
   },
 });

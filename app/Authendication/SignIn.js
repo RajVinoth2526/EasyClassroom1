@@ -9,58 +9,77 @@ import {
   Image,
   ActivityIndicator,
   KeyboardAvoidingView,
-  BackHandler
+  BackHandler,
+  StatusBar
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { signIn } from "../../API/firebaseMethods/firebaseMethod";
 import Modal from "react-native-modal";
-
+import { color } from "react-native-reanimated";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 export default function SignIn({ navigation }) {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setisLoading] = useState(false);
+  const [flag, setflag] = useState(false);
 
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('white'); 
+    StatusBar.setTranslucent(true)
+   }, []);
 
-
- 
 
   const handlePress = () => {
     if (!email) {
       Alert.alert("email field is required.");
-    }
-
-    if (!password) {
+    } else if (!password) {
       Alert.alert("Password field is required.");
+    } else {
+      setisLoading(true);
+
+      const FLAG = signIn(email, password).then(() => {
+        setisLoading(false);
+        setflag(FLAG);
+      });
+    
+      setEmail("");
+      setPassword("");
     }
+  };
 
-    signIn(email, password);
-    setEmail("");
-    setPassword("");
 
+
+  if (flag == true) {
     return (
       <View style={styles.Loadingcontainer}>
-        <Image
-          style={styles.logo}
-          source={require("../assets/logo.png")}
-        ></Image>
-        <Text style={{ color: "black", fontSize: 40 }}>Easy Classroom</Text>
         <ActivityIndicator color="#03befc" size="large" />
       </View>
     );
-  };
+  }
+
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
-          source={require("./../assets/logo.png")}
+          source={require("./../assets/ec.png")}
         ></Image>
+        <Text style = {{alignSelf:'center', color :'#cdaffa' ,fontWeight:'bold'}}>Easy Classroom</Text>
         <Text style={styles.text}>TIME TO LEARN</Text>
       </View>
 
-      <SafeAreaView>
-        <ScrollView style={{ height: 200 }}>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <ScrollView style={{ height: hp("33%") }}>
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>Email</Text>
             <View style={styles.action}>
@@ -87,7 +106,7 @@ export default function SignIn({ navigation }) {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
 
       <TouchableOpacity style={styles.buttonLogin} onPress={handlePress}>
         <Text style={styles.buttontext}>SignIn</Text>
@@ -96,55 +115,58 @@ export default function SignIn({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate("VerifyRole")}>
         <Text style={styles.inlineText}>Don't have an account?</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+        <Text
+          style={{ alignSelf: "center", color: "red",fontWeight:'bold', marginTop: hp("2%") }}
+        >
+          Forgot Password?
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    padding: 10,
+    flex: 1,
     backgroundColor: "#ffffff",
   },
 
   cardCont: {
-    marginTop: -10,
-    marginLeft: 40,
-    padding: 5,
-    width: "80%",
+    marginLeft: hp("5%"),
+
+    width: wp("80%"),
   },
   text: {
-    marginTop: -20,
     fontWeight: "bold",
-    fontSize: 20,
+    color: "black",
+    marginTop: hp("0%"),
+    fontSize: hp("2.5%"),
+    marginBottom: hp("6%"),
+    fontWeight:'bold'
   },
 
   cardtext: {
-    fontSize: 18,
+    fontSize: hp("2.5%"),
     fontWeight: "bold",
-    marginBottom: 5,
   },
   inlineText: {
-    color: "blue",
-    marginTop: 15,
+    color: "#cdaffa",
+    marginTop: hp("4%"),
     alignSelf: "center",
+    fontWeight:'bold'
   },
 
-  logo: {
-    width: 150,
-    height: 150,
-  },
   logoContainer: {
-    
-    marginBottom: '10%',
+    marginTop: hp("5%"),
     alignItems: "center",
-    padding: 10,
   },
   action: {
-    marginTop: 5,
+    marginTop: hp("1%"),
 
     borderRadius: 10,
-    paddingBottom: 5,
+
     marginBottom: 20,
 
     backgroundColor: "white",
@@ -155,24 +177,23 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 5,
+    elevation: 6,
   },
 
   textinput: {
     color: "black",
-    padding: 7,
-    fontSize: 20,
+    height: hp("7%"),
+    fontSize: hp("2.4%"),
     paddingLeft: 8,
   },
 
   buttonLogin: {
-    backgroundColor: "#34dbeb",
+    backgroundColor: "#cdaffa",
+    justifyContent: "center",
     alignSelf: "center",
-    height: 50,
+    height: hp("8%"),
     borderRadius: 9,
-    marginTop: 40,
-    paddingTop: 3,
-    width: "60%",
+    width: wp("55%"),
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -185,10 +206,9 @@ const styles = StyleSheet.create({
   },
 
   buttontext: {
-    fontSize: 22,
-    fontWeight: "500",
+    fontSize: hp("3%"),
     alignSelf: "center",
-    paddingTop: 2,
+    fontWeight:'bold'
   },
 
   Loadingcontainer: {
@@ -200,7 +220,7 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 200,
-    height: 200,
-  },
+    width: wp("50%"),
+    height: hp("20%"),
+  }
 });

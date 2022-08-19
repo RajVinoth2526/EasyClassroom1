@@ -51,7 +51,11 @@ export async function LecturerRegistration(
       ProfileUrl : image     
       
     });
+
+    return true;
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
+
+    return false;
   }
 }

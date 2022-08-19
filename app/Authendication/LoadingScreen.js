@@ -2,6 +2,10 @@ import React from "react";
 import { ActivityIndicator, StyleSheet, View, Text, Image } from "react-native";
 import * as firebase from "firebase";
 import "firebase/firestore";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 export default function LoadingScreen({ navigation }) {
   firebase.auth().onAuthStateChanged(function (user) {
@@ -14,18 +18,19 @@ export default function LoadingScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={require("../assets/logo.png")}></Image>
+      <Image style={styles.logo} source={require("../assets/ec.png")}></Image>
       <Text
         style={{
           color: "black",
-          fontSize: 12,
-          marginBottom: 20,
-          marginStart: -10,
+          fontWeight:'bold',
+          fontSize: hp('2%'),
+          
+         
         }}
       >
         Easy Classroom
       </Text>
-      <ActivityIndicator color="#03befc" size="large" />
+      <ActivityIndicator color="#cdaffa" size="large" />
     </View>
   );
 }
@@ -38,10 +43,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
 
+  
   logo: {
-    width: 150,
-    height: 150,
-    marginBottom: -40,
-    marginTop: -60,
+    alignSelf: "center",
+    width: wp("40%"),
+    height: hp("20%"),
   },
 });

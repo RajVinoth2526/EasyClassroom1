@@ -7,41 +7,79 @@ import {
   Image,
   TextInput,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  RefreshControl,
+  StatusBar,
+  Alert
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
 import { ScrollView } from "react-native-gesture-handler";
-
+import { useIsFocused } from "@react-navigation/native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { DeleteChat } from "../../../API/firebaseMethods/firebaseMethod";
 export default function ChatScreen({ navigation }) {
 
-  const [isLoading, setisLoading] = useState(true);
+  const [isLoading, setisLoading] = useState(false);
   const [subjects, setSubjects] = useState([]);
 
-  let currentUserUID = firebase.auth().currentUser.uid;
+  const currentUser = firebase.auth().currentUser;
+  
+  async function fetchSubjects() {
+    
+
+    const data = [];
+    
+    const db = firebase.firestore();
+    const querySnapshot = await db.collection("Conversations").doc(currentUser.uid).collection("Chats").get();
+    
+    querySnapshot.forEach((doc) => {
+      
+
+      console.log(doc.id, " => ", doc.data());
+      data.push(doc.data());
+    });
+
+    setSubjects(data);
+
+  }
   
 
   useEffect(() => {
-    async function fetchSubjects() {
-      const data = [];
-      
-      const db = firebase.firestore();
-      const querySnapshot = await db.collection(currentUserUID+"senders").get();
-      querySnapshot.forEach((doc) => {
-        
-
-        console.log(doc.id, " => ", doc.data());
-        data.push(doc.data());
-      });
-
-      setSubjects(data);
-      setisLoading(false);
-    }
-
+   
+    
     fetchSubjects();
   }, []);
 
+  function delectChat(userId,Id){
+    DeleteChat(userId,Id);
+    //Alert.alert("nskgw");
+    fetchSubjects();
+    RefreshPage();
+
+
+
+  }
+
+  function Delete(id) {
+    Alert.alert(
+      "Delete Chat",
+      "Are you sure you want to delete the Chat?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => delectChat(currentUser.uid,id) },
+      ],
+      { cancelable: false }
+    );
+  }
   const handlePress = () => {
     navigation.navigate("contact");
   };
@@ -51,38 +89,26 @@ export default function ChatScreen({ navigation }) {
   };
 
 
-  if(isLoading == true){
-    return(
-    <View style={styles.Loadingcontainer}>
-      
-      <ActivityIndicator color="#03befc" size="large" />
-    </View>
-    );
-  }
+  function RefreshPage(){
 
 
-  
-
-
-  
-
- 
     return (
       <View style={styles.container}>
-        <Text style={{fontSize :30 ,marginBottom :"5%",marginLeft :'3%',fontWeight:'900'}}>Chats</Text>
+        <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold'}}>Chats</Text>
         
         <ScrollView>
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handlePress1(item.ID,item.ProfileUrl,item.firstName,item.lastName)}>
-                <View style={[styles.Box]}>
+              <TouchableOpacity style={[styles.Box]} onLongPress={()=>Delete(item.ID)} onPress={() => handlePress1(item.ID,item.ProfileUrl,item.firstName,item.lastName)}>
+               
                   <View style={styles.head}>
+                  <View style ={styles.avatar}>
                     <Image
                       source={{ uri: item.ProfileUrl }}
                       style={{
                         marginLeft: "5%",
-                        marginTop: "2%",
+                        marginTop: "2%", 
                         height: 41,
                         width: 41,
                         borderWidth: 1.5,
@@ -90,12 +116,13 @@ export default function ChatScreen({ navigation }) {
                         borderRadius: 50,
                       }}
                     />
+                  </View>
 
                     <Text style={styles.Name}>
                       {item.firstName} {item.lastName}
                     </Text>
                   </View>
-                </View>
+            
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -106,8 +133,127 @@ export default function ChatScreen({ navigation }) {
         
         <Ionicons
           name="md-add-circle-sharp"
-          size={70}
+          size={hp('10%')}
           color="#03dffc"
+          onPress={handlePress}
+        />
+      </View>
+      </View>
+    );
+
+
+
+
+
+  }
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    fetchSubjects();
+     RefreshPage();
+  },[isFocused]);
+
+
+  const MINUTE_MS = 10000000000;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+
+    fetchSubjects();
+     RefreshPage();
+     
+    }, MINUTE_MS);
+  
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [])
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+ 
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+   RefreshPage();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('#cdaffa'); 
+    StatusBar.setTranslucent(true)
+   }, []);
+
+  
+
+  if(isLoading == true){
+    return(
+    <View style={styles.Loadingcontainer}>
+      
+      <ActivityIndicator color="#03befc" size="large" />
+    </View>
+    );
+  }
+
+  
+
+
+  
+
+
+  
+
+ 
+    return (
+      <View style={styles.container}>
+        <Text style={{fontSize :hp('4%') ,marginBottom :hp("2%"),marginLeft :hp('2%'),fontWeight:'bold'}}>Chats</Text>
+        
+        <ScrollView 
+        
+        refreshControl={
+         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+       }>
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={[styles.Box]} onLongPress={()=>Delete(item.ID)} onPress={() => handlePress1(item.ID,item.ProfileUrl,item.firstName,item.lastName)}>
+               
+                  <View style={styles.head}>
+                    <View style ={styles.avatar}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        
+                       
+                        height: hp('5.2%'),
+                        width: wp('11%'),
+                        borderWidth: 1.5,
+
+                        borderRadius: 50,
+                      }}
+                    />
+                    </View>
+
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                  </View>
+             
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
+
+        <View style={styles.AddIcon}>
+        
+        <Ionicons
+          name="md-add-circle-sharp"
+          size={hp('10%')}
+          color="#cdaffa"
           onPress={handlePress}
         />
       </View>
@@ -128,23 +274,23 @@ export default function ChatScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
-    paddingTop: 10,
+   
+   
   },
   AddIcon: {
     position: "absolute",
     alignSelf: "flex-end",
-    bottom: 150,
-    marginRight: "5%",
+    bottom: hp('8%'),
+   
   },
   Box: {
-    marginBottom: "5%",
-    marginTop: "1%",
+    marginBottom:hp('1%'),
     alignSelf: "center",
     alignItems: "flex-start",
-    width: "90%",
-    padding: 8,
-    backgroundColor: "#c7f5ff",
+    width: wp("95%"),
+    height:hp('9%'),
+    justifyContent:'center',
+    backgroundColor: "#e3bbfa",
     borderRadius: 5,
     marginHorizontal: 1,
     borderRadius: 10,
@@ -155,41 +301,18 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 5,
-    elevation: 8,
-  },
-
-  pic: {
-    alignSelf: "center",
-    marginTop: 10,
-  },
-  title: {
-    marginTop: "5%",
-    alignSelf: "flex-start",
-    marginLeft: "5%",
-    marginBottom: "5%",
-    fontSize: 20,
-    fontWeight: "bold",
+    elevation: 5,
   },
   Name: {
     alignSelf: "center",
-    marginLeft: "5%",
-    fontSize: 18,
+    marginLeft: wp('5%'),
+    fontSize: hp('2.4%'),
+    fontWeight:'400'
   },
   head: {
     flex: 1,
     flexDirection: "row",
-  },
-HEAD:{
-    flex:1,
-    flexDirection:'row'
-},
-
-  msg: {
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#03dffc",
-    borderRadius: 10,
-    padding: 10,
+    marginLeft:hp('2%')
   },
   Loadingcontainer: {
     flex: 1,
@@ -198,17 +321,16 @@ HEAD:{
     backgroundColor: "#ffffff",
   },
   avatar: {
-    height: 200,
-    width: 300,
+    backgroundColor:'white',
     alignSelf: "center",
-    borderRadius: 10,
+    borderRadius: 50,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 8,
+    shadowOpacity: 5,
+    shadowRadius: 55,
+    elevation: 10,
   },
 });

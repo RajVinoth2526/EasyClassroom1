@@ -1,74 +1,128 @@
-import React from "react";
+import React ,{useState,useEffect} from "react";
 import { Octicons } from "@expo/vector-icons";
 
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import * as firebase from "firebase";
 
 export default function NoticeboardScreen({ navigation }) {
+  const [faculty, setFaculty] = useState("");
+
+
+  let currentUserUID = firebase.auth().currentUser.uid;
+
+  useEffect(() => {
+   
+
+
+  async function getUserInfo() {
+    let doc = await firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUserUID)
+      .get();
+
+    if (!doc.exists) {
+      Alert.alert("No user data found!");
+    } else {
+      let dataObj = doc.data();
+      setFaculty(dataObj.faculty);
+      
+    }
+  }
+  getUserInfo();
+}, []);
+ 
+
   const handler1 = () => {
-    navigation.navigate("UniversityNoticeboard");
+    navigation.navigate("UniversityNoticeboard",{ Faculty : faculty});
   };
 
   const handler2 = () => {
-    navigation.navigate("FacultyNoticeboard");
+    navigation.navigate("FacultyNoticeboard", { Faculty : faculty});
   };
 
   const handler3 = () => {
-    navigation.navigate("DepartmentNoticeboard");
+    navigation.navigate("DepartmentNoticeboard", { Faculty : faculty});
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.head}>
-        <Text style={styles.headText}>
-        <MaterialCommunityIcons
-              name="text-box-multiple"
-              size={30}
-              color="black"
-            /> Noticeboard
-        </Text>
+       <View style={{ backgroundColor: "white", height: hp("15%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("15%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            Noticeboard
+          </Text>
+        </View>
       </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("15%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("15%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+     
 
-      <View style={[styles.homeContent, { backgroundColor: "#bef7df" }]}>
-        <TouchableOpacity onPress={handler1}>
+  
+      <TouchableOpacity  style={[styles.select]} onPress={handler1}>
           <Text style={styles.homeContentText}>
             <MaterialCommunityIcons
               name="text-box-multiple"
-              size={25}
+              size={hp('4%')}
               color="black"
             />{" "}
             University
           </Text>
         </TouchableOpacity>
-      </View>
+     
 
-      <View style={[styles.homeContent, { backgroundColor: "#ffeab8" }]}>
-        <TouchableOpacity onPress={handler2}>
+     
+      <TouchableOpacity  style={[styles.select]} onPress={handler2}>
           <Text style={styles.homeContentText}>
             <MaterialCommunityIcons
               name="text-box-multiple"
-              size={25}
+              size={hp('4%')}
               color="black"
             />{" "}
             Faculty
           </Text>
         </TouchableOpacity>
-      </View>
+    
 
-      <View style={[styles.homeContent, { backgroundColor: "#e2bdf0" }]}>
-        <TouchableOpacity onPress={handler3}>
+     
+        <TouchableOpacity  style={[styles.select]} onPress={handler3}>
           <Text style={styles.homeContentText}>
             <MaterialCommunityIcons
               name="text-box-multiple"
-              size={25}
+              size={hp('4%')}
               color="black"
             />{" "}
             Department
           </Text>
         </TouchableOpacity>
-      </View>
+      
     </View>
   );
 }
@@ -76,45 +130,41 @@ export default function NoticeboardScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
     backgroundColor: "white",
   },
-
-  NoticeIcon: {
-    marginLeft: -30,
-  },
-  homeContent: {
-    alignSelf: "center",
+  select: {
+  marginTop:hp('1.5%'),
+    borderRadius: 20,
     alignItems: "center",
-    marginTop: '5%',
-    marginBottom: '5%',
-    backgroundColor: "#f2ffff",
-    height: 120,
-    width: 290,
-    borderRadius: 10,
+    height: hp("15%"),
+    width: wp("75%"),
+    alignSelf:'center',
+    justifyContent: "center",
+    borderColor: "#c986f0",
+    borderWidth: 2,
+    backgroundColor: "#e6c0fc",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 6,
+    shadowOpacity: 1,
     shadowRadius: 10,
     elevation: 8,
   },
   homeContentText: {
     alignSelf: "center",
-    marginTop: 30,
-    fontSize: 30,
+    fontSize: hp('4%'),
+    fontWeight:'400'
   },
   head: {
     alignSelf: "center",
-    marginTop: '20%',
-    marginBottom: '10%',
+    marginTop: hp('15%'),
+    marginBottom: hp('6%'),
     alignSelf: "center",
   },
   headText: {
-    fontSize: 30,
+    fontSize: hp('4.5%'),
     marginTop: -40,
     marginLeft: 10,
   },

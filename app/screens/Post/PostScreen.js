@@ -10,13 +10,18 @@ import {
   ActivityIndicator,
   FlatList,
   Alert,
+  StatusBar
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { DeletePost } from "../../../API/firebaseMethods/firebaseMethod";
-import IMAGE from '../../assets/profile-placeholder.png';
-
+import IMAGE from "../../assets/profile-placeholder.png";
+import { useIsFocused ,useFocusEffect} from "@react-navigation/native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -25,25 +30,50 @@ const wait = (timeout) => {
 export default function PostScreen({ navigation }) {
   const [subjects, setSubjects] = useState([]);
   const [role, setRole] = useState("");
+  const [faculty, setFaculty] = useState("");
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
+  const [flag, setFlag] = useState(false);
+
+  const currentUser = firebase.auth().currentUser;
+
  
-  
 
-  let currentUserUID = firebase.auth().currentUser.uid;
+React.useEffect(() => {
+ 
+  getUserInfo();
+  RefreshPage();
+  const unsubscribe = navigation.addListener('focus', () => {
+   
+    getUserInfo();
+    RefreshPage();
+    //Put your Data loading function here instead of my loadData()
+  });
 
-  function printId(ID ) {
-    navigation.navigate("EditPost", { PostID: ID });
+  return unsubscribe;
+}, [navigation]);
+
+ 
+
+
+  function printId(ID) {
+    navigation.navigate("EditPost", { PostID: ID , Faculty : faculty });
   }
-
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
+ 
   function deletePost(id) {
-    DeletePost(id);
-    Alert.alert("Post deleted!");
-    navigation.replace("Dashboard");
+    DeletePost(id,faculty);
+  
+    getUserInfo();
+    RefreshPage();
+  
   }
 
   function Edit(PostID, PostUserID) {
-    if (currentUserUID == PostUserID) {
+    if (currentUser.uid == PostUserID) {
       Alert.alert(
         "Edit Post",
         "",
@@ -81,32 +111,14 @@ export default function PostScreen({ navigation }) {
   }
 
   const handlePress = () => {
-    navigation.navigate("AddPostScreen");
+    navigation.navigate("AddPostScreen",{Faculty : faculty});
   };
-
-  
-
-  useEffect(() => {
-    firebase
-      .storage()
-      .ref()
-      .child("profileImage/" + currentUserUID) //name in storage in firebase console
-      .getDownloadURL()
-      .then((url) => {
-        setImage(url);
-       
-      })
-      .catch((e) => console.log("Errors while downloading => ", e));
-  }, []);
-
-
-  
 
   async function getUserInfo() {
     let doc = await firebase
       .firestore()
       .collection("users")
-      .doc(currentUserUID)
+      .doc(currentUser.uid)
       .get();
 
     if (!doc.exists) {
@@ -114,17 +126,20 @@ export default function PostScreen({ navigation }) {
     } else {
       let dataObj = doc.data();
       setRole(dataObj.role);
+      setFaculty(dataObj.faculty)
+      fetchSubjects(dataObj.faculty)
+      .then(() => {
+        setFlag(true);
+      })
     }
   }
 
-  async function fetchSubjects() {
+  async function fetchSubjects(Faculty) {
+   
     const data = [];
-    
     const db = firebase.firestore();
-    const querySnapshot = await db.collection("Posts").get();
+    const querySnapshot = await db.collection(Faculty+"-Posts").get();
     querySnapshot.forEach((doc) => {
-      
-
       console.log(doc.id, " => ", doc.data());
       data.push(doc.data());
     });
@@ -132,21 +147,11 @@ export default function PostScreen({ navigation }) {
     setSubjects(data);
   }
 
-
   useEffect(() => {
-    
     getUserInfo();
-  });
-
-  useEffect(() => {
-    
-    fetchSubjects();
   }, []);
 
-
-  const generateRandomBrightestHSLColor = () => {
-    return "hsla(" + ~~(360 * Math.random()) + "," + "80%," + "90%,2)";
-  };
+  
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -155,492 +160,442 @@ export default function PostScreen({ navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-
-  const MINUTE_MS = 500;
-
-useEffect(() => {
-  const interval = setInterval(() => {
-
-    fetchSubjects();
-    getUserInfo();
-    RefreshPage();
-   
-  }, MINUTE_MS);
-
-  return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-}, [])
-
-
-function RefreshPage(){
-
-
-  if (role == "Lecturer") {
-    return (
-      
-
-       <View  style = {styles.container}>
-        <ScrollView
-         style={styles.scrollScreen}
-         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        >
-         
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <View
-                style={[
-                  styles.Box,
-                 
-                ]}
-              > 
-              <View style={styles.head}>
-                
-                  <Image
-                    
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      marginLeft :'5%',
-                      marginTop:'2%',
-                      height: 41,
-                      width: 41,
-                      borderWidth:1.5,
-                      
-                      borderRadius: 50,
-                    }}
-                  />
-                
-
-                <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                </Text>
-
-                <View style ={{marginLeft :'38%',marginTop:'2%'}} >
-                  <TouchableOpacity
-                    onPress={() => Edit(item.Postid, item.UserId)}
-                  >
-                    <AntDesign name="edit" size={20} color="#03dffc" />
-                    <Text style={{ fontSize: 8 }}>Edit</Text>
-                  </TouchableOpacity>
-                </View>
-                </View>
-                
-                
-                <Text style={styles.title}>{item.title}</Text>
-                <View style ={styles.avatar}>
-                <Image
-                
-                  source={{ uri: item.imageUrl }}
-                  style={{
-                    
-                    
-                    borderRadius:4,
-                    borderWidth:1.5,
-                    marginBottom: 30,
-                    borderRadius: 4,
-                    height: 200,
-                    width: 300,
-                    alignSelf: "center",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 5,
-                    elevation: 8,
-                                  }}
-                />
-              </View>
-               
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.message}</Text>
-                  
-
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-
-          />
-
-
-        
-
-          
-
-        </ScrollView>
-
-        <View style={styles.AddIcon}>
-          <Ionicons
-            name="md-add-circle-sharp"
-            size={70}
-            color="#03dffc"
-            onPress={handlePress}
-          />
-        </View>
-        </View>
-
-        
-        
-      
-    );
-  } else if (role == "Demo") {
-    return (
-      <ScrollView
-         style={styles.scrollScreen}
-         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        >
-          
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <View
-                style={[
-                  styles.Box,
-                 
-                ]}
-              > 
-              <View style={styles.head}>
-                
-                  <Image
-                    
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      marginLeft :'5%',
-                      marginTop:'2%',
-                      height: 41,
-                      width: 41,
-                      borderWidth:1.5,
-                      
-                      borderRadius: 50,
-                    }}
-                  />
-                
-
-                <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                </Text>
-
-                
-                </View>
-                
-                
-                <Text style={styles.title}>{item.title}</Text>
-                <View style ={styles.avatar}>
-                <Image
-                
-                  source={{ uri: item.imageUrl }}
-                  style={{
-                    
-                    
-                    borderRadius:4,
-                    borderWidth:1.5,
-                    marginBottom: 30,
-                    borderRadius: 4,
-                    height: 200,
-                    width: 300,
-                    alignSelf: "center",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 5,
-                    elevation: 8,
-                                  }}
-                />
-              </View>
-               
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.message}</Text>
-                  
-
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-
-          />
-
-          
-
-        </ScrollView>
-    );
-  } else if (role == "Student") {
-    return (
-      <ScrollView
-         style={styles.scrollScreen}
-         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        >
-          
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <View
-                style={[
-                  styles.Box,
-                 
-                ]}
-              > 
-              <View style={styles.head}>
-                
-                  <Image
-                    
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      marginLeft :'5%',
-                      marginTop:'2%',
-                      height: 41,
-                      width: 41,
-                      borderWidth:1.5,
-                      
-                      borderRadius: 50,
-                    }}
-                  />
-                
-
-                <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                </Text>
-
-                
-                </View>
-                
-                
-                <Text style={styles.title}>{item.title}</Text>
-                <View style ={styles.avatar}>
-                <Image
-                
-                  source={{ uri: item.imageUrl }}
-                  style={{
-                    
-                    
-                    borderRadius:4,
-                    borderWidth:1.5,
-                    marginBottom: 30,
-                    borderRadius: 4,
-                    height: 200,
-                    width: 300,
-                    alignSelf: "center",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 5,
-                    elevation: 8,
-                                  }}
-                />
-              </View>
-               
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.message}</Text>
-                  
-
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-
-          />
-
-          
-
-        </ScrollView>
-    );
-  }
-
-  return (
-    <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="#03befc" size="large" />
-    </View>
-  );
   
+  const MINUTE_MS = 10000000000;
 
-}
+  useEffect(() => {
+    const interval = setInterval(() => {
+    
+      getUserInfo();
+      RefreshPage();
+    }, MINUTE_MS);
 
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, []);
 
-  if (role == "Lecturer") {
-    return (
-      
+  function RefreshPage() {
+    if (role == "Lecturer" && flag == true) {
+      return (
+        <View style={styles.container}>
+          <ScrollView
+            style={styles.scrollScreen}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <FlatList
+              data={subjects}
+              renderItem={({ item }) => (
+                <View style={[styles.Box]}>
+                  <View style={styles.head}>
+                    <View style={styles.avatar1}>
+                      <Image
+                        source={{ uri: item.ProfileUrl }}
+                        style={{
+                          height: hp("5.2%"),
+                          width: wp("11%"),
+                          borderWidth: 1.5,
+  
+                          borderRadius: 50,
+                        }}
+                      />
+                    </View>
+                    <View style={{ flexDirection: "column" }}>
+                      <Text style={styles.Name}>
+                        {item.firstName} {item.lastName}
+                      </Text>
+                      <Text
+                        style={{
+                          marginLeft: wp("5%"),
+                          marginBottom: hp("1%"),
+                          marginTop: hp("0.5%"),
+                          fontSize: hp("1.1%"),
+                        }}
+                      >
+                        {item.DateTime}
+                      </Text>
+                    </View>
+                  </View>
+  
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.avatar}>
+                    <Image
+                      source={{ uri: item.imageUrl }}
+                      style={{
+                        borderRadius: 4,
+                        borderWidth: 1.5,
+                        marginBottom: 30,
+                        borderRadius: 4,
+                        height: hp("28%"),
+                        width: wp("88%"),
+                        alignSelf: "center",
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 1,
+                        },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 8,
+                      }}
+                    />
+                  </View>
+  
+                  <View style={styles.Msg}>
+                    <Text style={styles.msg}>{item.message}</Text>
+                  </View>
+                  <View
+                    style={{
+                      alignSelf: "flex-start",
+                      marginLeft: wp("6%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("1%"),
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => Edit(item.Postid, item.UserId)}
+                    >
+                      <AntDesign name="edit" size={20} color="#cdaffa" />
+                      <Text style={{ fontSize: hp("1.2%") }}>Edit</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+             <View style ={{height :hp('12%'),width:wp('100%')}}>
 
-       <View  style = {styles.container}>
+</View>
+          </ScrollView>
+  
+          <View style={styles.AddIcon}>
+            <Ionicons
+              name="md-add-circle-sharp"
+              size={70}
+              color="#cdaffa"
+              onPress={handlePress}
+            />
+          </View>
+        </View>
+      );
+    } else if (role == "Demonstrator" && flag == true) {
+      return (
         <ScrollView
-         style={styles.scrollScreen}
-         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+          style={styles.scrollScreen}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
-         
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
-              <View
-                style={[
-                  styles.Box,
-                 
-                ]}
-              > 
-              <View style={styles.head}>
-                
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <View style={styles.avatar1}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        height: hp("5.2%"),
+                        width: wp("11%"),
+                        borderWidth: 1.5,
+  
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text
+                      style={{
+                        marginLeft: wp("5%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("0.5%"),
+                        fontSize: hp("1.1%"),
+                      }}
+                    >
+                      {item.DateTime}
+                    </Text>
+                  </View>
+                </View>
+  
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.avatar}>
                   <Image
-                    
-                    source={{ uri: item.ProfileUrl }}
+                    source={{ uri: item.imageUrl }}
                     style={{
-                      marginLeft :'5%',
-                      marginTop:'2%',
-                      height: 41,
-                      width: 41,
-                      borderWidth:1.5,
-                      
-                      borderRadius: 50,
+                      borderRadius: 4,
+                      borderWidth: 1.5,
+                      marginBottom: 30,
+                      borderRadius: 4,
+                      height: hp("28%"),
+                      width: wp("88%"),
+                      alignSelf: "center",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 5,
+                      elevation: 8,
                     }}
                   />
+                </View>
+  
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.message}</Text>
+                </View>
                 
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
+      );
+    } else if (role == "Student"&& flag == true) {
+      return (
+        <ScrollView
+          style={styles.scrollScreen}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <View style={styles.avatar1}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        height: hp("5.2%"),
+                        width: wp("11%"),
+                        borderWidth: 1.5,
+  
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text
+                      style={{
+                        marginLeft: wp("5%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("0.5%"),
+                        fontSize: hp("1.1%"),
+                      }}
+                    >
+                      {item.DateTime}
+                    </Text>
+                  </View>
+                </View>
+  
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.avatar}>
+                  <Image
+                    source={{ uri: item.imageUrl }}
+                    style={{
+                      borderRadius: 4,
+                      borderWidth: 1.5,
+                      marginBottom: 30,
+                      borderRadius: 4,
+                      height: hp("28%"),
+                      width: wp("88%"),
+                      alignSelf: "center",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 5,
+                      elevation: 8,
+                    }}
+                  />
+                </View>
+  
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.message}</Text>
+                </View>
+                
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
+      );
+    }
+  
+    return (
+      <View style={styles.Loadingcontainer}>
+        <ActivityIndicator color="#cdaffa" size="large" />
+      </View>
+    );
+  }
 
-                <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                </Text>
+  if (role == "Lecturer" && flag == true) {
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.scrollScreen}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <FlatList 
+            data={subjects}
+            renderItem={({ item }) => (
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <View style={styles.avatar1}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        height: hp("5.2%"),
+                        width: wp("11%"),
+                        borderWidth: 1.5,
 
-                <View style ={{marginLeft :'38%',marginTop:'2%'}} >
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text
+                      style={{
+                        marginLeft: wp("5%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("0.5%"),
+                        fontSize: hp("1.1%"),
+                      }}
+                    >
+                      {item.DateTime}
+                    </Text>
+                  </View>
+                </View>
+
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.avatar}>
+                  <Image
+                    source={{ uri: item.imageUrl }}
+                    style={{
+                      borderRadius: 4,
+                      borderWidth: 1.5,
+                      marginBottom: 30,
+                      borderRadius: 4,
+                      height: hp("28%"),
+                      width: wp("88%"),
+                      alignSelf: "center",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 5,
+                      elevation: 8,
+                    }}
+                  />
+                </View>
+
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.message}</Text>
+                </View>
+                <View
+                  style={{
+                    alignSelf: "flex-start",
+                    marginLeft: wp("6%"),
+                    marginBottom: hp("1%"),
+                    marginTop: hp("1%"),
+                  }}
+                >
                   <TouchableOpacity
                     onPress={() => Edit(item.Postid, item.UserId)}
                   >
-                    <AntDesign name="edit" size={20} color="#03dffc" />
-                    <Text style={{ fontSize: 8 }}>Edit</Text>
+                    <AntDesign name="edit" size={20} color="#cdaffa" />
+                    <Text style={{ fontSize: hp("1.2%") }}>Edit</Text>
                   </TouchableOpacity>
-                </View>
-                </View>
-                
-                
-                <Text style={styles.title}>{item.title}</Text>
-                <View style ={styles.avatar}>
-                <Image
-                
-                  source={{ uri: item.imageUrl }}
-                  style={{
-                    
-                    
-                    borderRadius:4,
-                    borderWidth:1.5,
-                    marginBottom: 30,
-                    borderRadius: 4,
-                    height: 200,
-                    width: 300,
-                    alignSelf: "center",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 5,
-                    elevation: 8,
-                                  }}
-                />
-              </View>
-               
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.message}</Text>
-                  
-
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
                 </View>
               </View>
             )}
             keyExtractor={(item, index) => index.toString()}
-
           />
+         <View style ={{height :hp('12%'),width:wp('100%')}}>
 
-
-        
-
-          
-
+</View>
         </ScrollView>
 
         <View style={styles.AddIcon}>
           <Ionicons
             name="md-add-circle-sharp"
             size={70}
-            color="#03dffc"
+            color="#cdaffa"
             onPress={handlePress}
           />
         </View>
-        </View>
-
-        
-        
-      
+      </View>
     );
-  } else if (role == "Demo") {
+  } else if (role == "Demonstrator" && flag == true) {
     return (
       <ScrollView
-         style={styles.scrollScreen}
-         refreshControl={
+        style={styles.scrollScreen}
+        refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        >
-          
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <View
-                style={[
-                  styles.Box,
-                 
-                ]}
-              > 
+      >
+        <FlatList
+          data={subjects}
+          renderItem={({ item }) => (
+            <View style={[styles.Box]}>
               <View style={styles.head}>
-                
+                <View style={styles.avatar1}>
                   <Image
-                    
                     source={{ uri: item.ProfileUrl }}
                     style={{
-                      marginLeft :'5%',
-                      marginTop:'2%',
-                      height: 41,
-                      width: 41,
-                      borderWidth:1.5,
-                      
+                      height: hp("5.2%"),
+                      width: wp("11%"),
+                      borderWidth: 1.5,
+
                       borderRadius: 50,
                     }}
                   />
-                
-
-                <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                </Text>
-
-                
                 </View>
-                
-                
-                <Text style={styles.title}>{item.title}</Text>
-                <View style ={styles.avatar}>
+                <View style={{ flexDirection: "column" }}>
+                  <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: wp("5%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("0.5%"),
+                      fontSize: hp("1.1%"),
+                    }}
+                  >
+                    {item.DateTime}
+                  </Text>
+                </View>
+              </View>
+
+              <Text style={styles.title}>{item.title}</Text>
+              <View style={styles.avatar}>
                 <Image
-                
                   source={{ uri: item.imageUrl }}
                   style={{
-                    
-                    
-                    borderRadius:4,
-                    borderWidth:1.5,
+                    borderRadius: 4,
+                    borderWidth: 1.5,
                     marginBottom: 30,
                     borderRadius: 4,
-                    height: 200,
-                    width: 300,
+                    height: hp("28%"),
+                    width: wp("88%"),
                     alignSelf: "center",
                     shadowColor: "#000",
                     shadowOffset: {
@@ -650,83 +605,73 @@ function RefreshPage(){
                     shadowOpacity: 1,
                     shadowRadius: 5,
                     elevation: 8,
-                                  }}
+                  }}
                 />
               </View>
-               
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.message}</Text>
-                  
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
-                </View>
+              <View style={styles.Msg}>
+                <Text style={styles.msg}>{item.message}</Text>
               </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-
-          />
-
-          
-
-        </ScrollView>
+              
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </ScrollView>
     );
-  } else if (role == "Student") {
+  } else if (role == "Student" && flag == true) {
     return (
       <ScrollView
-         style={styles.scrollScreen}
-         refreshControl={
+        style={styles.scrollScreen}
+        refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        >
-          
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <View
-                style={[
-                  styles.Box,
-                 
-                ]}
-              > 
+      >
+        <FlatList
+          data={subjects}
+          renderItem={({ item }) => (
+            <View style={[styles.Box]}>
               <View style={styles.head}>
-                
+                <View style={styles.avatar1}>
                   <Image
-                    
                     source={{ uri: item.ProfileUrl }}
                     style={{
-                      marginLeft :'5%',
-                      marginTop:'2%',
-                      height: 41,
-                      width: 41,
-                      borderWidth:1.5,
-                      
+                      height: hp("5.2%"),
+                      width: wp("11%"),
+                      borderWidth: 1.5,
+
                       borderRadius: 50,
                     }}
                   />
-                
-
-                <Text style={styles.Name}>
-                    {item.firstName} {item.lastName}
-                </Text>
-
-                
                 </View>
-                
-                
-                <Text style={styles.title}>{item.title}</Text>
-                <View style ={styles.avatar}>
+                <View style={{ flexDirection: "column" }}>
+                  <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: wp("5%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("0.5%"),
+                      fontSize: hp("1.1%"),
+                    }}
+                  >
+                    {item.DateTime}
+                  </Text>
+                </View>
+              </View>
+
+              <Text style={styles.title}>{item.title}</Text>
+              <View style={styles.avatar}>
                 <Image
-                
                   source={{ uri: item.imageUrl }}
                   style={{
-                    
-                    
-                    borderRadius:4,
-                    borderWidth:1.5,
+                    borderRadius: 4,
+                    borderWidth: 1.5,
                     marginBottom: 30,
                     borderRadius: 4,
-                    height: 200,
-                    width: 300,
+                    height: hp("28%"),
+                    width: wp("88%"),
                     alignSelf: "center",
                     shadowColor: "#000",
                     shadowOffset: {
@@ -736,31 +681,25 @@ function RefreshPage(){
                     shadowOpacity: 1,
                     shadowRadius: 5,
                     elevation: 8,
-                                  }}
+                  }}
                 />
               </View>
-               
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.message}</Text>
-                  
 
-                  <Text style={{alignSelf:'flex-end', marginBottom :'3%',marginTop :'3%',fontSize :10}}>{item.DateTime}</Text>
-                </View>
+              <View style={styles.Msg}>
+                <Text style={styles.msg}>{item.message}</Text>
               </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-
-          />
-
-          
-
-        </ScrollView>
+              
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </ScrollView>
     );
   }
 
   return (
     <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="#03befc" size="large" />
+      <ActivityIndicator color="#cdaffa" size="large" />
     </View>
   );
 }
@@ -768,38 +707,23 @@ function RefreshPage(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
-
-    backgroundColor: "white",
   },
   AddIcon: {
-   
-   position:'absolute',
-   bottom:'25%',
-   alignSelf:'flex-end',
-   marginRight:'5%'
+    position: "absolute",
+    alignSelf: "flex-end",
+
+   bottom:5,
   },
   scrollScreen: {
-    borderRadius: 10,
-    width: "100%",
-    marginBottom: "35%",
-    backgroundColor: "white",
-    marginHorizontal: 1,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 10,
-    elevation: 0.001,
+ 
+    height: hp("100%"),
+    width: wp("100%"),
   },
   homeContent: {
     alignSelf: "center",
     alignItems: "center",
     marginTop: 10,
-    marginBottom: '2%',
+    marginBottom: "2%",
     backgroundColor: "#f2ffff",
     height: 120,
     width: 290,
@@ -819,28 +743,20 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   Box: {
-    marginBottom: '1%',
-    marginTop: '1%',
-    alignSelf :'center',
-    width:'95%',
+    marginTop: hp("1%"),
+    alignSelf: "center",
+    width: wp("98%"),
     backgroundColor: "white",
     borderRadius: 5,
     marginHorizontal: 1,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 8,
   },
   Msg: {
-    marginLeft: '5%',
-    marginRight: '5%',
-    marginTop:'5%',
-   
+    marginLeft: wp("4.5%"),
+    marginBottom: wp("2%"),
+    marginRight: wp("4.5%"),
+    marginTop: hp("3%"),
+
     borderRadius: 5,
   },
   pic: {
@@ -848,55 +764,72 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   title: {
-    marginTop: '5%',
-    alignSelf:'flex-start',
-    marginLeft:'5%',
-    marginBottom:'5%',
-    fontSize: 20,
-    fontWeight: "bold",
+    marginTop: hp("1%"),
+    alignSelf: "flex-start",
+    marginLeft: wp("8%"),
+    marginBottom: hp("2%"),
+    fontSize: hp("2.5%"),
+    fontWeight: "400",
   },
   Name: {
-   alignSelf:'center',
-   marginLeft :'5%',
-   fontSize : 18
+    alignSelf: "center",
+    marginTop: hp("2%"),
+    marginLeft: hp("2%"),
+    fontSize: hp("2%"),
+    fontWeight: "bold",
   },
-  head :{
-    flex : 1,
+  head: {
+    flex: 1,
+    marginLeft: wp("4%"),
+    marginTop: hp("1%"),
     flexDirection: "row",
-    borderBottomColor :"#03dffc",
-    borderBottomWidth:1,
-    paddingBottom :10,
-    borderBottomStartRadius:15,
-    borderBottomEndRadius:15
+    borderBottomColor: "#cdaffa",
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+    borderBottomStartRadius: 15,
+    borderBottomEndRadius: 15,
   },
   msg: {
-    fontSize: 18,
-    borderWidth :1,
-    borderColor:'#03dffc',
-    borderRadius :10,
-    padding:10,
-    
+    fontSize: hp("1.8%"),
+    fontWeight: "350",
+    borderWidth: 1,
+    borderColor: "#cdaffa",
+    borderRadius: 10,
+    padding: 10,
   },
   Loadingcontainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    
   },
   avatar: {
-   
-    height:200,
-    width :300,
-    alignSelf:'center',
-    borderRadius:10,
+    height: hp("28%"),
+    width: wp("88%"),
+    alignSelf: "center",
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.5,
+    shadowOpacity: 10,
     shadowRadius: 5,
-    elevation: 8,
+    elevation: 10,
   },
- 
+  avatar1: {
+    height: hp("5.2%"),
+    width: wp("11%"),
+    alignSelf: "center",
+    borderRadius: 50,
+    shadowColor: "#000",
+    backgroundColor:'white',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 5,
+    shadowRadius: 55,
+    elevation: 10,
+  },
 });

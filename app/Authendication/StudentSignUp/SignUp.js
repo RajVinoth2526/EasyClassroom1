@@ -9,8 +9,16 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  KeyboardAvoidingView,
 } from "react-native";
+import { Header } from "react-navigation";
+
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StudentRegistration } from "../../../API/firebaseMethods/firebaseMethod";
 import * as firebase from "firebase";
@@ -18,7 +26,7 @@ import "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
 
 import IMAGE from "../../assets/profile-placeholder.png";
-
+import { StatusBar } from "react-native";
 export default function StudentSignUp({ navigation }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -36,6 +44,11 @@ export default function StudentSignUp({ navigation }) {
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
   const [isLoading, setisLoading] = useState(false);
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   const emptyState = () => {
     setFirstName("");
@@ -79,9 +92,8 @@ export default function StudentSignUp({ navigation }) {
     } else if (password !== confirmPassword) {
       Alert.alert("Password does not match!");
     } else {
-     
       setisLoading(true);
-      StudentRegistration(
+      const flag = StudentRegistration(
         email,
         password,
         lastName,
@@ -95,30 +107,59 @@ export default function StudentSignUp({ navigation }) {
         image
       ).then(() => {
         setisLoading(false);
-       
-      })
-      navigation.navigate("Loading");
-      emptyState();
+      });
+      if (flag == true) {
+        navigation.navigate("Loading");
+        emptyState();
+      }
     }
   };
 
-
-  if(isLoading == true){
-    return(
-    <View style={styles.Loadingcontainer}>
-      <Text>Creating New account</Text>
-      <ActivityIndicator color="#03befc" size="large" />
-    </View>
+  if (isLoading == true) {
+    return (
+      <View style={styles.Loadingcontainer}>
+        <Text>Creating New account</Text>
+        <ActivityIndicator color="#03befc" size="large" />
+      </View>
     );
   }
 
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.text}>SignUp </Text>
+    <View style={styles.container}>
+      <View style={{ backgroundColor: "white", height: hp("12%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("12%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            SignUp
+          </Text>
+        </View>
       </View>
-      <ScrollView style={styles.scrollView}>
-        <View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("12%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
+        <ScrollView style={styles.scrollView}>
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>First Name</Text>
             <View style={styles.action}>
@@ -185,17 +226,22 @@ export default function StudentSignUp({ navigation }) {
           </View>
 
           <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Faculty</Text>
+            <Text style={styles.cardtext}>
+              <Text>
+                {faculty ? ` faculty is ${faculty}` : "Select faculty"}
+              </Text>
+            </Text>
             <View style={styles.action}>
-              <TextInput
-                style={styles.textinput}
-                placeholder="Enter your Faculty"
-                value={faculty}
-                onChangeText={(faculty) => setFaculty(faculty)}
+              <RNPickerSelect
+                onValueChange={(faculty) => setFaculty(faculty)}
+                items={[
+                  { label: "Science", value: "Science" },
+                  { label: "Medical", value: "Medical" },
+                  { label: "Managment", value: "Managment" },
+                ]}
               />
             </View>
           </View>
-
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>
               <Text>{course ? ` ${course}` : "Select course"}</Text>
@@ -262,8 +308,9 @@ export default function StudentSignUp({ navigation }) {
               />
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+
       <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
         <Text style={styles.SignUpText}>Sign Up</Text>
       </TouchableOpacity>
@@ -271,63 +318,51 @@ export default function StudentSignUp({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate("Sign In")}>
         <Text style={styles.inlineText}>Already have an account?</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
 
-    backgroundColor: "#ffffff",
+    backgroundColor: "white",
   },
   datePickerStyle: {
     width: 200,
   },
   scrollView: {
-    marginTop: 20,
-    marginBottom: 15,
-    borderRadius: 15,
+    height: hp("55%"),
+    width: wp("90%"),
+    alignSelf: "center",
+    borderRadius: 40,
+    marginBottom: hp("5%"),
     backgroundColor: "#ffffff",
-    marginHorizontal: 1,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.9,
-    shadowRadius: 10,
-    elevation: 0.2,
   },
 
   cardCont: {
-    marginTop: 10,
+    marginTop: hp("1%"),
     alignSelf: "center",
-    padding: 5,
-    width: "80%",
+    width: wp("78%"),
   },
   text: {
     alignSelf: "center",
-    marginBottom: 20,
+    marginTop: hp("4%"),
     fontSize: 30,
     fontWeight: "bold",
   },
 
   cardtext: {
-    marginLeft: 3,
-    fontSize: 20,
+    marginLeft: wp("1%"),
+    fontSize: hp("2.4%"),
     fontWeight: "bold",
-    marginBottom: 2,
+    marginBottom: hp("1%"),
   },
   action: {
-    marginTop: 5,
-
+    justifyContent: "center",
     borderRadius: 10,
-    paddingBottom: 5,
-    marginBottom: 5,
-    width: "100%",
+    height: hp("6%"),
+    marginBottom: hp("1%"),
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
@@ -340,21 +375,19 @@ const styles = StyleSheet.create({
   },
 
   textinput: {
-    marginLeft: 10,
+    marginLeft: wp("3%"),
     color: "black",
-    fontSize: 15,
+    fontSize: hp("2.2%"),
   },
 
   buttonSignup: {
-    backgroundColor: "#34dbeb",
+    backgroundColor: "#cdaffa",
+    justifyContent: "center",
     alignSelf: "center",
-    height: 50,
+    height: hp("8%"),
     borderRadius: 9,
-    marginTop: 90,
-    marginBottom: 20,
-    paddingTop: 3,
+    marginBottom: hp("0.1%"),
     width: "60%",
-    marginTop: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -366,16 +399,15 @@ const styles = StyleSheet.create({
   },
 
   SignUpText: {
-    marginTop: 5,
-    fontSize: 20,
+    fontSize: hp("3%"),
     alignSelf: "center",
     fontWeight: "bold",
   },
 
   inlineText: {
-    color: "blue",
-    marginTop: 10,
-    marginBottom: 20,
+    color: "red",
+    marginTop: hp("1.5%"),
+    marginBottom: hp("4%"),
     alignSelf: "center",
   },
 
@@ -384,5 +416,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     alignSelf: "center",
     paddingTop: 7,
+  },
+
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 });

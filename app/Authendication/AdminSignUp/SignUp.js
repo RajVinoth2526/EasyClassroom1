@@ -9,8 +9,10 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  KeyboardAvoidingView
 } from "react-native";
+import { StatusBar } from 'react-native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AdminRegistration } from "../../../API/firebaseMethods/AdminRegistration";
 import * as firebase from "firebase";
@@ -18,7 +20,10 @@ import "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
 import DatePicker from "react-native-datepicker";
 import IMAGE from "../../assets/profile-placeholder.png";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 export default function SignUp({ navigation }) {
   const [id, setId] = useState("");
@@ -29,13 +34,19 @@ export default function SignUp({ navigation }) {
   const [role, setRole] = useState("");
   const [district, setDistrict] = useState("");
   const [faculty, setFaculty] = useState("");
-  const [department, setDeparment] = useState("");
+  const [department, setDepartment] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setisLoading] = useState(false);
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('#cdaffa'); 
+    StatusBar.setTranslucent(true)
+   }, []);
+
 
   const emptyState = () => {
     setId("");
@@ -46,7 +57,7 @@ export default function SignUp({ navigation }) {
     setDistrict("");
     setRole("");
     setFaculty("");
-    setDeparment("");
+    setDepartment("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
@@ -79,7 +90,7 @@ export default function SignUp({ navigation }) {
     } else {
      
       setisLoading(true);
-      AdminRegistration(
+     const flag = AdminRegistration(
         email,
         password,
         lastName,
@@ -94,8 +105,11 @@ export default function SignUp({ navigation }) {
         setisLoading(false);
        
       })
-      navigation.navigate("Loading");
-      emptyState();
+      if(flag == true){
+        navigation.navigate("Loading");
+        emptyState();
+      }
+      
 
       
     }
@@ -110,14 +124,41 @@ export default function SignUp({ navigation }) {
     </View>
     );
   }
-
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.text}>SignUp </Text>
+      <View style={{ backgroundColor: "white", height: hp("12%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("12%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            SignUp
+          </Text>
+        </View>
       </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("12%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
       <ScrollView style={styles.scrollView}>
-        <View>
+        
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>ID</Text>
             <View style={styles.action}>
@@ -171,25 +212,32 @@ export default function SignUp({ navigation }) {
           </View>
 
           <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Faculty</Text>
+            <Text style={styles.cardtext}>
+              <Text>{faculty ? ` faculty is ${faculty}` : "Select faculty"}</Text>
+            </Text>
             <View style={styles.action}>
-              <TextInput
-                style={styles.textinput}
-                placeholder="Enter your Faculty"
-                value={faculty}
-                onChangeText={(faculty) => setFaculty(faculty)}
+              <RNPickerSelect
+                onValueChange={(faculty) => setFaculty(faculty)}
+                items={[
+                  { label: "Science", value: "Science" },
+                  { label: "Medical", value: "Medical" },
+                  { label: "Managment", value: "Managment" },
+                ]}
               />
             </View>
           </View>
-
           <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Deparment </Text>
+            <Text style={styles.cardtext}>
+              <Text>{department ? ` ${department}` : "Select department"}</Text>
+            </Text>
             <View style={styles.action}>
-              <TextInput
-                style={styles.textinput}
-                placeholder="Department"
-                value={department}
-                onChangeText={(department) => setDeparment(department)}
+              <RNPickerSelect
+                onValueChange={(department) => setDepartment(department)}
+                items={[
+                  { label: "Computer Science", value: "Computer Science" },
+                  { label: "Physical Science", value: "Physical SCience" },
+                  { label: "Bio SCience", value: "Bio SCience" },
+                ]}
               />
             </View>
           </View>
@@ -245,8 +293,10 @@ export default function SignUp({ navigation }) {
               />
             </View>
           </View>
-        </View>
+
+        
       </ScrollView>
+      </KeyboardAvoidingView>
       <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
         <Text style={styles.SignUpText}>Sign Up</Text>
       </TouchableOpacity>
@@ -254,6 +304,7 @@ export default function SignUp({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate("Sign In")}>
         <Text style={styles.inlineText}>Already have an account?</Text>
       </TouchableOpacity>
+      
     </SafeAreaView>
   );
 }
@@ -261,56 +312,44 @@ export default function SignUp({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
 
-    backgroundColor: "#ffffff",
+    backgroundColor: "white",
   },
   datePickerStyle: {
     width: 200,
   },
   scrollView: {
-    marginTop: 20,
-    marginBottom: 15,
-    borderRadius: 15,
+    height: hp("55%"),
+    width: wp("90%"),
+    alignSelf: "center",
+    borderRadius: 40,
+    marginBottom: hp("5%"),
     backgroundColor: "#ffffff",
-    marginHorizontal: 1,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.9,
-    shadowRadius: 10,
-    elevation: 0.2,
   },
 
   cardCont: {
-    marginTop: 10,
+    marginTop: hp("1%"),
     alignSelf: "center",
-    padding: 5,
-    width: "80%",
+    width: wp("78%"),
   },
   text: {
     alignSelf: "center",
-    marginBottom: 20,
+    marginTop: hp("4%"),
     fontSize: 30,
     fontWeight: "bold",
   },
 
   cardtext: {
-    marginLeft: 3,
-    fontSize: 20,
+    marginLeft: wp("1%"),
+    fontSize: hp("2.4%"),
     fontWeight: "bold",
-    marginBottom: 2,
+    marginBottom: hp("1%"),
   },
   action: {
-    marginTop: 5,
-
+    justifyContent: "center",
     borderRadius: 10,
-    paddingBottom: 5,
-    marginBottom: 5,
-    width: "100%",
+    height: hp("6%"),
+    marginBottom: hp("1%"),
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
@@ -323,21 +362,19 @@ const styles = StyleSheet.create({
   },
 
   textinput: {
-    marginLeft: 10,
+    marginLeft: wp("3%"),
     color: "black",
-    fontSize: 15,
+    fontSize: hp("2.2%"),
   },
 
   buttonSignup: {
-    backgroundColor: "#34dbeb",
+    backgroundColor: "#cdaffa",
+    justifyContent: "center",
     alignSelf: "center",
-    height: 50,
+    height: hp("8%"),
     borderRadius: 9,
-    marginTop: 90,
-    marginBottom: 20,
-    paddingTop: 3,
+    marginBottom: hp("0.1%"),
     width: "60%",
-    marginTop: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -349,16 +386,15 @@ const styles = StyleSheet.create({
   },
 
   SignUpText: {
-    marginTop: 5,
-    fontSize: 20,
+    fontSize: hp("3%"),
     alignSelf: "center",
     fontWeight: "bold",
   },
 
   inlineText: {
-    color: "blue",
-    marginTop: 10,
-    marginBottom: 20,
+    color: "red",
+    marginTop: hp("1.5%"),
+    marginBottom: hp("4%"),
     alignSelf: "center",
   },
 
@@ -367,5 +403,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     alignSelf: "center",
     paddingTop: 7,
+  },
+
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 });

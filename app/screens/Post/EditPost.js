@@ -14,14 +14,19 @@ import {
   keyboardVerticalOffset,
   TouchableWithoutFeedback,
   Keyboard,
+  StatusBar,
 } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import { FontAwesome5 } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import * as firebase from "firebase";
 import { UploadPostImage } from "../../../API/firebaseMethods/firebaseMethod";
-import IMAGE from '../../assets/photo.png';
+import IMAGE from "../../assets/photo.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
@@ -35,83 +40,80 @@ export default function EditPostScreen({ navigation, route }) {
   const [title1, setTitle1] = useState("");
   const exampleImageUri = Image.resolveAssetSource(IMAGE).uri;
   const [image, setImage] = useState(exampleImageUri);
-  const { PostID } = route.params; 
+  const { PostID } = route.params;
+  const { Faculty } = route.params;
   const [isLoading, setisLoading] = useState(false);
 
-
-  
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   const handlePress = () => {
-    if(!message1 ){
-     EditPost(PostID, message, title1,image);
-     navigation.replace("Dashboard");
-     Alert.alert("Post Updated!!");
-   }if(!title1){
-     EditPost(PostID, message1, title,image);
-     navigation.replace("Dashboard");
-     Alert.alert("post Updated!!");
-   }if(!message1 && !title1){
-     EditPost(PostID, message, title,image);
-     navigation.replace("Dashboard");
-     Alert.alert("post Updated!!");
-   }if(title1 && message1){
-     EditPost(PostID, message1, title1,image);
-     navigation.replace("Dashboard");
-     Alert.alert("post Updated!!");
+    if (!message1) {
+      EditPost(PostID, message, title1, image,Faculty);
+      navigation.replace("Dashboard");
+      Alert.alert("Post Updated!!");
+    }
+    if (!title1) {
+      EditPost(PostID, message1, title, image),Faculty;
+      navigation.replace("Dashboard");
+      Alert.alert("post Updated!!");
+    }
+    if (!message1 && !title1) {
+      EditPost(PostID, message, title, image,Faculty);
+      navigation.replace("Dashboard");
+      Alert.alert("post Updated!!");
+    }
+    if (title1 && message1) {
+      EditPost(PostID, message1, title1, image,Faculty);
+      navigation.replace("Dashboard");
+      Alert.alert("post Updated!!");
+    }
+  };
 
-   }
- };
-
- useEffect(() => {
-  firebase
-    .storage()
-    .ref()
-    .child("PostImage/" + PostID) //name in storage in firebase console
-    .getDownloadURL()
-    .then((url) => {
-      setImage(url);
-     
-    })
-    .catch((e) => console.log("Errors while downloading => ", e));
-}, []);
-
-const pickImage = async () => {
-  // No permissions request is necessary for launching the image library
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
-    allowsEditing: true,
-    aspect: [4, 3],
-    quality: 1,
-  });
-
-  setImage(result.uri);
-  // console.log(result);
-
-  if (!result.cancelled) {
-    setisLoading(true);
-    UploadPostImage(result.uri, PostID)
-      .then(() => {
-        setisLoading(false);
-        console.log("Uploaded");
+  useEffect(() => {
+    firebase
+      .storage()
+      .ref()
+      .child("PostImage/" + PostID) //name in storage in firebase console
+      .getDownloadURL()
+      .then((url) => {
+        setImage(url);
       })
-      .catch((error) => {
-        Alert.alert("Error:", error.message);
-      });
-  }
+      .catch((e) => console.log("Errors while downloading => ", e));
+  }, []);
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-};
+    setImage(result.uri);
+    // console.log(result);
 
-
-  
-  
-
+    if (!result.cancelled) {
+      setisLoading(true);
+      UploadPostImage(result.uri, PostID)
+        .then(() => {
+          setisLoading(false);
+          console.log("Uploaded");
+        })
+        .catch((error) => {
+          Alert.alert("Error:", error.message);
+        });
+    }
+  };
 
   useEffect(() => {
     async function getUserInfo() {
       let doc = await firebase
         .firestore()
-        .collection("Posts")
+        .collection(Faculty+"-Posts")
         .doc(PostID)
         .get();
 
@@ -127,57 +129,86 @@ const pickImage = async () => {
     getUserInfo();
   });
 
-  if(isLoading == true){
-    return(
-    <View style={styles.Loadingcontainer}>
-      <Text>Image Uploading Please wait!</Text>
-      <ActivityIndicator color="#03befc" size="large" />
-    </View>
+  if (isLoading == true) {
+    return (
+      <View style={styles.Loadingcontainer}>
+        <Text>Image Uploading Please wait!</Text>
+        <ActivityIndicator color="#03befc" size="large" />
+      </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      
-      <View style={styles.postName}>
-        <Text style={{ fontSize: 30, marginTop: 5 }}> <MaterialIcons
-        name="post-add"
-        size={35}
-        color="black"
-       
-      />Edit Post</Text>
+      <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            Edit Post
+          </Text>
+        </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
       </View>
 
-      <ScrollView style = {styles.scrollScreen}>
-        <View style={[styles.homeContent, { backgroundColor: "#88e1fc" }]}>
-        
-           
-
-
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <ScrollView style={{ height: hp("60%"), marginTop: hp("5%") }}>
+          <View>
             <View style={styles.avatar}>
-                <Image
-                  
-                  source={{ uri: image }}
-                  style={{
-                    borderRadius: 3,
-                   
-                    height: 200,
-                    width: 300,
-                  }}
-                />
-              </View>
-              <View style={styles.photoUpload}>
-                <MaterialCommunityIcons
-                  onPress={pickImage}
-                  name="image-plus"
-                  size={30}
-                  color="black"
-                />
-              </View>
-            <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
-              Title
-            </Text>
-           
+              <Image
+                source={{ uri: image }}
+                style={{
+                  borderRadius: 4,
+                  borderWidth: 1.5,
+                  marginBottom: 30,
+                  borderRadius: 4,
+                  height: hp("20%"),
+                  width: wp("60%"),
+                  alignSelf: "center",
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 5,
+                  elevation: 8,
+                }}
+              />
+            </View>
+            <View style={styles.photoUpload}>
+              <MaterialCommunityIcons
+                onPress={pickImage}
+                name="image-plus"
+                size={30}
+                color="black"
+              />
+            </View>
+
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Title</Text>
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
@@ -188,42 +219,27 @@ const pickImage = async () => {
                   onChangeText={(title1) => setTitle1(title1)}
                 />
               </View>
-            
+            </View>
 
-            <Text style={{ fontSize: 20, marginTop: 30, marginLeft: 10 }}>
-              Content
-            </Text>
-            
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Content</Text>
               <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
-                 
                   defaultValue={message}
-                 
                   multiline={true}
                   numberOfLines={10}
                   textAlignVertical="top"
                   onChangeText={(message1) => setMessage1(message1)}
                 />
               </View>
-            
-        </View>
-
-        
-      </ScrollView>
-      <View style={styles.iconAdd}>
-          <TouchableOpacity onPress={handlePress}>
-            <FontAwesome
-              name="send"
-              size={30}
-              color="#38deff"
-              style={{ alignSelf: "center" }}
-            />
-            <Text style={{ alignSelf: "center", fontWeight: "900" }}>
-              Upload
-            </Text>
-          </TouchableOpacity>
-        </View>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
+        <Text style={styles.SignUpText}>Upload</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -231,96 +247,124 @@ const pickImage = async () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 30,
 
     backgroundColor: "white",
   },
-  iconAdd: {
-    alignSelf: "center",
-    marginTop :'4%',
-    marginBottom: '3%',
+  datePickerStyle: {
+    width: 200,
   },
-  avatar: {
-    marginTop: 30,
+  scrollView: {
+    height: hp("55%"),
+    width: wp("90%"),
     alignSelf: "center",
+    borderRadius: 40,
+    marginBottom: hp("5%"),
+    backgroundColor: "#ffffff",
   },
-  postName: {
-    marginTop: 20,
+
+  cardCont: {
+    marginTop: hp("1%"),
     alignSelf: "center",
-    marginBottom: 10,
+    width: wp("78%"),
+  },
+  text: {
+    alignSelf: "center",
+    marginTop: hp("4%"),
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  photoUpload: {
+    alignSelf: "flex-end",
+    marginRight: wp("20%"),
+    marginTop: hp("3%"),
+  },
+
+  cardtext: {
+    marginLeft: wp("1%"),
+    fontSize: hp("2.4%"),
+    fontWeight: "bold",
+    marginBottom: hp("1%"),
+  },
+  action: {
+    justifyContent: "center",
+
     borderRadius: 10,
-  
-  },
-  scrollScreen: {
-   
-    borderRadius: 1,
-    height :'100%',
+    height: hp("6%"),
+    marginBottom: hp("3%"),
     backgroundColor: "white",
-    marginHorizontal: 1,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
-    shadowRadius: 10,
-    elevation: 0.5,
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 8,
   },
-  homeContent: {
-    alignSelf: "center",
-    width :'100%',
-    marginTop: 5,
 
-    backgroundColor: "#f2ffff",
-    borderRadius: 10,
+  textinput: {
+    marginLeft: wp("3%"),
+    color: "black",
+    fontSize: hp("2.2%"),
+  },
+
+  buttonSignup: {
+    backgroundColor: "#cdaffa",
+    justifyContent: "center",
+    alignSelf: "center",
+    height: hp("8%"),
+    borderRadius: 9,
+    marginBottom: hp("0.1%"),
+    width: "60%",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2,
     },
-    shadowOpacity: 6,
-    shadowRadius: 20,
-    elevation: 0.5,
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 6,
   },
+
+  SignUpText: {
+    fontSize: hp("3%"),
+    alignSelf: "center",
+    fontWeight: "bold",
+  },
+
+  inlineText: {
+    color: "red",
+    marginTop: hp("1.5%"),
+    marginBottom: hp("4%"),
+    alignSelf: "center",
+  },
+
+  buttontext: {
+    fontSize: 15,
+    fontWeight: "500",
+    alignSelf: "center",
+    paddingTop: 7,
+  },
+
   Loadingcontainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",
   },
-  homeContentText: {
+  avatar: {
+    height: hp("20%"),
+    width: wp("60%"),
     alignSelf: "center",
-    marginTop: 30,
-    fontSize: 30,
-  },
-  head: {
-    alignSelf: "center",
-    marginTop: 20,
-  },
-  headText: {
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  addPhotoName: {
-    alignSelf: "center",
-    fontWeight: "bold",
-    fontSize: 8,
-  },
-  photoUpload: {
-    marginTop: 20,
-    alignSelf:'flex-end',
-    marginRight: '3%'
-  },
-  textinput: {
-    marginLeft: 10,
-    marginRight: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: "#8af7ff",
-    backgroundColor: "#e3f8ff",
-
-    paddingRight: 20,
-    padding: 10,
+    borderRadius: 10,
+    shadowColor: "#000",
+    backgroundColor: "white",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 10,
+    shadowRadius: 5,
+    elevation: 10,
   },
 });

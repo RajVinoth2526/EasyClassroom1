@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Image,
-  BackHandler
+  BackHandler,
+  
 } from "react-native";
 import React from "react";
 import {
   useFocusEffect
  } from '@react-navigation/native';
-
+ import { StatusBar } from 'react-native';
+ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 export default function WelcomeScreen({ navigation }) {
 
 
@@ -40,16 +42,21 @@ export default function WelcomeScreen({ navigation }) {
       };
     }, []),
   );
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor('white'); 
+    StatusBar.setTranslucent(true)
+   }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
-          source={require("./../assets/logo.png")}
+          source={require("./../assets/ec.png")}
         ></Image>
+        <Text style = {{alignSelf:'center', color :'#cdaffa' ,fontWeight:'bold'}}>Easy Classroom</Text>
         <Text style={styles.text}> TIME TO LEARN </Text>
       </View>
-
+    
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -75,20 +82,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    justifyContent: "flex-end",
+    justifyContent:'center',
     alignItems: "center",
   },
 
-  newButton: {
-    width: "100%",
-  },
-
+  
   button: {
-    marginBottom: 20,
-    backgroundColor: "#34dbeb",
-    height: 60,
+    
+    backgroundColor: "#cdaffa",
+    marginBottom:hp('2%'),
+    justifyContent:'center',
+    alignItems: "center",
+    height:hp('8%'),
     borderRadius: 12,
-    paddingTop: 5,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -100,34 +106,34 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 190,
-    height: 190,
+    width: wp('60%'),
+    height: hp('20%'),
   },
 
   logoContainer: {
-    position: "absolute",
-    top: 180,
+    marginTop:hp('20%'),
     alignItems: "center",
   },
 
   buttonText: {
-    marginTop: 5,
+    
     color: "black",
-    fontSize: 25,
-    alignSelf: "center",
+    fontSize: hp('3%'),
+    fontWeight:'bold'
   },
 
   text: {
     fontWeight: "bold",
-    position: "absolute",
     color: "black",
-    marginTop: 30,
-    top: 130,
-    fontSize: 20,
+    marginTop:hp('1%'),
+    fontSize: hp('2.5%'),
+    fontWeight:'bold'
   },
 
   buttonContainer: {
-    width: "70%",
-    marginBottom: 30,
+    marginTop:hp('30%'),
+    width:wp('70%'),
+   
+  
   },
 });
