@@ -565,7 +565,7 @@ function TabNavigation() {
 
   return (
     <View style={styles.Loadingcontainer}>
-      <ActivityIndicator color="#03befc" size="large" />
+      <ActivityIndicator color="#cdaffa" size="large" />
     </View>
   );
 }

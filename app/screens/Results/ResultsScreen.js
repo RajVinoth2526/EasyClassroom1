@@ -29,6 +29,7 @@ export default function ResultsScreen({ navigation }) {
   const [academyYear, setAcademyYear] = useState("");
   const [indexNumber, setIndexNumber] = useState("");
   const [isLoading, setisLoading] = useState(false);
+  const [flag, setFlag] = useState(false);
 
   let currentUserUID = firebase.auth().currentUser.uid;
 
@@ -51,7 +52,9 @@ export default function ResultsScreen({ navigation }) {
 
 
   useEffect(() => {
+    
     async function getUserInfo() {
+      setFlag(true);
       let doc = await firebase
         .firestore()
         .collection("users")
@@ -66,10 +69,12 @@ export default function ResultsScreen({ navigation }) {
         fetchLevel1Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty,dataObj.course);
         fetchLevel2Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty,dataObj.course);
         fetchLevel3Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty, dataObj.course);
+       
 
       }
     }
     getUserInfo();
+  
     
   },[]);
 
@@ -91,6 +96,7 @@ export default function ResultsScreen({ navigation }) {
 
     setLevel1(data);
     getGPALevel1(data);
+    setFlag(false);
     
 
   }
@@ -112,6 +118,7 @@ export default function ResultsScreen({ navigation }) {
     });
 
     setLevel2(data);
+    setFlag(false);
     getGPALevel2(data);
   }
 
@@ -132,6 +139,7 @@ export default function ResultsScreen({ navigation }) {
     });
 
     setLevel3(data);
+    setFlag(false);
     getGPALevel3(data);
   }
 
@@ -183,6 +191,7 @@ export default function ResultsScreen({ navigation }) {
         var GPA1 = gpa1 / credits;
         
         setLevel1GPA(GPA1);
+        setFlag(false);
         CumlativeGPA(GPA1);
         console.log(credits + " " + gpa1);
         
@@ -238,6 +247,7 @@ export default function ResultsScreen({ navigation }) {
 
         var GPA1 = gpa1 / credits;
         console.log(credits + " " + gpa1);
+        setFlag(false);
         setLevel2GPA(GPA1);
         CumlativeGPA(GPA1);
 
@@ -295,9 +305,10 @@ export default function ResultsScreen({ navigation }) {
         var GPA1 = gpa1 / credits;
         console.log(credits + " " + gpa1);
         setLevel3GPA(GPA1);
-
+        setFlag(false);
         CumlativeGPA(GPA1);
         setisLoading(true);
+       
 
       });
     }
@@ -487,6 +498,201 @@ if(isLoading == true){
   );
 
 }
+
+if(flag == true){
+  return(
+    <View style={styles.Loadingcontainer}>
+    <ActivityIndicator color="#cdaffa" size="large" />
+  </View>
+  );
+}
+
+if( (level1 == '' && level2 == '') && level3 == ''){
+
+  return (
+    <View style={styles.container}>
+      <View style={{ backgroundColor: "white", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "#cdaffa",
+            height: hp("10%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+              Results Sheet
+          </Text>
+        </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("10%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+
+      <View style={styles.GPA}>
+       
+          <View style={styles.CUMGPA}>
+            <Text style = {{fontSize:hp('2%'),fontWeight:'bold',alignSelf :'center'}} >Cumulative GPA</Text>
+            <Text
+              style={{ alignSelf: "center", fontWeight: "bold", color: "#4c0370" }}
+            >
+              {cumGap}
+            </Text>
+          </View>
+
+         
+        <View style ={{marginLeft:wp('7%')}}>
+          <View 
+          style = {{borderColor: "#cdaffa",
+                    justifyContent:'center',
+                   width:wp('40%'),
+                   borderRadius: 40,
+                   backgroundColor: "#e9c8fa",
+                   marginBottom:hp('1%'),
+                   borderWidth:2}}>
+            <Text style={{alignSelf:'center'}}>Level1    -  {level1GPA}</Text>
+          </View>
+
+          <View 
+          style = {{borderColor: "#cdaffa",
+                    justifyContent:'center',
+                   width:wp('40%'),
+                   borderRadius: 40,
+                   marginBottom:hp('1%'),
+                   backgroundColor: "#e9c8fa",
+                   borderWidth:2}}>
+            <Text  style={{alignSelf:'center'}}>Level2    -  {level2GPA}</Text>
+          </View>
+          <View 
+          style = {{borderColor: "#cdaffa",
+                    justifyContent:'center',
+                   width:wp('40%'),
+                   borderRadius: 40,
+                   marginBottom:hp('1%'),
+                   backgroundColor: "#e9c8fa",
+                   borderWidth:2}}>
+            <Text  style={{alignSelf:'center'}}>Level3    -  {level3GPA}</Text>
+          </View>
+        </View>
+
+
+
+       
+      </View>
+
+      <ScrollView style={styles.scrollScreen}>
+        <Text style = {{alignSelf:'center' ,fontSize:hp('2%'),fontWeight :'bold',marginTop:hp('2%')}}> Rsults</Text>
+        <View style={styles.tableContainer}>
+          <View style={styles.tableRowHeader}>
+            <View style={styles.tableColumnHeader}>
+              <Text style={styles.textHeader}>Level 1</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColumnCourseHead}>
+              <Text style={styles.textLineItemHead}>Course</Text>
+            </View>
+            <View style={styles.tableColumnResultHead}>
+              <Text style={styles.textLineItemHead}>Result</Text>
+            </View>
+          </View>
+
+          <FlatList
+            data={level1}
+            renderItem={({ item }) => (
+              <View style={styles.tableRow}>
+                <View style={styles.tableColumnCourse}>
+                  <Text style={styles.textLineItem}>{item.course}</Text>
+                </View>
+                <View style={styles.tableColumnResult}>
+                  <Text style={styles.textLineItem}>{item.result}</Text>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+
+        <View style={styles.tableContainer}>
+          <View style={styles.tableRowHeader}>
+            <View style={styles.tableColumnHeader}>
+              <Text style={styles.textHeader}>Level 2</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColumnCourseHead}>
+              <Text style={styles.textLineItemHead}>Course</Text>
+            </View>
+            <View style={styles.tableColumnResultHead}>
+              <Text style={styles.textLineItemHead}>Result</Text>
+            </View>
+          </View>
+
+          <FlatList
+            data={level2}
+            renderItem={({ item }) => (
+              <View style={styles.tableRow}>
+                <View style={styles.tableColumnCourse}>
+                  <Text style={styles.textLineItem}>{item.course}</Text>
+                </View>
+                <View style={styles.tableColumnResult}>
+                  <Text style={styles.textLineItem}>{item.result}</Text>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+        <View style={styles.tableContainer}>
+          <View style={styles.tableRowHeader}>
+            <View style={styles.tableColumnHeader}>
+              <Text style={styles.textHeader}>Level 3</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColumnCourseHead}>
+              <Text style={styles.textLineItemHead}>Course</Text>
+            </View>
+            <View style={styles.tableColumnResultHead}>
+              <Text style={styles.textLineItemHead}>Result</Text>
+            </View>
+          </View>
+
+          <FlatList
+            data={level3}
+            renderItem={({ item }) => (
+              <View style={styles.tableRow}>
+                <View style={styles.tableColumnCourse}>
+                  <Text style={styles.textLineItem}>{item.course}</Text>
+                </View>
+                <View style={styles.tableColumnResult}>
+                  <Text style={styles.textLineItem}>{item.result}</Text>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+      </ScrollView>
+    </View>
+  );
+
+}
+
+
+
 
   return(
     <View style={styles.Loadingcontainer}>
