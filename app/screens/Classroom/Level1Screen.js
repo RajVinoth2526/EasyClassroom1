@@ -3,31 +3,23 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
-  Image,
-  TextInput,
   FlatList,
   StatusBar,
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
 import { ScrollView } from "react-native-gesture-handler";
-import { greaterOrEq } from "react-native-reanimated";
 import { Entypo } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { StudentEntroll } from "../../../API/firebaseMethods/firebaseMethod";
 export default function Level1Screen({ navigation }) {
   const [role, setRole] = useState("");
   const [flag, setFlag] = useState("");
   const [subjects, setSubjects] = useState([]);
   const [AcademyYear, setAcademyYear] = useState([]);
-  const Year = "2021|2022";
-
   const level1 = "Level1";
   const [faculty, setFaculty] = useState("");
   const [department, setDepartment] = useState("");

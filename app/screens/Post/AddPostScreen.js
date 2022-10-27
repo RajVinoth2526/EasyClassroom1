@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
   View,
@@ -9,25 +9,17 @@ import {
   Image,
   Alert,
   ActivityIndicator,
-  SafeAreaView,
   KeyboardAvoidingView,
-  keyboardVerticalOffset,
-  TouchableWithoutFeedback,
-  Keyboard,
   StatusBar,
-  KeyboardAvoidingViewBase,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
-import { FontAwesome5 } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import * as firebase from "firebase";
 import { UploadPostImage } from "../../../API/firebaseMethods/firebaseMethod";
 import IMG from "../../assets/profile-placeholder.png";
 import IMAGE from "../../assets/photo.png";
-import { MaterialIcons } from "@expo/vector-icons";
 import { UploadPost } from "../../../API/firebaseMethods/firebaseMethod";
-import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,
@@ -41,7 +33,6 @@ export default function AddPostScreen({ navigation, route }) {
   const exampleImageUri1 = Image.resolveAssetSource(IMG).uri;
   const [image1, setImage1] = useState(exampleImageUri1);
   const [isLoading, setisLoading] = useState(false);
-
   const { Faculty } = route.params;
   const [ID] = useState(uuid.v4());
   let currentUserUID = firebase.auth().currentUser.uid;
@@ -62,13 +53,13 @@ export default function AddPostScreen({ navigation, route }) {
       const ProfileUrl = await firebase
         .storage()
         .ref()
-        .child("profileImage/" + currentUserUID) //name in storage in firebase console
+        .child("profileImage/" + currentUserUID)
         .getDownloadURL()
         .catch((e) => console.log("Errors while downloading => ", e));
       const url = await firebase
         .storage()
         .ref()
-        .child("PostImage/" + ID) //name in storage in firebase console
+        .child("PostImage/" + ID)
         .getDownloadURL()
         .catch((e) => console.log("Errors while downloading => ", e));
 
@@ -80,7 +71,6 @@ export default function AddPostScreen({ navigation, route }) {
   };
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,

@@ -14,9 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { Foundation } from "@expo/vector-icons";
 import { UploadImage } from "../../../API/firebaseMethods/firebaseMethod";
-import { GetImage } from "../../../API/firebaseMethods/firebaseMethod";
 import IMAGE from "../../assets/profile-placeholder.png";
 import { UpdateUserDetails } from "../../../API/firebaseMethods/firebaseMethod";
 const wait = (timeout) => {

@@ -4,19 +4,14 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  SafeAreaView,
   Alert,
-  Image,
   ActivityIndicator,
   KeyboardAvoidingView,
-  BackHandler,
   StatusBar,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import * as firebase from "firebase";
 import "firebase/firestore";
-import Modal from "react-native-modal";
-import { color } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,

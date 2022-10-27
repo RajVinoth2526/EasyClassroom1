@@ -5,7 +5,6 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  Keyboard,
   StyleSheet,
   SafeAreaView,
   Image,
@@ -15,10 +14,8 @@ import {
 import { StatusBar } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { LecturerRegistration } from "../../../API/firebaseMethods/LecturerRagistration";
-import * as firebase from "firebase";
 import "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
-import DatePicker from "react-native-datepicker";
 import IMAGE from "../../assets/profile-placeholder.png";
 import {
   widthPercentageToDP as wp,
@@ -30,7 +27,6 @@ export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
-  //const [DOB ,setDOB] = useState('');
   const [district, setDistrict] = useState("");
   const [role, setRole] = useState("");
   const [faculty, setFaculty] = useState("");
@@ -52,7 +48,6 @@ export default function SignUp({ navigation }) {
     setFirstName("");
     setLastName("");
     setGender("");
-    //setDOB('');
     setDistrict("");
     setRole("");
     setFaculty("");

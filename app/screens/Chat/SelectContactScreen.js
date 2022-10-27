@@ -3,9 +3,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   Image,
-  TextInput,
   FlatList,
   ActivityIndicator,
   Alert,
@@ -15,7 +13,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import React, { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
 import { ScrollView } from "react-native-gesture-handler";
 

@@ -2,13 +2,7 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import {
   Alert,
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import moment from "moment";
 
 export async function StudentRegistration(

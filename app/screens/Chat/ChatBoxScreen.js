@@ -5,7 +5,6 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  Keyboard,
   StyleSheet,
   SafeAreaView,
   Image,
@@ -15,15 +14,11 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Entypo } from "@expo/vector-icons";
-import CodeInput from "react-native-confirmation-code-input";
-import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import * as firebase from "firebase";
 import { FontAwesome } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import { StoreSendMessage } from "../../../API/firebaseMethods/firebaseMethod";
-import { StoreReceiveMessage } from "../../../API/firebaseMethods/firebaseMethod";
 import { StoreReceivedID } from "../../../API/firebaseMethods/firebaseMethod";
 import {
   widthPercentageToDP as wp,

@@ -11,9 +11,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { AddResults } from "../../../API/firebaseMethods/firebaseMethod";
 import RNPickerSelect from "react-native-picker-select";
-import { StoreCourse } from "../../../API/firebaseMethods/firebaseMethod";
 import { StoreCourseName } from "../../../API/firebaseMethods/firebaseMethod";
 import * as firebase from "firebase";
 import {

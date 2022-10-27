@@ -9,11 +9,8 @@ import {
   Image,
   Alert,
   ActivityIndicator,
-  SafeAreaView,
   KeyboardAvoidingView,
   keyboardVerticalOffset,
-  TouchableWithoutFeedback,
-  Keyboard,
   StatusBar,
 } from "react-native";
 import {
@@ -22,17 +19,11 @@ import {
 } from "react-native-responsive-screen";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
-import { FontAwesome5 } from "@expo/vector-icons";
-import uuid from "react-native-uuid";
 import * as firebase from "firebase";
 import { UploadPostImage } from "../../../API/firebaseMethods/firebaseMethod";
 import IMAGE from "../../assets/photo.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
-import { FontAwesome } from "@expo/vector-icons";
-import { set } from "react-native-reanimated";
-
 export default function EditPostScreen({ navigation, route }) {
   const [message, setMessage] = useState("");
   const [title, setTitle] = useState("");

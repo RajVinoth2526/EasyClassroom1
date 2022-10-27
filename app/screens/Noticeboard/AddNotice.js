@@ -7,25 +7,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TextInput,
-  Image,
   Alert,
-  SafeAreaView,
   KeyboardAvoidingView,
-  keyboardVerticalOffset,
-  TouchableWithoutFeedback,
-  Keyboard,
-  StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import * as ImagePicker from "expo-image-picker";
-import { FontAwesome5 } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import * as firebase from "firebase";
-//import { UploadPost } from '../../../../API/firebaseMethods/firebaseMethod';
-//import IMAGE from '../../../assets/photo.png';
-import { MaterialIcons } from "@expo/vector-icons";
 import { CreateNotice } from "../../../API/firebaseMethods/firebaseMethod";
-import { FontAwesome } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -35,9 +23,7 @@ export default function AddNoticeScreen({ navigation, route }) {
   const [faculty, setFaculty] = useState("");
   const [title, setTitle] = useState("");
   const { type } = route.params;
-  const [isLoading, setisLoading] = useState(false);
   const [flag, setFlag] = useState(false);
-
   const id = uuid.v4();
   let currentUserUID = firebase.auth().currentUser.uid;
 

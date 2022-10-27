@@ -9,10 +9,8 @@ import {
   Image,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { StatusBar } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -25,16 +23,12 @@ export default function DemoHomeScreen({ navigation }) {
     React.useCallback(() => {
       const onBackPress = () => {
         BackHandler.exitApp();
-        // Return true to stop default back navigaton
-        // Return false to keep default back navigaton
         return true;
       };
 
-      // Add Event Listener for hardwareBackPress
       BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
       return () => {
-        // Once the Screen gets blur Remove Event Listener
         BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
     }, [])

@@ -4,18 +4,14 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  SafeAreaView,
   Alert,
   Image,
   ActivityIndicator,
   KeyboardAvoidingView,
-  BackHandler,
   StatusBar,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { signIn } from "../../API/firebaseMethods/firebaseMethod";
-import Modal from "react-native-modal";
-import { color } from "react-native-reanimated";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

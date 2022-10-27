@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
   View,
@@ -6,28 +6,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Image,
   Alert,
-  SafeAreaView,
   KeyboardAvoidingView,
-  keyboardVerticalOffset,
-  TouchableWithoutFeedback,
-  Keyboard,
   StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import * as ImagePicker from "expo-image-picker";
-import { FontAwesome5 } from "@expo/vector-icons";
-import uuid from "react-native-uuid";
 import * as DocumentPicker from "expo-document-picker";
-import * as firebase from "firebase";
-//import { UploadPost } from '../../../../API/firebaseMethods/firebaseMethod';
-//import IMAGE from '../../../assets/photo.png';
-import { MaterialIcons } from "@expo/vector-icons";
-import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
 import { FontAwesome } from "@expo/vector-icons";
 import { UpdateStoreCourse } from "../../../API/firebaseMethods/firebaseMethod";
-import { normalizeUnits } from "moment";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

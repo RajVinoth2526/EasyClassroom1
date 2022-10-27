@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Octicons } from "@expo/vector-icons";
-
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,

@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  RefreshControl,
   StyleSheet,
   TouchableOpacity,
-  Image,
   ActivityIndicator,
   FlatList,
   Alert,
@@ -15,9 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
-import { setRandomFallback } from "bcryptjs";
 import { Entypo } from "@expo/vector-icons";
-import Clipboard from "@react-native-clipboard/clipboard";
 import { DeleteStoreCourseName } from "../../../API/firebaseMethods/firebaseMethod";
 import {
   widthPercentageToDP as wp,
@@ -26,20 +22,13 @@ import {
 export default function LecturerClassroomScreen({ navigation, route }) {
   const [subjects, setSubjects] = useState([]);
   const [role, setRole] = useState("");
-
   const { Year } = route.params;
   const { Level } = route.params;
-
-  //const Year = "2021|2022";
   console.log(Year);
   console.log(Level);
-  const level1 = "Level1";
   const [faculty, setFaculty] = useState("");
   const [department, setDepartment] = useState("");
-  const [loading, setLoading] = useState("");
-  const [isloading, setisLoading] = useState(false);
   const [flag, setFlag] = useState(false);
-  const [year, setYear] = useState("");
 
   React.useEffect(() => {
     StatusBar.setBackgroundColor("#cdaffa");
@@ -53,8 +42,6 @@ export default function LecturerClassroomScreen({ navigation, route }) {
     const unsubscribe = navigation.addListener("focus", () => {
       getUserInfo();
       Refresh();
-
-      //Put your Data loading function here instead of my loadData()
     });
 
     return unsubscribe;

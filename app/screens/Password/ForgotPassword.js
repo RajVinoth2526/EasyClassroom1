@@ -4,12 +4,9 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  SafeAreaView,
   Alert,
-  Image,
   ActivityIndicator,
   KeyboardAvoidingView,
-  BackHandler,
   StatusBar,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -17,16 +14,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import Modal from "react-native-modal";
-import { color } from "react-native-reanimated";
 import * as firebase from "firebase";
 import "firebase/firestore";
-
-import {
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function SignIn({ navigation }) {

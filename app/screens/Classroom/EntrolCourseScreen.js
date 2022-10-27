@@ -4,29 +4,17 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  SafeAreaView,
   Alert,
-  Image,
-  ActivityIndicator,
   KeyboardAvoidingView,
-  BackHandler,
   StatusBar,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-
-import Modal from "react-native-modal";
-import { color } from "react-native-reanimated";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import {
-  signInWithpasswordAndPassword,
-  sendPasswordResetpassword,
-} from "firebase/auth";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { StudentEntroll } from "../../../API/firebaseMethods/firebaseMethod";
 export default function EntrolCourseScreen({ navigation, route }) {

@@ -3,9 +3,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   Image,
-  TextInput,
   FlatList,
   ActivityIndicator,
   RefreshControl,
@@ -52,7 +50,6 @@ export default function ChatScreen({ navigation }) {
 
   function delectChat(userId, Id) {
     DeleteChat(userId, Id);
-    //Alert.alert("nskgw");
     fetchSubjects();
     RefreshPage();
   }
@@ -168,7 +165,7 @@ export default function ChatScreen({ navigation }) {
       RefreshPage();
     }, MINUTE_MS);
 
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    return () => clearInterval(interval);
   }, []);
 
   const wait = (timeout) => {

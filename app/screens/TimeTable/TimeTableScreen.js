@@ -3,20 +3,13 @@ import * as firebase from "firebase";
 import {
   View,
   Text,
-  RefreshControl,
   StyleSheet,
-  TouchableOpacity,
   Image,
   ActivityIndicator,
-  FlatList,
   Alert,
   StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
 import IMAGE from "../../assets/photo.png";
 import * as ImagePicker from "expo-image-picker";
 import { UploadTimeTable } from "../../../API/firebaseMethods/firebaseMethod";

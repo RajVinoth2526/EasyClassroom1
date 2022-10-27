@@ -5,13 +5,11 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  Keyboard,
   StyleSheet,
   SafeAreaView,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { registration } from "../../API/firebaseMethods/firebaseMethod";
-import * as firebase from "firebase";
 import "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
 
@@ -26,7 +24,6 @@ export default function StudentSignUp({ navigation }) {
   const [indexNumber, setIndexNumber] = useState("");
   const [role, setRole] = useState("");
   const [faculty, setFaculty] = useState("");
-  //const [department, setDeparment] = useState('');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -40,9 +37,7 @@ export default function StudentSignUp({ navigation }) {
     setCourse("");
     setRegistrationNumber("");
     setIndexNumber("");
-    //setRole('');
     setFaculty("");
-    // setDeparment('');
     setEmail("");
     setPassword("");
     setConfirmPassword("");

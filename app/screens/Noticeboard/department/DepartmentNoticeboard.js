@@ -18,9 +18,7 @@ import {
 } from "react-native-responsive-screen";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
 import { DeleteNotice } from "../../../../API/firebaseMethods/firebaseMethod";
 
 const wait = (timeout) => {
@@ -44,7 +42,6 @@ export default function PostScreen({ navigation, route }) {
       fetchSubjects();
       getUserInfo();
       RefreshPage();
-      //Put your Data loading function here instead of my loadData()
     });
 
     return unsubscribe;
@@ -169,7 +166,7 @@ export default function PostScreen({ navigation, route }) {
     fetchSubjects();
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => { });
 
   const generateRandomBrightestHSLColor = () => {
     return "hsla(" + ~~(360 * Math.random()) + "," + "80%," + "90%,2)";

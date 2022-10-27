@@ -3,19 +3,13 @@ import {
   View,
   Text,
   Image,
-  TextInput,
   Alert,
-  ScrollView,
-  Keyboard,
   StyleSheet,
-  SafeAreaView,
   ActivityIndicator,
   KeyboardAvoidingView,
   StatusBar,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import CodeInput from "react-native-confirmation-code-input";
-import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import * as firebase from "firebase";

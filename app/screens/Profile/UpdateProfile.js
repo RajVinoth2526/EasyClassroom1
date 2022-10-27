@@ -7,7 +7,6 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  Keyboard,
   StyleSheet,
   SafeAreaView,
   Image,
@@ -18,7 +17,6 @@ import { Update } from "../../../API/firebaseMethods/firebaseMethod";
 import * as firebase from "firebase";
 import "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
-import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,

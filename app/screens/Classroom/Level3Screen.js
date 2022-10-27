@@ -3,38 +3,28 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
-  Image,
-  TextInput,
   FlatList,
   ActivityIndicator,
   StatusBar,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import React, { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
-import { BorderlessButton, ScrollView } from "react-native-gesture-handler";
-import { greaterOrEq } from "react-native-reanimated";
 import { Entypo } from "@expo/vector-icons";
-import { StudentEntroll } from "../../../API/firebaseMethods/firebaseMethod";
 export default function Level3Screen({ navigation }) {
   const [role, setRole] = useState("");
-  const [flag, setFlag] = useState("");
   const [subjects, setSubjects] = useState([]);
   const [AcademyYear, setAcademyYear] = useState([]);
-  //const Year = "2021|2022";
-
   const level3 = "Level3";
   const [faculty, setFaculty] = useState("");
   const [department, setDepartment] = useState("");
   const [loading, setLoading] = useState("");
   const [isloading, setisLoading] = useState(false);
   const [year, setYear] = useState("");
-
   const currentUser = firebase.auth().currentUser;
 
   React.useEffect(() => {

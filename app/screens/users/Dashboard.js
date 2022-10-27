@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
-  Image,
   ActivityIndicator,
   Alert,
-  BackHandler,
 } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";

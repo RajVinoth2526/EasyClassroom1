@@ -5,28 +5,17 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  Keyboard,
   StyleSheet,
-  SafeAreaView,
   ActivityIndicator,
   StatusBar,
   KeyboardAvoidingView,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Entypo } from "@expo/vector-icons";
-import CodeInput from "react-native-confirmation-code-input";
-import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import * as firebase from "firebase";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import Level1Screen from "./Level1Screen";
-import Level3Screen from "./Level3Screen";
-import Level2Screen from "./Level2Screen";
 import uuid from "react-native-uuid";
-import { MaterialIcons } from "@expo/vector-icons";
 import { StoreCourse } from "../../../API/firebaseMethods/firebaseMethod";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
 import { StoreCourseLink } from "../../../API/firebaseMethods/firebaseMethod";
 import {

@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
-  SafeAreaView,
   Alert,
-  Image,
   ActivityIndicator,
-  KeyboardAvoidingView,
   BackHandler,
   FlatList,
   StatusBar,
@@ -21,14 +17,9 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
-import Modal from "react-native-modal";
-import { color } from "react-native-reanimated";
 import * as firebase from "firebase";
 import "firebase/firestore";
-import HyperlinkedText from "react-native-hyperlinked-text";
 import { useFocusEffect } from "@react-navigation/native";
-
-import { Octicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { DeleteStoreCourse } from "../../../API/firebaseMethods/firebaseMethod";
@@ -72,7 +63,6 @@ export default function CourseScreen({ navigation, route }) {
       fetchSubjects();
       fetchSubjects1();
       Refresh();
-      //Put your Data loading function here instead of my loadData()
     });
 
     return unsubscribe;
@@ -82,17 +72,12 @@ export default function CourseScreen({ navigation, route }) {
     React.useCallback(() => {
       const onBackPress = () => {
         navigation.navigate("ClassroomWelcome");
-
-        // Return true to stop default back navigaton
-        // Return false to keep default back navigaton
         return true;
       };
 
-      // Add Event Listener for hardwareBackPress
       BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
       return () => {
-        // Once the Screen gets blur Remove Event Listener
         BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
     }, [])

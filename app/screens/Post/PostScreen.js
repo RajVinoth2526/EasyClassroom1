@@ -17,7 +17,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { DeletePost } from "../../../API/firebaseMethods/firebaseMethod";
 import IMAGE from "../../assets/profile-placeholder.png";
-import { useIsFocused, useFocusEffect } from "@react-navigation/native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

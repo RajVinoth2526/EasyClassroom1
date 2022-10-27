@@ -1,29 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
-  TextInput,
-  Alert,
-  ScrollView,
-  Keyboard,
   StyleSheet,
-  SafeAreaView,
   StatusBar,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import CodeInput from "react-native-confirmation-code-input";
-import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 export default function VerifyRole({ navigation }) {
-  const role1 = "Lecturer";
-  const role2 = "Demonstrator";
-  const role3 = "Student";
-  const role4 = "Admin";
-
   const Verify = () => {
     navigation.navigate("Pin");
   };

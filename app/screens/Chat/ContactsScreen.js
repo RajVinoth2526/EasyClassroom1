@@ -1,19 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
-  TextInput,
-  Alert,
-  ScrollView,
-  Keyboard,
   StyleSheet,
-  SafeAreaView,
   StatusBar,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Entypo } from "@expo/vector-icons";
-import CodeInput from "react-native-confirmation-code-input";
-import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import {
   widthPercentageToDP as wp,
