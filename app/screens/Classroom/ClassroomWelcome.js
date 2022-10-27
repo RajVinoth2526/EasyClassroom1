@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   StyleSheet,
   SafeAreaView,
   ActivityIndicator,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Entypo } from "@expo/vector-icons";
@@ -17,26 +17,21 @@ import CodeInput from "react-native-confirmation-code-input";
 import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import * as firebase from "firebase";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Level1Screen from "./Level1Screen";
 import Level3Screen from "./Level3Screen";
 import Level2Screen from "./Level2Screen";
 
-
 export default function ClassroomWelcome({ navigation }) {
-
   React.useEffect(() => {
     StatusBar.setBackgroundColor("#cdaffa");
     StatusBar.setTranslucent(true);
   }, []);
 
- 
   const Tab = createMaterialTopTabNavigator();
 
-   
   return (
-    
-      <Tab.Navigator
+    <Tab.Navigator
       screenOptions={{
         tabBarLabelStyle: {
           fontSize: 12,
@@ -58,24 +53,10 @@ export default function ClassroomWelcome({ navigation }) {
         },
         tabBarIndicator: () => null,
       }}
-      >
-        <Tab.Screen name="Level1" component={Level1Screen} />
-        <Tab.Screen name="Level2" component={Level2Screen} />
-        <Tab.Screen name="Level3" component={Level3Screen} />
-       
-        
-      </Tab.Navigator>
-
-
-
-    );
-
-    
-    
-     
-  
-
+    >
+      <Tab.Screen name="Level1" component={Level1Screen} />
+      <Tab.Screen name="Level2" component={Level2Screen} />
+      <Tab.Screen name="Level3" component={Level3Screen} />
+    </Tab.Navigator>
+  );
 }
-
-
-

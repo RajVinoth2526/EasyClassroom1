@@ -13,7 +13,7 @@ import {
   keyboardVerticalOffset,
   TouchableWithoutFeedback,
   Keyboard,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
@@ -32,64 +32,94 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 export default function EditCourseNameScreen({ navigation, route }) {
- 
   const [Course1, setCourse] = useState("");
   const [CourseID1, setCourseId] = useState("");
   const { UserId } = route.params;
-  const {ID} = route.params;
-  const {Course} = route.params;
-  const {CourseID} = route.params;
-  const {Faculty} = route.params;
-  const {Level} = route.params;
-  const {Year} = route.params;
-  const {Department} = route.params;
- 
+  const { ID } = route.params;
+  const { Course } = route.params;
+  const { CourseID } = route.params;
+  const { Faculty } = route.params;
+  const { Level } = route.params;
+  const { Year } = route.params;
+  const { Department } = route.params;
+
   React.useEffect(() => {
     StatusBar.setBackgroundColor("#cdaffa");
     StatusBar.setTranslucent(true);
   }, []);
 
-  
-
-
   function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = "";
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * 
-  charactersLength));
-   }
-   return result;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
-  
+
   const password = makeid(10);
 
-
- 
-
   const handlePress = () => {
-     if(!Course1  ){
-      EditCourseName(UserId,Faculty,Department,Level,Year, Course,ID,CourseID1,password);
-      navigation.goBack({Level : Level ,Year : Year});
-     
-    }if(!CourseID1){
-      EditCourseName(UserId,Faculty,Department,Level,Year, Course1,ID,CourseID,password);
-      navigation.goBack({Level : Level ,Year : Year});
-    
-    }if(!Course1 && !CourseID1){
-      EditCourseName(UserId,Faculty,Department,Level,Year, Course,ID,CourseID,password);
-      navigation.navigate('LecturerClassroom',{Level : Level ,Year : Year});
-    
-    }if(Course1 && CourseID1){
-      EditCourseName(UserId,Faculty,Department,Level,Year, Course1,ID,CourseID1,password);
-      navigation.goBack({Level : Level ,Year : Year});
-      
-
+    if (!Course1) {
+      EditCourseName(
+        UserId,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course,
+        ID,
+        CourseID1,
+        password
+      );
+      navigation.goBack({ Level: Level, Year: Year });
+    }
+    if (!CourseID1) {
+      EditCourseName(
+        UserId,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course1,
+        ID,
+        CourseID,
+        password
+      );
+      navigation.goBack({ Level: Level, Year: Year });
+    }
+    if (!Course1 && !CourseID1) {
+      EditCourseName(
+        UserId,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course,
+        ID,
+        CourseID,
+        password
+      );
+      navigation.navigate("LecturerClassroom", { Level: Level, Year: Year });
+    }
+    if (Course1 && CourseID1) {
+      EditCourseName(
+        UserId,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course1,
+        ID,
+        CourseID1,
+        password
+      );
+      navigation.goBack({ Level: Level, Year: Year });
     }
   };
 
- 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
   return (
@@ -124,37 +154,28 @@ export default function EditCourseNameScreen({ navigation, route }) {
         ></View>
       </View>
 
-
-
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-        <ScrollView style={{height:hp('40%'),marginTop:hp('10%')}}>
-        <View>
-       
-       
-
-          
-
-         
-         
-        
-
-          <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Course Name</Text>
-            <View style={styles.action}>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <ScrollView style={{ height: hp("40%"), marginTop: hp("10%") }}>
+          <View>
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Course Name</Text>
+              <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
                   editable={true}
-                  defaultValue ={Course}
-                
+                  defaultValue={Course}
                   textAlignVertical="top"
                   onChangeText={(Course1) => setCourse(Course1)}
                 />
               </View>
-          </View>
+            </View>
 
-          < View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Course ID</Text>
-            <View style={styles.action}>
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Course ID</Text>
+              <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
                   editable={true}
@@ -163,28 +184,13 @@ export default function EditCourseNameScreen({ navigation, route }) {
                   onChangeText={(CourseID1) => setCourseId(CourseID1)}
                 />
               </View>
+            </View>
           </View>
-
-         
-
-         
-
-          
-
-
-           
-          
-
-            
-          </View>
-
         </ScrollView>
-        </KeyboardAvoidingView>
-        <TouchableOpacity style={styles.buttonSignup}  onPress={handlePress}>
-            <Text style={styles.SignUpText}>Done</Text>
-         </TouchableOpacity>
-
-     
+      </KeyboardAvoidingView>
+      <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
+        <Text style={styles.SignUpText}>Done</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -218,11 +224,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
   },
-  photoUpload:{
-    alignSelf:'flex-end',
-    marginRight:wp('20%'),
-    marginTop:hp('3%')
-
+  photoUpload: {
+    alignSelf: "flex-end",
+    marginRight: wp("20%"),
+    marginTop: hp("3%"),
   },
 
   cardtext: {
@@ -300,11 +305,11 @@ const styles = StyleSheet.create({
   },
   avatar: {
     height: hp("20%"),
-                    width: wp("60%"),
+    width: wp("60%"),
     alignSelf: "center",
     borderRadius: 10,
     shadowColor: "#000",
-    backgroundColor:'white',
+    backgroundColor: "white",
     shadowOffset: {
       width: 0,
       height: 1,

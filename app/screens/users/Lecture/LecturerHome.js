@@ -1,9 +1,14 @@
 import React from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { StatusBar } from "react-native";
 import {
-  useFocusEffect
- } from '@react-navigation/native';
- import { StatusBar } from 'react-native';
-import { View, Text, StyleSheet, TouchableOpacity ,BackHandler,Image} from "react-native";
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  BackHandler,
+  Image,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -17,40 +22,31 @@ import {
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
 export default function LecturerHomeScreen({ navigation }) {
-
-
   useFocusEffect(
-    React.useCallback(() => {    
+    React.useCallback(() => {
       const onBackPress = () => {
         BackHandler.exitApp();
-        // Return true to stop default back navigaton    
+        // Return true to stop default back navigaton
         // Return false to keep default back navigaton
         return true;
       };
- 
+
       // Add Event Listener for hardwareBackPress
-      BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress
-      );
- 
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
       return () => {
         // Once the Screen gets blur Remove Event Listener
-        BackHandler.removeEventListener(
-          'hardwareBackPress',
-          onBackPress
-        );
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
-    }, []),
+    }, [])
   );
 
   React.useEffect(() => {
-    StatusBar.setBackgroundColor('#cdaffa'); 
-    StatusBar.setTranslucent(true)
-   }, []);
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   return (
-   
     <View style={styles.container}>
       <View style={{ backgroundColor: "white", height: hp("30%") }}>
         <View
@@ -61,22 +57,22 @@ export default function LecturerHomeScreen({ navigation }) {
             justifyContent: "center",
           }}
         >
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.logo}
-            source={require("./../../../assets/ec.png")}
-          ></Image>
-          <Text
-            style={{
-              alignSelf: "center",
-              fontSize: hp("2%"),
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            TIME TO LEARN{" "}
-          </Text>
-        </View>
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.logo}
+              source={require("./../../../assets/ec.png")}
+            ></Image>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("2%"),
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              TIME TO LEARN{" "}
+            </Text>
+          </View>
         </View>
       </View>
       <View style={{ backgroundColor: "#cdaffa", height: hp("8%") }}>
@@ -88,11 +84,7 @@ export default function LecturerHomeScreen({ navigation }) {
           }}
         ></View>
       </View>
-    
 
-       
-    
-    
       <ScrollView style={styles.scrollScreen}>
         <View
           style={{
@@ -214,8 +206,7 @@ export default function LecturerHomeScreen({ navigation }) {
           </View>
         </View>
       </ScrollView>
-  
-  </View>
+    </View>
   );
 }
 
@@ -227,7 +218,6 @@ const styles = StyleSheet.create({
   scrollScreen: {
     backgroundColor: "white",
     alignSelf: "center",
-   
   },
   homeContent: {
     alignSelf: "center",

@@ -10,14 +10,14 @@ import {
   ActivityIndicator,
   FlatList,
   Alert,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { DeletePost } from "../../../API/firebaseMethods/firebaseMethod";
 import IMAGE from "../../assets/profile-placeholder.png";
-import { useIsFocused ,useFocusEffect} from "@react-navigation/native";
+import { useIsFocused, useFocusEffect } from "@react-navigation/native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -37,39 +37,31 @@ export default function PostScreen({ navigation }) {
 
   const currentUser = firebase.auth().currentUser;
 
- 
-
-React.useEffect(() => {
- 
-  getUserInfo();
-  RefreshPage();
-  const unsubscribe = navigation.addListener('focus', () => {
-   
+  React.useEffect(() => {
     getUserInfo();
     RefreshPage();
-    //Put your Data loading function here instead of my loadData()
-  });
+    const unsubscribe = navigation.addListener("focus", () => {
+      getUserInfo();
+      RefreshPage();
+      //Put your Data loading function here instead of my loadData()
+    });
 
-  return unsubscribe;
-}, [navigation]);
-
- 
-
+    return unsubscribe;
+  }, [navigation]);
 
   function printId(ID) {
-    navigation.navigate("EditPost", { PostID: ID , Faculty : faculty });
+    navigation.navigate("EditPost", { PostID: ID, Faculty: faculty });
   }
   React.useEffect(() => {
     StatusBar.setBackgroundColor("#cdaffa");
     StatusBar.setTranslucent(true);
   }, []);
- 
+
   function deletePost(id) {
-    DeletePost(id,faculty);
-  
+    DeletePost(id, faculty);
+
     getUserInfo();
     RefreshPage();
-  
   }
 
   function Edit(PostID, PostUserID) {
@@ -111,7 +103,7 @@ React.useEffect(() => {
   }
 
   const handlePress = () => {
-    navigation.navigate("AddPostScreen",{Faculty : faculty});
+    navigation.navigate("AddPostScreen", { Faculty: faculty });
   };
 
   async function getUserInfo() {
@@ -126,19 +118,17 @@ React.useEffect(() => {
     } else {
       let dataObj = doc.data();
       setRole(dataObj.role);
-      setFaculty(dataObj.faculty)
-      fetchSubjects(dataObj.faculty)
-      .then(() => {
+      setFaculty(dataObj.faculty);
+      fetchSubjects(dataObj.faculty).then(() => {
         setFlag(true);
-      })
+      });
     }
   }
 
   async function fetchSubjects(Faculty) {
-   
     const data = [];
     const db = firebase.firestore();
-    const querySnapshot = await db.collection(Faculty+"-Posts").get();
+    const querySnapshot = await db.collection(Faculty + "-Posts").get();
     querySnapshot.forEach((doc) => {
       console.log(doc.id, " => ", doc.data());
       data.push(doc.data());
@@ -151,8 +141,6 @@ React.useEffect(() => {
     getUserInfo();
   }, []);
 
-  
-
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -160,12 +148,10 @@ React.useEffect(() => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  
   const MINUTE_MS = 10000000000;
 
   useEffect(() => {
     const interval = setInterval(() => {
-    
       getUserInfo();
       RefreshPage();
     }, MINUTE_MS);
@@ -195,7 +181,7 @@ React.useEffect(() => {
                           height: hp("5.2%"),
                           width: wp("11%"),
                           borderWidth: 1.5,
-  
+
                           borderRadius: 50,
                         }}
                       />
@@ -216,7 +202,7 @@ React.useEffect(() => {
                       </Text>
                     </View>
                   </View>
-  
+
                   <Text style={styles.title}>{item.title}</Text>
                   <View style={styles.avatar}>
                     <Image
@@ -240,7 +226,7 @@ React.useEffect(() => {
                       }}
                     />
                   </View>
-  
+
                   <View style={styles.Msg}>
                     <Text style={styles.msg}>{item.message}</Text>
                   </View>
@@ -263,11 +249,9 @@ React.useEffect(() => {
               )}
               keyExtractor={(item, index) => index.toString()}
             />
-             <View style ={{height :hp('12%'),width:wp('100%')}}>
-
-</View>
+            <View style={{ height: hp("12%"), width: wp("100%") }}></View>
           </ScrollView>
-  
+
           <View style={styles.AddIcon}>
             <Ionicons
               name="md-add-circle-sharp"
@@ -298,7 +282,7 @@ React.useEffect(() => {
                         height: hp("5.2%"),
                         width: wp("11%"),
                         borderWidth: 1.5,
-  
+
                         borderRadius: 50,
                       }}
                     />
@@ -319,7 +303,7 @@ React.useEffect(() => {
                     </Text>
                   </View>
                 </View>
-  
+
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.avatar}>
                   <Image
@@ -343,18 +327,17 @@ React.useEffect(() => {
                     }}
                   />
                 </View>
-  
+
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.message}</Text>
                 </View>
-                
               </View>
             )}
             keyExtractor={(item, index) => index.toString()}
           />
         </ScrollView>
       );
-    } else if (role == "Student"&& flag == true) {
+    } else if (role == "Student" && flag == true) {
       return (
         <ScrollView
           style={styles.scrollScreen}
@@ -374,7 +357,7 @@ React.useEffect(() => {
                         height: hp("5.2%"),
                         width: wp("11%"),
                         borderWidth: 1.5,
-  
+
                         borderRadius: 50,
                       }}
                     />
@@ -395,7 +378,7 @@ React.useEffect(() => {
                     </Text>
                   </View>
                 </View>
-  
+
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.avatar}>
                   <Image
@@ -419,11 +402,10 @@ React.useEffect(() => {
                     }}
                   />
                 </View>
-  
+
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.message}</Text>
                 </View>
-                
               </View>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -431,7 +413,7 @@ React.useEffect(() => {
         </ScrollView>
       );
     }
-  
+
     return (
       <View style={styles.Loadingcontainer}>
         <ActivityIndicator color="#cdaffa" size="large" />
@@ -448,7 +430,7 @@ React.useEffect(() => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          <FlatList 
+          <FlatList
             data={subjects}
             renderItem={({ item }) => (
               <View style={[styles.Box]}>
@@ -528,9 +510,7 @@ React.useEffect(() => {
             )}
             keyExtractor={(item, index) => index.toString()}
           />
-         <View style ={{height :hp('12%'),width:wp('100%')}}>
-
-</View>
+          <View style={{ height: hp("12%"), width: wp("100%") }}></View>
         </ScrollView>
 
         <View style={styles.AddIcon}>
@@ -612,7 +592,6 @@ React.useEffect(() => {
               <View style={styles.Msg}>
                 <Text style={styles.msg}>{item.message}</Text>
               </View>
-              
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
@@ -688,7 +667,6 @@ React.useEffect(() => {
               <View style={styles.Msg}>
                 <Text style={styles.msg}>{item.message}</Text>
               </View>
-              
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
@@ -712,10 +690,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
 
-   bottom:5,
+    bottom: 5,
   },
   scrollScreen: {
- 
     height: hp("100%"),
     width: wp("100%"),
   },
@@ -801,7 +778,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    
   },
   avatar: {
     height: hp("28%"),
@@ -823,7 +799,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 50,
     shadowColor: "#000",
-    backgroundColor:'white',
+    backgroundColor: "white",
     shadowOffset: {
       width: 0,
       height: 1,

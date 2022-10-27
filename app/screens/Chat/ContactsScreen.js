@@ -8,7 +8,7 @@ import {
   Keyboard,
   StyleSheet,
   SafeAreaView,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Entypo } from "@expo/vector-icons";
@@ -27,9 +27,9 @@ export default function ContactScreen({ navigation }) {
   const role4 = "Admin";
 
   React.useEffect(() => {
-    StatusBar.setBackgroundColor('#cdaffa'); 
-    StatusBar.setTranslucent(true)
-   }, []);
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   function handlePress(Role) {
     navigation.navigate("SelectContact", { ROLE: Role });
@@ -37,36 +37,50 @@ export default function ContactScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style = {{backgroundColor:'white'}}>
-      <View style={styles.head}>
-        <Text style={styles.headText}>Chat With</Text>
+      <View style={{ backgroundColor: "white" }}>
+        <View style={styles.head}>
+          <Text style={styles.headText}>Chat With</Text>
+        </View>
       </View>
-      </View>
-      <View style = {{backgroundColor:'white',width:wp('100%'),height : hp('80%') , borderTopLeftRadius:60,justifyContent:'center',alignSelf:'center'}}>
-        <View style = {{alignSelf:'center'}}>
-     
-        <TouchableOpacity  style={[styles.select]} onPress={() => handlePress(role1)}>
-          <Text style={styles.selectText}>Lecturer</Text>
-        </TouchableOpacity>
-      
+      <View
+        style={{
+          backgroundColor: "white",
+          width: wp("100%"),
+          height: hp("80%"),
+          borderTopLeftRadius: 60,
+          justifyContent: "center",
+          alignSelf: "center",
+        }}
+      >
+        <View style={{ alignSelf: "center" }}>
+          <TouchableOpacity
+            style={[styles.select]}
+            onPress={() => handlePress(role1)}
+          >
+            <Text style={styles.selectText}>Lecturer</Text>
+          </TouchableOpacity>
 
-     
-        <TouchableOpacity  style={[styles.select]} onPress={() => handlePress(role2)}>
-          <Text style={styles.selectText}>Demonstrator</Text>
-        </TouchableOpacity>
-  
+          <TouchableOpacity
+            style={[styles.select]}
+            onPress={() => handlePress(role2)}
+          >
+            <Text style={styles.selectText}>Demonstrator</Text>
+          </TouchableOpacity>
 
-     
-        <TouchableOpacity   style={[styles.select]} onPress={() => handlePress(role3)}>
-          <Text style={styles.selectText}>Student</Text>
-        </TouchableOpacity>
-    
-     
-        <TouchableOpacity   style={[styles.select]} onPress={() => handlePress(role4)}>
-          <Text style={styles.selectText}>Admin</Text>
-        </TouchableOpacity>
-    
-      </View>
+          <TouchableOpacity
+            style={[styles.select]}
+            onPress={() => handlePress(role3)}
+          >
+            <Text style={styles.selectText}>Student</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.select]}
+            onPress={() => handlePress(role4)}
+          >
+            <Text style={styles.selectText}>Admin</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -79,16 +93,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   head: {
-    width:wp('100%'),
-    justifyContent:'center',
-    height:hp('20%'),
-    backgroundColor:'#cdaffa',
-    borderBottomRightRadius:60,
+    width: wp("100%"),
+    justifyContent: "center",
+    height: hp("20%"),
+    backgroundColor: "#cdaffa",
+    borderBottomRightRadius: 60,
     alignSelf: "center",
   },
   headText: {
     fontSize: hp("5.5%"),
-    alignSelf:'center',
+    alignSelf: "center",
     fontWeight: "bold",
   },
   select: {

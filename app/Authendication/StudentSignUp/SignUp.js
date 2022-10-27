@@ -158,7 +158,10 @@ export default function StudentSignUp({ navigation }) {
         ></View>
       </View>
 
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
         <ScrollView style={styles.scrollView}>
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>First Name</Text>

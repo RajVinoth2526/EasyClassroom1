@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   BackHandler,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
@@ -76,51 +76,49 @@ export default function EntrolCourseScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={{ backgroundColor: "white", height: hp("12%") }}>
-          <View
-            style={{
-              backgroundColor: "#cdaffa",
-              height: hp("12%"),
-              borderBottomRightRadius: 60,
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: hp("4%"),
-                fontWeight: "bold",
-              }}
-            >
-              Entroll Course
-            </Text>
-          </View>
-        </View>
-        <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
-          <View
-            style={{
-              backgroundColor: "white",
-              height: hp("12%"),
-              borderTopLeftRadius: 60,
-            }}
-          ></View>
-        </View>
-
         <View
           style={{
-            alignSelf: "center",
-            marginBottom: hp("3%"),
-            marginTop: hp("1%"),
+            backgroundColor: "#cdaffa",
+            height: hp("12%"),
+            borderBottomRightRadius: 60,
+            justifyContent: "center",
           }}
         >
-          <FontAwesome5 name="user-lock" size={hp("12%")} color="#cdaffa" />
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("4%"),
+              fontWeight: "bold",
+            }}
+          >
+            Entroll Course
+          </Text>
         </View>
+      </View>
+      <View style={{ backgroundColor: "#cdaffa", height: hp("12%") }}>
+        <View
+          style={{
+            backgroundColor: "white",
+            height: hp("12%"),
+            borderTopLeftRadius: 60,
+          }}
+        ></View>
+      </View>
+
+      <View
+        style={{
+          alignSelf: "center",
+          marginBottom: hp("3%"),
+          marginTop: hp("1%"),
+        }}
+      >
+        <FontAwesome5 name="user-lock" size={hp("12%")} color="#cdaffa" />
+      </View>
 
       <KeyboardAvoidingView
         behavior="position"
         keyboardVerticalOffset={keyboardVerticalOffset}
       >
-       
-        
         <ScrollView style={{ height: hp("25%") }}>
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>Entoll Key</Text>

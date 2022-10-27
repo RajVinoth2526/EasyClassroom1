@@ -14,9 +14,6 @@ export async function AdminRegistration(
   id,
   image
 ) {
-
-
-  
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     const currentUser = firebase.auth().currentUser;
@@ -36,31 +33,24 @@ export async function AdminRegistration(
       department: department,
       role: "Admin",
     });
-  
+
     var ref = firebase
       .storage()
       .ref()
       .child("profileImage/" + currentUser.uid);
     const snapshot = await ref.put(blob);
 
-    
     const db1 = firebase.firestore();
     db1.collection("Admin").doc(currentUser.uid).set({
-     
       id: currentUser.uid,
       firstName: firstName,
       lastName: lastName,
-      ProfileUrl : image      
+      ProfileUrl: image,
     });
 
-
     return true;
-
-    
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
     return false;
-  
-    
   }
 }

@@ -10,9 +10,9 @@ import {
   SafeAreaView,
   Image,
   ActivityIndicator,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
-import { StatusBar } from 'react-native';
+import { StatusBar } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AdminRegistration } from "../../../API/firebaseMethods/AdminRegistration";
 import * as firebase from "firebase";
@@ -43,10 +43,9 @@ export default function SignUp({ navigation }) {
   const [image, setImage] = useState(exampleImageUri);
 
   React.useEffect(() => {
-    StatusBar.setBackgroundColor('#cdaffa'); 
-    StatusBar.setTranslucent(true)
-   }, []);
-
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   const emptyState = () => {
     setId("");
@@ -88,9 +87,8 @@ export default function SignUp({ navigation }) {
     } else if (password !== confirmPassword) {
       Alert.alert("Password does not match!");
     } else {
-     
       setisLoading(true);
-     const flag = AdminRegistration(
+      const flag = AdminRegistration(
         email,
         password,
         lastName,
@@ -103,25 +101,20 @@ export default function SignUp({ navigation }) {
         image
       ).then(() => {
         setisLoading(false);
-       
-      })
-      if(flag == true){
+      });
+      if (flag == true) {
         navigation.navigate("Loading");
         emptyState();
       }
-      
-
-      
     }
   };
 
-
-  if(isLoading == true){
-    return(
-    <View style={styles.Loadingcontainer}>
-      <Text>Creating New account</Text>
-      <ActivityIndicator color="#03befc" size="large" />
-    </View>
+  if (isLoading == true) {
+    return (
+      <View style={styles.Loadingcontainer}>
+        <Text>Creating New account</Text>
+        <ActivityIndicator color="#03befc" size="large" />
+      </View>
     );
   }
   const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
@@ -156,9 +149,11 @@ export default function SignUp({ navigation }) {
           }}
         ></View>
       </View>
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-      <ScrollView style={styles.scrollView}>
-        
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <ScrollView style={styles.scrollView}>
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>ID</Text>
             <View style={styles.action}>
@@ -213,7 +208,9 @@ export default function SignUp({ navigation }) {
 
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>
-              <Text>{faculty ? ` faculty is ${faculty}` : "Select faculty"}</Text>
+              <Text>
+                {faculty ? ` faculty is ${faculty}` : "Select faculty"}
+              </Text>
             </Text>
             <View style={styles.action}>
               <RNPickerSelect
@@ -293,9 +290,7 @@ export default function SignUp({ navigation }) {
               />
             </View>
           </View>
-
-        
-      </ScrollView>
+        </ScrollView>
       </KeyboardAvoidingView>
       <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
         <Text style={styles.SignUpText}>Sign Up</Text>
@@ -304,7 +299,6 @@ export default function SignUp({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate("Sign In")}>
         <Text style={styles.inlineText}>Already have an account?</Text>
       </TouchableOpacity>
-      
     </SafeAreaView>
   );
 }

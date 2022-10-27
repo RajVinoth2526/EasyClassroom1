@@ -22,10 +22,8 @@ export default function LoadingScreen({ navigation }) {
       <Text
         style={{
           color: "black",
-          fontWeight:'bold',
-          fontSize: hp('2%'),
-          
-         
+          fontWeight: "bold",
+          fontSize: hp("2%"),
         }}
       >
         Easy Classroom
@@ -43,7 +41,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
 
-  
   logo: {
     alignSelf: "center",
     width: wp("40%"),

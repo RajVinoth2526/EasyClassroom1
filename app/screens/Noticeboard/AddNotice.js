@@ -14,7 +14,7 @@ import {
   keyboardVerticalOffset,
   TouchableWithoutFeedback,
   Keyboard,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
@@ -38,7 +38,6 @@ export default function AddNoticeScreen({ navigation, route }) {
   const [isLoading, setisLoading] = useState(false);
   const [flag, setFlag] = useState(false);
 
-  
   const id = uuid.v4();
   let currentUserUID = firebase.auth().currentUser.uid;
 
@@ -47,36 +46,31 @@ export default function AddNoticeScreen({ navigation, route }) {
     StatusBar.setTranslucent(true);
   }, []);
 
-useEffect (() => {
+  useEffect(() => {
+    async function getUserInfo() {
+      let doc = await firebase
+        .firestore()
+        .collection("users")
+        .doc(currentUserUID)
+        .get();
 
-  async function getUserInfo() {
-    let doc = await firebase
-      .firestore()
-      .collection("users")
-      .doc(currentUserUID)
-      .get();
-
-    if (!doc.exists) {
-      Alert.alert("No user data found!");
-    } else {
-      let dataObj = doc.data();
-      setFaculty(dataObj.faculty);
+      if (!doc.exists) {
+        Alert.alert("No user data found!");
+      } else {
+        let dataObj = doc.data();
+        setFaculty(dataObj.faculty);
+      }
     }
-  }
-  getUserInfo();
+    getUserInfo();
+  }, []);
 
-},[]);
-  
- 
-
-  const handlePress =  async() => {
-
+  const handlePress = async () => {
     const ProfileUrl = await firebase
-    .storage()
-    .ref()
-    .child("profileImage/" + currentUserUID) //name in storage in firebase console
-    .getDownloadURL()
-    .catch((e) => console.log("Errors while downloading => ", e));
+      .storage()
+      .ref()
+      .child("profileImage/" + currentUserUID) //name in storage in firebase console
+      .getDownloadURL()
+      .catch((e) => console.log("Errors while downloading => ", e));
 
     if (!notice) {
       Alert.alert("Text required");
@@ -84,25 +78,19 @@ useEffect (() => {
       Alert.alert("title required");
     } else {
       setFlag(true);
-      CreateNotice(id, notice, title, type,ProfileUrl,faculty)
-      .then(() => {
-       
+      CreateNotice(id, notice, title, type, ProfileUrl, faculty).then(() => {
         setFlag(false);
-        navigation.goBack({Faculty : faculty});
-      })
-
-      
-    
+        navigation.goBack({ Faculty: faculty });
+      });
     }
   };
 
-
-  if(flag == true){
-    return(
-    <View style={styles.Loadingcontainer}>
-      <Text>Please wait!</Text>
-      <ActivityIndicator color="#cdaffa" size="large" />
-    </View>
+  if (flag == true) {
+    return (
+      <View style={styles.Loadingcontainer}>
+        <Text>Please wait!</Text>
+        <ActivityIndicator color="#cdaffa" size="large" />
+      </View>
     );
   }
 
@@ -110,7 +98,6 @@ useEffect (() => {
 
   return (
     <View style={styles.container}>
-      
       <View style={{ backgroundColor: "white", height: hp("10%") }}>
         <View
           style={{
@@ -141,21 +128,15 @@ useEffect (() => {
         ></View>
       </View>
 
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-        <ScrollView style={{height:hp('45%'),marginTop:hp('5%')}}>
-        <View>
-       
-       
-
-          
-
-         
-         
-        
-
-          <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Title</Text>
-            <View style={styles.action}>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <ScrollView style={{ height: hp("45%"), marginTop: hp("5%") }}>
+          <View>
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Title</Text>
+              <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
                   placeholder="Type here"
@@ -166,11 +147,11 @@ useEffect (() => {
                   onChangeText={(title) => setTitle(title)}
                 />
               </View>
-          </View>
+            </View>
 
-          < View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Content</Text>
-            <View style={styles.action1}>
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Content</Text>
+              <View style={styles.action1}>
                 <TextInput
                   style={styles.textinput}
                   placeholder="Type here"
@@ -181,29 +162,13 @@ useEffect (() => {
                   onChangeText={(notice) => setNotice(notice)}
                 />
               </View>
+            </View>
           </View>
-
-         
-
-         
-
-          
-
-
-           
-          
-
-            
-          </View>
-
         </ScrollView>
-        </KeyboardAvoidingView>
-        <TouchableOpacity style={styles.buttonSignup}  onPress={handlePress}>
-            <Text style={styles.SignUpText}>Create</Text>
-         </TouchableOpacity>
-      
-      
-     
+      </KeyboardAvoidingView>
+      <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
+        <Text style={styles.SignUpText}>Create</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -237,11 +202,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
   },
-  photoUpload:{
-    alignSelf:'flex-end',
-    marginRight:wp('20%'),
-    marginTop:hp('3%')
-
+  photoUpload: {
+    alignSelf: "flex-end",
+    marginRight: wp("20%"),
+    marginTop: hp("3%"),
   },
 
   cardtext: {
@@ -341,11 +305,11 @@ const styles = StyleSheet.create({
   },
   avatar: {
     height: hp("20%"),
-                    width: wp("60%"),
+    width: wp("60%"),
     alignSelf: "center",
     borderRadius: 10,
     shadowColor: "#000",
-    backgroundColor:'white',
+    backgroundColor: "white",
     shadowOffset: {
       width: 0,
       height: 1,

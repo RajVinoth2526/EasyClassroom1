@@ -176,34 +176,34 @@ export default function UpdateProfile({ navigation }) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
+          <View
             style={{
-              alignSelf: "center",
-              fontSize: hp("4%"),
-              fontWeight: "bold",
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
             }}
           >
-            Edit Profile
-          </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Edit Profile
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
 
         <ScrollView
           style={styles.scrollView}
@@ -342,7 +342,11 @@ export default function UpdateProfile({ navigation }) {
           </View>
 
           <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress1}>
-            <MaterialCommunityIcons name="update" size={hp('8%')} color="black" />
+            <MaterialCommunityIcons
+              name="update"
+              size={hp("8%")}
+              color="black"
+            />
             <Text style={styles.updateText}>Update</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -352,34 +356,34 @@ export default function UpdateProfile({ navigation }) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
+          <View
             style={{
-              alignSelf: "center",
-              fontSize: hp("4%"),
-              fontWeight: "bold",
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
             }}
           >
-            Edit Profile
-          </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Edit Profile
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
 
         <ScrollView style={styles.scrollView}>
           <View>
@@ -490,7 +494,11 @@ export default function UpdateProfile({ navigation }) {
           </View>
 
           <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress1}>
-            <MaterialCommunityIcons name="update" size={hp('8%')} color="black" />
+            <MaterialCommunityIcons
+              name="update"
+              size={hp("8%")}
+              color="black"
+            />
             <Text style={styles.updateText}>Update</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -500,34 +508,34 @@ export default function UpdateProfile({ navigation }) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
+          <View
             style={{
-              alignSelf: "center",
-              fontSize: hp("4%"),
-              fontWeight: "bold",
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
             }}
           >
-            Edit Profile
-          </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Edit Profile
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
 
         <ScrollView style={styles.scrollView}>
           <View>
@@ -637,7 +645,11 @@ export default function UpdateProfile({ navigation }) {
           </View>
 
           <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress1}>
-            <MaterialCommunityIcons name="update" size={hp('8%')} color="black" />
+            <MaterialCommunityIcons
+              name="update"
+              size={hp("8%")}
+              color="black"
+            />
             <Text style={styles.updateText}>Update</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -646,35 +658,35 @@ export default function UpdateProfile({ navigation }) {
   } else if (role == "Admin") {
     return (
       <SafeAreaView style={styles.container}>
-       <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
             style={{
-              alignSelf: "center",
-              fontSize: hp("4%"),
-              fontWeight: "bold",
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
             }}
           >
-            Edit Profile
-          </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Edit Profile
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
 
         <ScrollView style={styles.scrollView}>
           <View>
@@ -784,7 +796,11 @@ export default function UpdateProfile({ navigation }) {
           </View>
 
           <TouchableOpacity style={styles.buttonUpdate} onPress={handlePress1}>
-            <MaterialCommunityIcons name="update" size={hp('8%')} color="black" />
+            <MaterialCommunityIcons
+              name="update"
+              size={hp("8%")}
+              color="black"
+            />
             <Text style={styles.updateText}>Update</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -808,8 +824,8 @@ const styles = StyleSheet.create({
     width: 200,
   },
   scrollView: {
-    marginBottom:hp('1%'),
-    width:wp('96%'),
+    marginBottom: hp("1%"),
+    width: wp("96%"),
     alignSelf: "center",
     borderRadius: 15,
     backgroundColor: "#cdaffa",
@@ -825,40 +841,35 @@ const styles = StyleSheet.create({
   },
 
   cardCont: {
-    marginTop: hp('2%'),
-    
-    
+    marginTop: hp("2%"),
   },
   editText: {
-   
-    fontSize: hp('4%'),
+    fontSize: hp("4%"),
     fontWeight: "bold",
   },
   editTextContainer: {
     alignSelf: "center",
-    marginTop: hp('3%'),
-
+    marginTop: hp("3%"),
   },
 
   cardtext: {
-    marginLeft: wp('5%'),
-    fontSize: hp('2.5%'),
+    marginLeft: wp("5%"),
+    fontSize: hp("2.5%"),
     fontWeight: "bold",
-    marginBottom:hp('0.5%')
-   
+    marginBottom: hp("0.5%"),
   },
   action: {
-    marginTop: hp('1%'),
-    width:wp('90%'),
-    alignSelf:'center'
+    marginTop: hp("1%"),
+    width: wp("90%"),
+    alignSelf: "center",
   },
 
   textinput: {
-    width:wp('89%'),
+    width: wp("89%"),
     color: "blue",
-    paddingLeft:10,
-    fontSize: hp('2%'),
-    height:hp('6.5%'),
+    paddingLeft: 10,
+    fontSize: hp("2%"),
+    height: hp("6.5%"),
     borderRadius: 15,
     alignSelf: "center",
     backgroundColor: "#e9c8fa",
@@ -875,14 +886,14 @@ const styles = StyleSheet.create({
   buttonUpdate: {
     alignSelf: "center",
 
-    marginTop: hp('5%'),
+    marginTop: hp("5%"),
     marginBottom: 20,
     marginLeft: 20,
     marginTop: 10,
   },
 
   updateText: {
-    fontSize: hp('1.5%'),
+    fontSize: hp("1.5%"),
     color: "black",
     alignSelf: "center",
     fontWeight: "bold",

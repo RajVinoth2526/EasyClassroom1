@@ -221,7 +221,7 @@ export default function App() {
           component={AddCourse}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={"CourseScreen"}
           component={CourseScreen}
           options={{ headerShown: false }}
@@ -237,12 +237,12 @@ export default function App() {
           component={AddAcademyYear}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={"CourseContent"}
           component={CourseContent}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={"EditCourse"}
           component={EditCourseScreen}
           options={{ headerShown: false }}

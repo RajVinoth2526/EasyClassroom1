@@ -179,171 +179,169 @@ export default function Profile({ navigation }) {
           </View>
         </View>
 
-      <View style = {{backgroundColor : 'white', height :hp('65%')}}>
-
-      <View style={styles.fullName}>
-          <Text style={{ fontWeight: "bold", fontSize: hp("2.5%") }}>
-            {firstName} {lastName}
-          </Text>
-        </View>
-        <ScrollView
-          style={styles.scrollScreen}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.profileDetails}>
-            <Text style={styles.headText}> ID </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{id}</Text>
-            </View>
-            <Text style={styles.headText}> First Name </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{firstName}</Text>
-            </View>
-            <Text style={styles.headText}> Last Name </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{lastName}</Text>
-            </View>
-
-            <Text style={styles.headText}> Gender </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{gender}</Text>
-            </View>
-            <Text style={styles.headText}> District </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{district}</Text>
-            </View>
-            <Text style={styles.headText}> Faculty </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{faculty}</Text>
-            </View>
-            <Text style={styles.headText}> Deparment </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{department}</Text>
-            </View>
-
-            <Text style={styles.headText}> Email </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{email}</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.buttonEditProfile}
-              onPress={() => navigation.navigate("UpdateProfile")}
-            >
-              <AntDesign name="edit" size={hp("4%")} color="black" />
-              <Text style={{ color: "black", fontSize: hp("2%") }}>Edit</Text>
-            </TouchableOpacity>
+        <View style={{ backgroundColor: "white", height: hp("65%") }}>
+          <View style={styles.fullName}>
+            <Text style={{ fontWeight: "bold", fontSize: hp("2.5%") }}>
+              {firstName} {lastName}
+            </Text>
           </View>
-        </ScrollView>
+          <ScrollView
+            style={styles.scrollScreen}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <View style={styles.profileDetails}>
+              <Text style={styles.headText}> ID </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{id}</Text>
+              </View>
+              <Text style={styles.headText}> First Name </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{firstName}</Text>
+              </View>
+              <Text style={styles.headText}> Last Name </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{lastName}</Text>
+              </View>
+
+              <Text style={styles.headText}> Gender </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{gender}</Text>
+              </View>
+              <Text style={styles.headText}> District </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{district}</Text>
+              </View>
+              <Text style={styles.headText}> Faculty </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{faculty}</Text>
+              </View>
+              <Text style={styles.headText}> Deparment </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{department}</Text>
+              </View>
+
+              <Text style={styles.headText}> Email </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{email}</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.buttonEditProfile}
+                onPress={() => navigation.navigate("UpdateProfile")}
+              >
+                <AntDesign name="edit" size={hp("4%")} color="black" />
+                <Text style={{ color: "black", fontSize: hp("2%") }}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       </View>
     );
   } else if (role == "Demonstrator") {
     return (
       <View style={StyleSheet.container}>
-      <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        ></View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("20%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("20%"),
-            borderTopLeftRadius: 60,
-          }}
-        >
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: image }}
-              style={{
-                height: hp("13.3%"),
-                width: wp("27.9%"),
-                borderColor: "#cdaffa",
-                borderWidth: 2,
-                borderRadius: 50,
-              }}
-            />
-          </View>
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          ></View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("20%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("20%"),
+              borderTopLeftRadius: 60,
+            }}
+          >
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: image }}
+                style={{
+                  height: hp("13.3%"),
+                  width: wp("27.9%"),
+                  borderColor: "#cdaffa",
+                  borderWidth: 2,
+                  borderRadius: 50,
+                }}
+              />
+            </View>
 
-          <View style={styles.uploadButton}>
-            <MaterialCommunityIcons
-              onPress={pickImage}
-              name="image-plus"
-              size={hp("3.8%")}
-              color="#cdaffa"
-            />
+            <View style={styles.uploadButton}>
+              <MaterialCommunityIcons
+                onPress={pickImage}
+                name="image-plus"
+                size={hp("3.8%")}
+                color="#cdaffa"
+              />
+            </View>
           </View>
         </View>
-      </View>
 
-    <View style = {{backgroundColor : 'white', height :hp('65%')}}>
+        <View style={{ backgroundColor: "white", height: hp("65%") }}>
+          <View style={styles.fullName}>
+            <Text style={{ fontWeight: "bold", fontSize: hp("2.5%") }}>
+              {firstName} {lastName}
+            </Text>
+          </View>
+          <ScrollView
+            style={styles.scrollScreen}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <View style={styles.profileDetails}>
+              <Text style={styles.headText}> ID </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{id}</Text>
+              </View>
+              <Text style={styles.headText}> First Name </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{firstName}</Text>
+              </View>
+              <Text style={styles.headText}> Last Name </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{lastName}</Text>
+              </View>
 
-    <View style={styles.fullName}>
-        <Text style={{ fontWeight: "bold", fontSize: hp("2.5%") }}>
-          {firstName} {lastName}
-        </Text>
-      </View>
-      <ScrollView
-        style={styles.scrollScreen}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <View style={styles.profileDetails}>
-          <Text style={styles.headText}> ID </Text>
-          <View style={styles.dataContainer}>
-            <Text style={styles.dataText}>{id}</Text>
-          </View>
-          <Text style={styles.headText}> First Name </Text>
-          <View style={styles.dataContainer}>
-            <Text style={styles.dataText}>{firstName}</Text>
-          </View>
-          <Text style={styles.headText}> Last Name </Text>
-          <View style={styles.dataContainer}>
-            <Text style={styles.dataText}>{lastName}</Text>
-          </View>
+              <Text style={styles.headText}> Gender </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{gender}</Text>
+              </View>
+              <Text style={styles.headText}> District </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{district}</Text>
+              </View>
+              <Text style={styles.headText}> Faculty </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{faculty}</Text>
+              </View>
+              <Text style={styles.headText}> Deparment </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{department}</Text>
+              </View>
 
-          <Text style={styles.headText}> Gender </Text>
-          <View style={styles.dataContainer}>
-            <Text style={styles.dataText}>{gender}</Text>
-          </View>
-          <Text style={styles.headText}> District </Text>
-          <View style={styles.dataContainer}>
-            <Text style={styles.dataText}>{district}</Text>
-          </View>
-          <Text style={styles.headText}> Faculty </Text>
-          <View style={styles.dataContainer}>
-            <Text style={styles.dataText}>{faculty}</Text>
-          </View>
-          <Text style={styles.headText}> Deparment </Text>
-          <View style={styles.dataContainer}>
-            <Text style={styles.dataText}>{department}</Text>
-          </View>
+              <Text style={styles.headText}> Email </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{email}</Text>
+              </View>
 
-          <Text style={styles.headText}> Email </Text>
-          <View style={styles.dataContainer}>
-            <Text style={styles.dataText}>{email}</Text>
-          </View>
-
-          <TouchableOpacity
-              style={styles.buttonEditProfile}
-              onPress={() => navigation.navigate("UpdateProfile")}
-            >
-              <AntDesign name="edit" size={hp("4%")} color="black" />
-              <Text style={{ color: "black", fontSize: hp("2%") }}>Edit</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonEditProfile}
+                onPress={() => navigation.navigate("UpdateProfile")}
+              >
+                <AntDesign name="edit" size={hp("4%")} color="black" />
+                <Text style={{ color: "black", fontSize: hp("2%") }}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
-      </ScrollView>
       </View>
-    </View>
     );
   } else if (role == "Student") {
     return (
@@ -390,65 +388,63 @@ export default function Profile({ navigation }) {
           </View>
         </View>
 
-      <View style = {{backgroundColor : 'white', height :hp('65%')}}>
-
-      <View style={styles.fullName}>
-          <Text style={{ fontWeight: "bold", fontSize: hp("2.5%") }}>
-            {firstName} {lastName}
-          </Text>
-        </View>
-        <ScrollView
-          style={styles.scrollScreen}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.profileDetails}>
-          <Text style={styles.headText}> First Name </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{firstName}</Text>
-            </View>
-            <Text style={styles.headText}> Last Name </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{lastName}</Text>
-            </View>
-
-            <Text style={styles.headText}> Gender </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{gender}</Text>
-            </View>
-            <Text style={styles.headText}> District </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{district}</Text>
-            </View>
-            <Text style={styles.headText}> Faculty </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{faculty}</Text>
-            </View>
-            <Text style={styles.headText}> indexNumber </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{indexNumber}</Text>
-            </View>
-
-            <Text style={styles.headText}> RegistrationNumber </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{registrationNumber}</Text>
-            </View>
-           
-
-            <Text style={styles.headText}> Email </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{email}</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.buttonEditProfile}
-              onPress={() => navigation.navigate("UpdateProfile")}
-            >
-              <AntDesign name="edit" size={hp("4%")} color="black" />
-              <Text style={{ color: "black", fontSize: hp("2%") }}>Edit</Text>
-            </TouchableOpacity>
+        <View style={{ backgroundColor: "white", height: hp("65%") }}>
+          <View style={styles.fullName}>
+            <Text style={{ fontWeight: "bold", fontSize: hp("2.5%") }}>
+              {firstName} {lastName}
+            </Text>
           </View>
-        </ScrollView>
+          <ScrollView
+            style={styles.scrollScreen}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <View style={styles.profileDetails}>
+              <Text style={styles.headText}> First Name </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{firstName}</Text>
+              </View>
+              <Text style={styles.headText}> Last Name </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{lastName}</Text>
+              </View>
+
+              <Text style={styles.headText}> Gender </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{gender}</Text>
+              </View>
+              <Text style={styles.headText}> District </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{district}</Text>
+              </View>
+              <Text style={styles.headText}> Faculty </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{faculty}</Text>
+              </View>
+              <Text style={styles.headText}> indexNumber </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{indexNumber}</Text>
+              </View>
+
+              <Text style={styles.headText}> RegistrationNumber </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{registrationNumber}</Text>
+              </View>
+
+              <Text style={styles.headText}> Email </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{email}</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.buttonEditProfile}
+                onPress={() => navigation.navigate("UpdateProfile")}
+              >
+                <AntDesign name="edit" size={hp("4%")} color="black" />
+                <Text style={{ color: "black", fontSize: hp("2%") }}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       </View>
     );
@@ -497,64 +493,63 @@ export default function Profile({ navigation }) {
           </View>
         </View>
 
-      <View style = {{backgroundColor : 'white', height :hp('65%')}}>
-
-      <View style={styles.fullName}>
-          <Text style={{ fontWeight: "bold", fontSize: hp("2.5%") }}>
-            {firstName} {lastName}
-          </Text>
-        </View>
-        <ScrollView
-          style={styles.scrollScreen}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.profileDetails}>
-            <Text style={styles.headText}> ID </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{id}</Text>
-            </View>
-            <Text style={styles.headText}> First Name </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{firstName}</Text>
-            </View>
-            <Text style={styles.headText}> Last Name </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{lastName}</Text>
-            </View>
-
-            <Text style={styles.headText}> Gender </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{gender}</Text>
-            </View>
-            <Text style={styles.headText}> District </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{district}</Text>
-            </View>
-            <Text style={styles.headText}> Faculty </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{faculty}</Text>
-            </View>
-            <Text style={styles.headText}> Deparment </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{department}</Text>
-            </View>
-
-            <Text style={styles.headText}> Email </Text>
-            <View style={styles.dataContainer}>
-              <Text style={styles.dataText}>{email}</Text>
-            </View>
-
-            <TouchableOpacity
-              style={styles.buttonEditProfile}
-              onPress={() => navigation.navigate("UpdateProfile")}
-            >
-              <AntDesign name="edit" size={hp("4%")} color="black" />
-              <Text style={{ color: "black", fontSize: hp("2%") }}>Edit</Text>
-            </TouchableOpacity>
+        <View style={{ backgroundColor: "white", height: hp("65%") }}>
+          <View style={styles.fullName}>
+            <Text style={{ fontWeight: "bold", fontSize: hp("2.5%") }}>
+              {firstName} {lastName}
+            </Text>
           </View>
-        </ScrollView>
+          <ScrollView
+            style={styles.scrollScreen}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <View style={styles.profileDetails}>
+              <Text style={styles.headText}> ID </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{id}</Text>
+              </View>
+              <Text style={styles.headText}> First Name </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{firstName}</Text>
+              </View>
+              <Text style={styles.headText}> Last Name </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{lastName}</Text>
+              </View>
+
+              <Text style={styles.headText}> Gender </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{gender}</Text>
+              </View>
+              <Text style={styles.headText}> District </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{district}</Text>
+              </View>
+              <Text style={styles.headText}> Faculty </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{faculty}</Text>
+              </View>
+              <Text style={styles.headText}> Deparment </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{department}</Text>
+              </View>
+
+              <Text style={styles.headText}> Email </Text>
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataText}>{email}</Text>
+              </View>
+
+              <TouchableOpacity
+                style={styles.buttonEditProfile}
+                onPress={() => navigation.navigate("UpdateProfile")}
+              >
+                <AntDesign name="edit" size={hp("4%")} color="black" />
+                <Text style={{ color: "black", fontSize: hp("2%") }}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       </View>
     );
@@ -579,7 +574,7 @@ const styles = StyleSheet.create({
   },
   scrollScreen: {
     marginTop: hp("1%"),
-    marginBottom:hp('5%'),
+    marginBottom: hp("5%"),
     alignSelf: "center",
     height: hp("50%"),
     width: wp("95%"),

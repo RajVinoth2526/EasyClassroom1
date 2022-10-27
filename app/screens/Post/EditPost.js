@@ -51,22 +51,22 @@ export default function EditPostScreen({ navigation, route }) {
 
   const handlePress = () => {
     if (!message1) {
-      EditPost(PostID, message, title1, image,Faculty);
+      EditPost(PostID, message, title1, image, Faculty);
       navigation.replace("Dashboard");
       Alert.alert("Post Updated!!");
     }
     if (!title1) {
-      EditPost(PostID, message1, title, image),Faculty;
+      EditPost(PostID, message1, title, image), Faculty;
       navigation.replace("Dashboard");
       Alert.alert("post Updated!!");
     }
     if (!message1 && !title1) {
-      EditPost(PostID, message, title, image,Faculty);
+      EditPost(PostID, message, title, image, Faculty);
       navigation.replace("Dashboard");
       Alert.alert("post Updated!!");
     }
     if (title1 && message1) {
-      EditPost(PostID, message1, title1, image,Faculty);
+      EditPost(PostID, message1, title1, image, Faculty);
       navigation.replace("Dashboard");
       Alert.alert("post Updated!!");
     }
@@ -113,7 +113,7 @@ export default function EditPostScreen({ navigation, route }) {
     async function getUserInfo() {
       let doc = await firebase
         .firestore()
-        .collection(Faculty+"-Posts")
+        .collection(Faculty + "-Posts")
         .doc(PostID)
         .get();
 

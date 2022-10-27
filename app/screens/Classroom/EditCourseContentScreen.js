@@ -13,13 +13,13 @@ import {
   keyboardVerticalOffset,
   TouchableWithoutFeedback,
   Keyboard,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import { FontAwesome5 } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
-import * as DocumentPicker from 'expo-document-picker';
+import * as DocumentPicker from "expo-document-picker";
 import * as firebase from "firebase";
 //import { UploadPost } from '../../../../API/firebaseMethods/firebaseMethod';
 //import IMAGE from '../../../assets/photo.png';
@@ -34,22 +34,20 @@ import {
 } from "react-native-responsive-screen";
 
 export default function EditCourseContentScreen({ navigation, route }) {
-
   const [title1, setTitle] = useState("");
   const [instruction1, setinstruction] = useState("");
   const { UserID } = route.params;
-  const {ID} = route.params;
-  const {Course} = route.params;
-  const {CourseID} = route.params;
-  const {Faculty} = route.params;
-  const {Level} = route.params;
-  const {Year} = route.params;
-  const {Department} = route.params;
-  const {title} = route.params;
-  const {document} = route.params;
-  const {instruction} = route.params;
-  const {CourseNameID} = route.params;
-
+  const { ID } = route.params;
+  const { Course } = route.params;
+  const { CourseID } = route.params;
+  const { Faculty } = route.params;
+  const { Level } = route.params;
+  const { Year } = route.params;
+  const { Department } = route.params;
+  const { title } = route.params;
+  const { document } = route.params;
+  const { instruction } = route.params;
+  const { CourseNameID } = route.params;
 
   console.log(UserID);
 
@@ -62,10 +60,9 @@ export default function EditCourseContentScreen({ navigation, route }) {
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
 
-
     if (!result.cancelled) {
       setisLoading(true);
-      StoreCourseLink(ID1,result.uri)
+      StoreCourseLink(ID1, result.uri)
         .then(() => {
           setDocument(result.uri);
           setisLoading(false);
@@ -75,18 +72,10 @@ export default function EditCourseContentScreen({ navigation, route }) {
           Alert.alert("Error:", error.message);
         });
     }
-    
-   
   };
 
-
-  
-
-
- 
-
   const handlePress = () => {
-     if(!title1  ){
+    if (!title1) {
       UpdateStoreCourse(
         ID,
         UserID,
@@ -101,10 +90,17 @@ export default function EditCourseContentScreen({ navigation, route }) {
         instruction1,
         Document
       );
-      navigation.goBack({Faculty :Faculty, Department : Department, Level : Level,Year : Year,CourseID:CourseID,CourseName:Course,CoursenameID:CourseNameID});
- 
-     
-    }if(!instruction1){
+      navigation.goBack({
+        Faculty: Faculty,
+        Department: Department,
+        Level: Level,
+        Year: Year,
+        CourseID: CourseID,
+        CourseName: Course,
+        CoursenameID: CourseNameID,
+      });
+    }
+    if (!instruction1) {
       UpdateStoreCourse(
         ID,
         UserID,
@@ -117,55 +113,75 @@ export default function EditCourseContentScreen({ navigation, route }) {
         CourseNameID,
         title1,
         instruction,
-        Document);
-        
-      navigation.goBack({Faculty :Faculty, Department : Department, Level : Level,Year : Year,CourseID:CourseID,CourseName:Course,CoursenameID:CourseNameID});
-    
-    }if(!title1 && !instruction1){
-      UpdateStoreCourse(
-        ID,
-        UserID,
-        Faculty,
-        Department,
-        Level,
-        Year,
-        Course,
-        CourseID,
-        CourseNameID,
-        title,
-        instruction,
         Document
       );
-      navigation.navigate('CourseScreen',{Faculty :Faculty, Department : Department, Level : Level,Year : Year,CourseID:CourseID,CourseName:Course,CoursenameID:CourseNameID});
-    
-    }if(title1 && instruction1){
-      UpdateStoreCourse(
-         ID,
-        UserID,
-        Faculty,
-        Department,
-        Level,
-        Year,
-        Course,
-        CourseID,
-        CourseNameID,
-        title1,
-        instruction1,
-        Document
-      );
-      navigation.goBack({Faculty :Faculty, Department : Department, Level : Level,Year : Year,CourseID:CourseID,CourseName:Course,CoursenameID:CourseNameID});
-      
 
+      navigation.goBack({
+        Faculty: Faculty,
+        Department: Department,
+        Level: Level,
+        Year: Year,
+        CourseID: CourseID,
+        CourseName: Course,
+        CoursenameID: CourseNameID,
+      });
+    }
+    if (!title1 && !instruction1) {
+      UpdateStoreCourse(
+        ID,
+        UserID,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course,
+        CourseID,
+        CourseNameID,
+        title,
+        instruction,
+        Document
+      );
+      navigation.navigate("CourseScreen", {
+        Faculty: Faculty,
+        Department: Department,
+        Level: Level,
+        Year: Year,
+        CourseID: CourseID,
+        CourseName: Course,
+        CoursenameID: CourseNameID,
+      });
+    }
+    if (title1 && instruction1) {
+      UpdateStoreCourse(
+        ID,
+        UserID,
+        Faculty,
+        Department,
+        Level,
+        Year,
+        Course,
+        CourseID,
+        CourseNameID,
+        title1,
+        instruction1,
+        Document
+      );
+      navigation.goBack({
+        Faculty: Faculty,
+        Department: Department,
+        Level: Level,
+        Year: Year,
+        CourseID: CourseID,
+        CourseName: Course,
+        CoursenameID: CourseNameID,
+      });
     }
   };
 
- 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
   return (
-    
     <View style={styles.container}>
-      
       <View style={{ backgroundColor: "white", height: hp("10%") }}>
         <View
           style={{
@@ -196,89 +212,103 @@ export default function EditCourseContentScreen({ navigation, route }) {
         ></View>
       </View>
 
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-        <ScrollView style={{height:hp('50%'),marginTop:hp('5%')}}>
-        <View>
-          
-       
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <ScrollView style={{ height: hp("50%"), marginTop: hp("5%") }}>
+          <View>
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Title</Text>
+              <View style={styles.action}>
+                <TextInput
+                  style={styles.textinput}
+                  placeholder="Type here"
+                  defaultValue={title}
+                  multiline={true}
+                  textAlignVertical="top"
+                  onChangeText={(title1) => setTitle(title1)}
+                />
+              </View>
+            </View>
 
-          
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Content</Text>
+              <View style={styles.action}>
+                <TextInput
+                  style={styles.textinput}
+                  placeholder="Type here"
+                  defaultValue={instruction}
+                  multiline={true}
+                  textAlignVertical="top"
+                  onChangeText={(instruction1) => setinstruction(instruction1)}
+                />
+              </View>
+            </View>
 
-         
-         
-        
+            <Text
+              style={{
+                fontSize: hp("2.5%"),
+                marginTop: hp("3%"),
+                marginLeft: wp("12%"),
+              }}
+            >
+              Upload Document
+            </Text>
 
-          <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Title</Text>
-            <View style={styles.action}>
-              <TextInput
-                style={styles.textinput}
-                placeholder="Type here"
-                defaultValue={title}
-                multiline={true}
-               
-                textAlignVertical="top"
-                onChangeText={(title1) => setTitle(title1)}
-              />
+            <View style={{ flexDirection: "row" }}>
+              <View
+                style={{
+                  width: wp("70%"),
+                  marginLeft: wp("10%"),
+                  marginRight: wp("3%"),
+                  marginTop: hp("0.5%"),
+                  height: hp("5%"),
+                  borderRadius: 25,
+                  backgroundColor: "#e9c8fa",
+                  justifyContent: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: hp("1.8%"),
+                    fontWeight: "100",
+                    color: "red",
+                    alignSelf: "center",
+                    paddingLeft: 15,
+                    paddingRight: 10,
+                  }}
+                >
+                  {Document}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={pickDocument}>
+                <FontAwesome
+                  name="send"
+                  size={hp("2%")}
+                  color="black"
+                  style={{ alignSelf: "center", paddingTop: 10 }}
+                />
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: hp("1%"),
+                    fontWeight: "900",
+                  }}
+                >
+                  Upload
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
-
-          < View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Content</Text>
-            <View style={styles.action}>
-              <TextInput
-                style={styles.textinput}
-                placeholder="Type here"
-                defaultValue={instruction}
-                multiline={true}
-              
-                textAlignVertical="top"
-                onChangeText={(instruction1) => setinstruction(instruction1)}
-              />
-            </View>
-          </View>
-
-          <Text style={{ fontSize: hp('2.5%'), marginTop: hp('3%'), marginLeft: wp('12%') }}>
-            Upload Document
-          </Text>
-
-          <View style={{flexDirection:"row"}}>
-            <View style={{width:wp('70%'),marginLeft:wp('10%'),marginRight:wp('3%'),marginTop:hp('0.5%'),height:hp('5%'), borderRadius:25, backgroundColor:'#e9c8fa', justifyContent:'center'}}>
-            <Text style= {{fontSize:hp('1.8%'),fontWeight:'100' , color :'red', alignSelf:'center',paddingLeft:15,paddingRight:10}}>{Document}</Text>
-            </View>
-            
-            <TouchableOpacity onPress={pickDocument}>
-          <FontAwesome
-            name="send"
-            size={hp('2%')}
-            color="black"
-            style={{ alignSelf: "center",paddingTop:10 }}
-          />
-          <Text style={{ alignSelf: "center", fontSize:hp('1%'), fontWeight: "900" }}>
-            Upload
-          </Text>
-        </TouchableOpacity>
-
-          </View>
-
-          
-
-
-           
-          
-
-            
-          </View>
-
         </ScrollView>
-        </KeyboardAvoidingView>
-        <TouchableOpacity style={styles.buttonSignup}  onPress={handlePress}>
-            <Text style={styles.SignUpText}>Upload</Text>
-         </TouchableOpacity>
-
-    
-  </View>
-);
+      </KeyboardAvoidingView>
+      <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
+        <Text style={styles.SignUpText}>Upload</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

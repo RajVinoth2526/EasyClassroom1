@@ -1,54 +1,51 @@
 import React from "react";
 
-import { View, Text, StyleSheet, TouchableOpacity,BackHandler,Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  BackHandler,
+  Image,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import { StatusBar } from 'react-native';
+import { StatusBar } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import {
-  useFocusEffect
- } from '@react-navigation/native';
- import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 export default function AdminHomeScreen({ navigation }) {
-
   useFocusEffect(
-    React.useCallback(() => {    
+    React.useCallback(() => {
       const onBackPress = () => {
         BackHandler.exitApp();
         // Return true to stop default back navigaton
         // Return false to keep default back navigaton
         return true;
       };
- 
+
       // Add Event Listener for hardwareBackPress
-      BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress
-      );
- 
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
       return () => {
         // Once the Screen gets blur Remove Event Listener
-        BackHandler.removeEventListener(
-          'hardwareBackPress',
-          onBackPress
-        );
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
-    }, []),
+    }, [])
   );
   React.useEffect(() => {
-    StatusBar.setBackgroundColor('#cdaffa'); 
-    StatusBar.setTranslucent(true)
-   }, []);
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
   return (
-   
     <View style={styles.container}>
-   <View style={{ backgroundColor: "white", height: hp("30%") }}>
+      <View style={{ backgroundColor: "white", height: hp("30%") }}>
         <View
           style={{
             backgroundColor: "#cdaffa",
@@ -57,22 +54,22 @@ export default function AdminHomeScreen({ navigation }) {
             justifyContent: "center",
           }}
         >
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.logo}
-            source={require("./../../../assets/ec.png")}
-          ></Image>
-          <Text
-            style={{
-              alignSelf: "center",
-              fontSize: hp("2%"),
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            TIME TO LEARN{" "}
-          </Text>
-        </View>
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.logo}
+              source={require("./../../../assets/ec.png")}
+            ></Image>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("2%"),
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              TIME TO LEARN{" "}
+            </Text>
+          </View>
         </View>
       </View>
       <View style={{ backgroundColor: "#cdaffa", height: hp("8%") }}>
@@ -84,7 +81,7 @@ export default function AdminHomeScreen({ navigation }) {
           }}
         ></View>
       </View>
-    
+
       <ScrollView style={styles.scrollScreen}>
         <View
           style={{
@@ -206,8 +203,7 @@ export default function AdminHomeScreen({ navigation }) {
           </View>
         </View>
       </ScrollView>
-  
-  </View>
+    </View>
   );
 }
 
@@ -217,12 +213,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   scrollScreen: {
-  
     height: hp("45%"),
     width: wp("100%"),
     backgroundColor: "white",
     alignSelf: "center",
-   
   },
   homeContent: {
     alignSelf: "center",

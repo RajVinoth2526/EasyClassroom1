@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   BackHandler,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { signIn } from "../../API/firebaseMethods/firebaseMethod";
@@ -22,17 +22,15 @@ import {
 } from "react-native-responsive-screen";
 
 export default function SignIn({ navigation }) {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setisLoading] = useState(false);
   const [flag, setflag] = useState(false);
 
   React.useEffect(() => {
-    StatusBar.setBackgroundColor('white'); 
-    StatusBar.setTranslucent(true)
-   }, []);
-
+    StatusBar.setBackgroundColor("white");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   const handlePress = () => {
     if (!email) {
@@ -46,13 +44,11 @@ export default function SignIn({ navigation }) {
         setisLoading(false);
         setflag(FLAG);
       });
-    
+
       setEmail("");
       setPassword("");
     }
   };
-
-
 
   if (flag == true) {
     return (
@@ -71,7 +67,11 @@ export default function SignIn({ navigation }) {
           style={styles.logo}
           source={require("./../assets/ec.png")}
         ></Image>
-        <Text style = {{alignSelf:'center', color :'#cdaffa' ,fontWeight:'bold'}}>Easy Classroom</Text>
+        <Text
+          style={{ alignSelf: "center", color: "#cdaffa", fontWeight: "bold" }}
+        >
+          Easy Classroom
+        </Text>
         <Text style={styles.text}>TIME TO LEARN</Text>
       </View>
 
@@ -118,7 +118,12 @@ export default function SignIn({ navigation }) {
 
       <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
         <Text
-          style={{ alignSelf: "center", color: "red",fontWeight:'bold', marginTop: hp("2%") }}
+          style={{
+            alignSelf: "center",
+            color: "red",
+            fontWeight: "bold",
+            marginTop: hp("2%"),
+          }}
         >
           Forgot Password?
         </Text>
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
     marginTop: hp("0%"),
     fontSize: hp("2.5%"),
     marginBottom: hp("6%"),
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
 
   cardtext: {
@@ -155,7 +160,7 @@ const styles = StyleSheet.create({
     color: "#cdaffa",
     marginTop: hp("4%"),
     alignSelf: "center",
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
 
   logoContainer: {
@@ -208,7 +213,7 @@ const styles = StyleSheet.create({
   buttontext: {
     fontSize: hp("3%"),
     alignSelf: "center",
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
 
   Loadingcontainer: {
@@ -222,5 +227,5 @@ const styles = StyleSheet.create({
   logo: {
     width: wp("50%"),
     height: hp("20%"),
-  }
+  },
 });
