@@ -151,7 +151,7 @@ export default function EditNoticeScreen({ navigation, route }) {
 
           < View style={styles.cardCont}>
             <Text style={styles.cardtext}>Content</Text>
-            <View style={styles.action}>
+            <View style={styles.action1}>
                 <TextInput
                   style={styles.textinput}
                   editable={true}
@@ -235,6 +235,22 @@ const styles = StyleSheet.create({
 
     borderRadius: 10,
     height: hp("6%"),
+    marginBottom: hp("3%"),
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  action1: {
+    justifyContent: "center",
+
+    borderRadius: 10,
+    height: hp("15%"),
     marginBottom: hp("3%"),
     backgroundColor: "white",
     shadowColor: "#000",

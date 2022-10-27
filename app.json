@@ -20,7 +20,8 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.raj2526.easyclassroom"
     },
     "web": {
       "favicon": "./assets/favicon.png"

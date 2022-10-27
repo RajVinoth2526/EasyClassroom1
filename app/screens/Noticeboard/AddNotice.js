@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
   TextInput,
   Image,
   Alert,
@@ -35,6 +36,8 @@ export default function AddNoticeScreen({ navigation, route }) {
   const [title, setTitle] = useState("");
   const { type } = route.params;
   const [isLoading, setisLoading] = useState(false);
+  const [flag, setFlag] = useState(false);
+
   
   const id = uuid.v4();
   let currentUserUID = firebase.auth().currentUser.uid;
@@ -80,11 +83,28 @@ useEffect (() => {
     } else if (!title) {
       Alert.alert("title required");
     } else {
-      CreateNotice(id, notice, title, type,ProfileUrl,faculty);
-      navigation.goBack({Faculty : faculty});
+      setFlag(true);
+      CreateNotice(id, notice, title, type,ProfileUrl,faculty)
+      .then(() => {
+       
+        setFlag(false);
+        navigation.goBack({Faculty : faculty});
+      })
+
+      
     
     }
   };
+
+
+  if(flag == true){
+    return(
+    <View style={styles.Loadingcontainer}>
+      <Text>Please wait!</Text>
+      <ActivityIndicator color="#cdaffa" size="large" />
+    </View>
+    );
+  }
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
@@ -150,7 +170,7 @@ useEffect (() => {
 
           < View style={styles.cardCont}>
             <Text style={styles.cardtext}>Content</Text>
-            <View style={styles.action}>
+            <View style={styles.action1}>
                 <TextInput
                   style={styles.textinput}
                   placeholder="Type here"
@@ -229,6 +249,28 @@ const styles = StyleSheet.create({
     fontSize: hp("2.4%"),
     fontWeight: "bold",
     marginBottom: hp("1%"),
+  },
+  action1: {
+    justifyContent: "center",
+
+    borderRadius: 10,
+    height: hp("15%"),
+    marginBottom: hp("3%"),
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+
+  textinput: {
+    marginLeft: wp("3%"),
+    color: "black",
+    fontSize: hp("2.2%"),
   },
   action: {
     justifyContent: "center",
@@ -311,5 +353,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 10,
     shadowRadius: 5,
     elevation: 10,
+  },
+
+  Loadingcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
 });
