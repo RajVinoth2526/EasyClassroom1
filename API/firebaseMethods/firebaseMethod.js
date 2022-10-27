@@ -2,17 +2,10 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import {
   Alert,
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import moment from "moment";
 
 export async function StudentRegistration(
-
   email,
   password,
   lastName,
@@ -29,10 +22,9 @@ export async function StudentRegistration(
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     const currentUser = firebase.auth().currentUser;
 
-
     let year = new Date().getFullYear();
 
-    const academyYear = (year -1) +'|' +year;
+    const academyYear = year - 1 + "|" + year;
 
     const db = firebase.firestore();
 
@@ -47,33 +39,24 @@ export async function StudentRegistration(
       course: course,
       role: "Student",
       faculty: faculty,
-      academyYear : academyYear,
+      academyYear: academyYear,
     });
 
     const response = await fetch(image);
     const blob = await response.blob();
-  
+
     var ref = firebase
       .storage()
       .ref()
       .child("profileImage/" + currentUser.uid);
     const snapshot = await ref.put(blob);
 
-    
-    
-
-    
-
-
-    
     const db1 = firebase.firestore();
     db1.collection("Student").doc(currentUser.uid).set({
-     
       id: currentUser.uid,
       firstName: firstName,
       lastName: lastName,
-      ProfileUrl : image     
-      
+      ProfileUrl: image,
     });
 
     return true;
@@ -94,32 +77,29 @@ export async function StoreSendMessage(
   ProfileUrl
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("messages").doc(SenderID).collection(ReceiverID).doc(id).set({
-     
-      MessageId: id,
-      type : type,
-      ReceiverID : ReceiverID,
-      message:message,
-      dateAndTime : dateAndTime,
-      firstName : firstName,
-      lastName : lastName,
-      ProfileUrl : ProfileUrl,
-      created: firebase.firestore.FieldValue.serverTimestamp()
-
-    });
-
-
-    
+    db1
+      .collection("messages")
+      .doc(SenderID)
+      .collection(ReceiverID)
+      .doc(id)
+      .set({
+        MessageId: id,
+        type: type,
+        ReceiverID: ReceiverID,
+        message: message,
+        dateAndTime: dateAndTime,
+        firstName: firstName,
+        lastName: lastName,
+        ProfileUrl: ProfileUrl,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
-
 
 export async function DeleteMessage(
   id,
@@ -132,34 +112,29 @@ export async function DeleteMessage(
   ProfileUrl
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("messages").doc(SenderID).collection(ReceiverID).doc(id).update({
-     
-      MessageId: id,
-      type : type,
-      ReceiverID : ReceiverID,
-      message:"message has deleted!",
-      dateAndTime : dateAndTime,
-      firstName : firstName,
-      lastName : lastName,
-      ProfileUrl : ProfileUrl,
-      created: created
-
-    });
-
-
-    
+    db1
+      .collection("messages")
+      .doc(SenderID)
+      .collection(ReceiverID)
+      .doc(id)
+      .update({
+        MessageId: id,
+        type: type,
+        ReceiverID: ReceiverID,
+        message: "message has deleted!",
+        dateAndTime: dateAndTime,
+        firstName: firstName,
+        lastName: lastName,
+        ProfileUrl: ProfileUrl,
+        created: created,
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
-
-
-
 
 export async function StoreCourse(
   id,
@@ -176,27 +151,29 @@ export async function StoreCourse(
   document
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("Courses-"+faculty).doc(department).collection(level).doc(year).collection(CourseID).doc(CourseID).collection(userId).doc(id).set({
-     
-      Id: id,
-      userId : userId,
-      course:course, 
-      CourseNameID:CourseNameID,
-      dateAndTime : dateAndTime,
-      title : title,
-      instruction : instruction,
-      document : document,
-      created: firebase.firestore.FieldValue.serverTimestamp()
-
-    });
-
-
-    
+    db1
+      .collection("Courses-" + faculty)
+      .doc(department)
+      .collection(level)
+      .doc(year)
+      .collection(CourseID)
+      .doc(CourseID)
+      .collection(userId)
+      .doc(id)
+      .set({
+        Id: id,
+        userId: userId,
+        course: course,
+        CourseNameID: CourseNameID,
+        dateAndTime: dateAndTime,
+        title: title,
+        instruction: instruction,
+        document: document,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
@@ -217,27 +194,29 @@ export async function UpdateStoreCourse(
   document
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("Courses-"+faculty).doc(department).collection(level).doc(year).collection(CourseID).doc(CourseID).collection(userId).doc(id).update({
-     
-      Id: id,
-      userId : userId,
-      course:course, 
-      CourseNameID:CourseNameID,
-      dateAndTime : dateAndTime,
-      title : title,
-      instruction : instruction,
-      document : document,
-      created: firebase.firestore.FieldValue.serverTimestamp()
-
-    });
-
-
-    
+    db1
+      .collection("Courses-" + faculty)
+      .doc(department)
+      .collection(level)
+      .doc(year)
+      .collection(CourseID)
+      .doc(CourseID)
+      .collection(userId)
+      .doc(id)
+      .update({
+        Id: id,
+        userId: userId,
+        course: course,
+        CourseNameID: CourseNameID,
+        dateAndTime: dateAndTime,
+        title: title,
+        instruction: instruction,
+        document: document,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
@@ -250,19 +229,22 @@ export async function DeleteStoreCourse(
   department,
   level,
   year,
-  CourseID,
- 
+  CourseID
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("Courses-"+faculty).doc(department).collection(level).doc(year).collection(CourseID).doc(CourseID).collection(userId).doc(id).delete();
-
-
-    
+    db1
+      .collection("Courses-" + faculty)
+      .doc(department)
+      .collection(level)
+      .doc(year)
+      .collection(CourseID)
+      .doc(CourseID)
+      .collection(userId)
+      .doc(id)
+      .delete();
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
@@ -280,56 +262,53 @@ export async function StoreCourseName(
   password
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("CoursesName-"+faculty).doc(department).collection(level).doc(year).collection("CourseNames").doc(CourseID).set({
-     
-  
-      userId:userId,
-      CourseID:CourseID,
-      CourseNameID:CourseNameID,
-      course:course, 
-      dateAndTime : dateAndTime,
-      EntrollKey :password,
-      created: firebase.firestore.FieldValue.serverTimestamp()
-
-    });
-
-
-    
+    db1
+      .collection("CoursesName-" + faculty)
+      .doc(department)
+      .collection(level)
+      .doc(year)
+      .collection("CourseNames")
+      .doc(CourseID)
+      .set({
+        userId: userId,
+        CourseID: CourseID,
+        CourseNameID: CourseNameID,
+        course: course,
+        dateAndTime: dateAndTime,
+        EntrollKey: password,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
 export async function DeleteStoreCourseName(
-  
   faculty,
   department,
   level,
   year,
-  CourseID,
- 
+  CourseID
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("CoursesName-"+faculty).doc(department).collection(level).doc(year).collection("CourseNames").doc(CourseID).delete();
-
-
-    
+    db1
+      .collection("CoursesName-" + faculty)
+      .doc(department)
+      .collection(level)
+      .doc(year)
+      .collection("CourseNames")
+      .doc(CourseID)
+      .delete();
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
-
-
 
 export async function EditCourseName(
   userId,
@@ -343,54 +322,42 @@ export async function EditCourseName(
   password
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("CoursesName-"+faculty).doc(department).collection(level).doc(year).collection("CourseNames").doc(CourseID).update({
-     
-  
-      userId:userId,
-      CourseID:CourseID,
-      CourseNameID:CourseNameID,
-      course:course, 
-      dateAndTime : dateAndTime,
-      EntrollKey :password,
-      created: firebase.firestore.FieldValue.serverTimestamp()
-
-    });
-
-
-    
+    db1
+      .collection("CoursesName-" + faculty)
+      .doc(department)
+      .collection(level)
+      .doc(year)
+      .collection("CourseNames")
+      .doc(CourseID)
+      .update({
+        userId: userId,
+        CourseID: CourseID,
+        CourseNameID: CourseNameID,
+        course: course,
+        dateAndTime: dateAndTime,
+        EntrollKey: password,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-
-export async function StoreAcademyYear(
-  id,
-  Year
-) {
+export async function StoreAcademyYear(id, Year) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
     db1.collection("AcademyYearForStudents").doc(id).set({
-     
       Id: id,
-      year : Year,
-      dateAndTime : dateAndTime,
-      
-      created: firebase.firestore.FieldValue.serverTimestamp()
+      year: Year,
+      dateAndTime: dateAndTime,
 
+      created: firebase.firestore.FieldValue.serverTimestamp(),
     });
-
-
-    
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
@@ -404,154 +371,114 @@ export async function StoreReceiveMessage(
   firstName,
   lastName,
   ProfileUrl
-  
 ) {
   try {
-   
-    
     var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
 
     const db1 = firebase.firestore();
-    db1.collection("messages").doc(ReceiverID).collection(SenderID).doc(id).set({
-     
-      MessageId: id,
-      ReceiverID : ReceiverID,
-      message:message,
-      dateAndTime : dateAndTime,
-      firstName : firstName,
-      lastName : lastName,
-      ProfileUrl : ProfileUrl
-
-    });
-
-
-    
+    db1
+      .collection("messages")
+      .doc(ReceiverID)
+      .collection(SenderID)
+      .doc(id)
+      .set({
+        MessageId: id,
+        ReceiverID: ReceiverID,
+        message: message,
+        dateAndTime: dateAndTime,
+        firstName: firstName,
+        lastName: lastName,
+        ProfileUrl: ProfileUrl,
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
-
-
-
-
 
 export async function StoreReceivedID(
   ReceiverID,
   ID,
   firstName,
   lastName,
-  ProfileUrl,
-
- 
+  ProfileUrl
 ) {
-
-
-  
   const db1 = firebase.firestore();
-    db1.collection("Conversations").doc(ReceiverID).collection("Chats").doc(ID).set({
-      
-      ID : ID,
+  db1
+    .collection("Conversations")
+    .doc(ReceiverID)
+    .collection("Chats")
+    .doc(ID)
+    .set({
+      ID: ID,
       firstName: firstName,
       lastName: lastName,
-      ProfileUrl : ProfileUrl
+      ProfileUrl: ProfileUrl,
     });
-  
 }
 
-
-
-export async function DeleteChat(ReceiverID,ID) {
+export async function DeleteChat(ReceiverID, ID) {
   try {
     const db = firebase.firestore();
-    db.collection("Conversations").doc(ReceiverID).collection("Chats").doc(ID).delete();
- 
+    db.collection("Conversations")
+      .doc(ReceiverID)
+      .collection("Chats")
+      .doc(ID)
+      .delete();
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-export async function StudentEntroll(
-  userID,
-  CourseID,
-
-
- 
-) {
- try {
-
-      const db1 = firebase.firestore();
-      db1.collection("entrollment").doc(userID).collection("course").doc(CourseID).set({
-       
-        userID:userID,
-        CourseID : CourseID,
-       
+export async function StudentEntroll(userID, CourseID) {
+  try {
+    const db1 = firebase.firestore();
+    db1
+      .collection("entrollment")
+      .doc(userID)
+      .collection("course")
+      .doc(CourseID)
+      .set({
+        userID: userID,
+        CourseID: CourseID,
       });
-     
-    } catch (err) {
-      Alert.alert("There is something wrong!!!!", err.message);
-    }
-  
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
 }
 
-export async function StoreCourseLink(
-  id,
-  url,
-
-
- 
-) {
- try {
-
-
-
-  const response = await fetch(url);
+export async function StoreCourseLink(id, url) {
+  try {
+    const response = await fetch(url);
     const blob = await response.blob();
-  
+
     var ref = firebase
       .storage()
       .ref()
       .child("CourseLink/" + id);
     const snapshot = await ref.put(blob);
-
-     
-    } catch (err) {
-      Alert.alert("There is something wrong!!!!", err.message);
-    }
-  
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
 }
 
-
-export async function UpdateUserDetails(
-  id,
-  firstName,
-  lastName,
-  role,
- 
-) {
-
-  
-
-
+export async function UpdateUserDetails(id, firstName, lastName, role) {
   const currentUser = firebase.auth().currentUser;
 
- 
-  const  image  = await firebase
-  .storage()
-  .ref()
-  .child("profileImage/" + currentUser.uid) //name in storage in firebase console
-  .getDownloadURL();
+  const image = await firebase
+    .storage()
+    .ref()
+    .child("profileImage/" + currentUser.uid) //name in storage in firebase console
+    .getDownloadURL();
 
-  console.log(image +"nothing");
+  console.log(image + "nothing");
 
   const db1 = firebase.firestore();
-    db1.collection(role).doc(id).update({
-     
-      id: id,
-      firstName: firstName,
-      lastName: lastName,
-      ProfileUrl : image
-    });
-  
+  db1.collection(role).doc(id).update({
+    id: id,
+    firstName: firstName,
+    lastName: lastName,
+    ProfileUrl: image,
+  });
 }
 export async function AddResults(
   year,
@@ -564,20 +491,31 @@ export async function AddResults(
   department
 ) {
   try {
-   
-
     const db = firebase.firestore();
-    db.collection(faculty+'-result').doc(department).collection(year).doc(level).collection(RegistrationNumber).doc(course).set({
-      course :course,
-      result : result,
-      credits : credits,
-    });
+    db.collection(faculty + "-result")
+      .doc(department)
+      .collection(year)
+      .doc(level)
+      .collection(RegistrationNumber)
+      .doc(course)
+      .set({
+        course: course,
+        result: result,
+        credits: credits,
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-export async function UploadPost(id, message, title,imageUrl,ProfileUrl,faculty) {
+export async function UploadPost(
+  id,
+  message,
+  title,
+  imageUrl,
+  ProfileUrl,
+  faculty
+) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -592,24 +530,25 @@ export async function UploadPost(id, message, title,imageUrl,ProfileUrl,faculty)
     let dataObj = doc.data();
 
     const db = firebase.firestore();
-    db.collection(faculty+"-Posts").doc(id).set({
-      Postid: id,
-      UserId: currentUser.uid,
-      title: title,
-      firstName: dataObj.firstName,
-      lastName: dataObj.lastName,
-      message: message,
-      DateTime: dateAndTime,
-      imageUrl: imageUrl,
-      ProfileUrl : ProfileUrl
-      
-    });
+    db.collection(faculty + "-Posts")
+      .doc(id)
+      .set({
+        Postid: id,
+        UserId: currentUser.uid,
+        title: title,
+        firstName: dataObj.firstName,
+        lastName: dataObj.lastName,
+        message: message,
+        DateTime: dateAndTime,
+        imageUrl: imageUrl,
+        ProfileUrl: ProfileUrl,
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-export async function EditPost(id, message, title,image,faculty) {
+export async function EditPost(id, message, title, image, faculty) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -624,62 +563,42 @@ export async function EditPost(id, message, title,image,faculty) {
     let dataObj = doc.data();
 
     const db = firebase.firestore();
-    db.collection(faculty+"-Posts").doc(id).update({
-      Postid: id,
-      UserId: currentUser.uid,
-      title: title,
-      firstName: dataObj.firstName,
-      lastName: dataObj.lastName,
-      message: message,
-      DateTime: dateAndTime,
-      imageUrl: image,
-    });
+    db.collection(faculty + "-Posts")
+      .doc(id)
+      .update({
+        Postid: id,
+        UserId: currentUser.uid,
+        title: title,
+        firstName: dataObj.firstName,
+        lastName: dataObj.lastName,
+        message: message,
+        DateTime: dateAndTime,
+        imageUrl: image,
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-export async function DeletePost(id,faculty) {
+export async function DeletePost(id, faculty) {
   try {
     const db = firebase.firestore();
-    db.collection(faculty+"-Posts").doc(id).delete();
+    db.collection(faculty + "-Posts")
+      .doc(id)
+      .delete();
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-export async function CreateNotice(id, notice, title, type,ProfileUrl ,faculty) {
-  try {
-    const currentUser = firebase.auth().currentUser;
-
-    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
-
-    let doc = await firebase
-      .firestore()
-      .collection("users")
-      .doc(currentUser.uid)
-      .get();
-
-    let dataObj = doc.data();
-
-    const db = firebase.firestore();
-    db.collection(faculty+"Notices").doc(id).set({
-      id: id,
-      UserID: currentUser.uid,
-      notice: notice,
-      title: title,
-      type: type,
-      firstName: dataObj.firstName,
-      lastName: dataObj.lastName,
-      DateTime: dateAndTime,
-      ProfileUrl :ProfileUrl
-    });
-  } catch (err) {
-    Alert.alert("There is something wrong!!!!", err.message);
-  }
-}
-
-export async function EditNotice(Noticeid, notice, title, type , Faculty) {
+export async function CreateNotice(
+  id,
+  notice,
+  title,
+  type,
+  ProfileUrl,
+  faculty
+) {
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -694,25 +613,62 @@ export async function EditNotice(Noticeid, notice, title, type , Faculty) {
     let dataObj = doc.data();
 
     const db = firebase.firestore();
-    db.collection(Faculty+"Notices").doc(Noticeid).update({
-      id: Noticeid,
-      UserID: currentUser.uid,
-      title: title,
-      type: type,
-      firstName: dataObj.firstName,
-      lastName: dataObj.lastName,
-      notice: notice,
-      DateTime: dateAndTime,
-    });
+    db.collection(faculty + "Notices")
+      .doc(id)
+      .set({
+        id: id,
+        UserID: currentUser.uid,
+        notice: notice,
+        title: title,
+        type: type,
+        firstName: dataObj.firstName,
+        lastName: dataObj.lastName,
+        DateTime: dateAndTime,
+        ProfileUrl: ProfileUrl,
+      });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
 
-export async function DeleteNotice(id,Faculty) {
+export async function EditNotice(Noticeid, notice, title, type, Faculty) {
+  try {
+    const currentUser = firebase.auth().currentUser;
+
+    var dateAndTime = moment().format("DD/MM/YYYY HH:mm");
+
+    let doc = await firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUser.uid)
+      .get();
+
+    let dataObj = doc.data();
+
+    const db = firebase.firestore();
+    db.collection(Faculty + "Notices")
+      .doc(Noticeid)
+      .update({
+        id: Noticeid,
+        UserID: currentUser.uid,
+        title: title,
+        type: type,
+        firstName: dataObj.firstName,
+        lastName: dataObj.lastName,
+        notice: notice,
+        DateTime: dateAndTime,
+      });
+  } catch (err) {
+    Alert.alert("There is something wrong!!!!", err.message);
+  }
+}
+
+export async function DeleteNotice(id, Faculty) {
   try {
     const db = firebase.firestore();
-    db.collection(Faculty+"Notices").doc(id).delete();
+    db.collection(Faculty + "Notices")
+      .doc(id)
+      .delete();
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);
   }

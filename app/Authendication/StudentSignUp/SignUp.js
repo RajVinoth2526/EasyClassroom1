@@ -5,23 +5,18 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  Keyboard,
   StyleSheet,
-  SafeAreaView,
   Image,
   ActivityIndicator,
   KeyboardAvoidingView,
 } from "react-native";
-import { Header } from "react-navigation";
 
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StudentRegistration } from "../../../API/firebaseMethods/firebaseMethod";
-import * as firebase from "firebase";
 import "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
 
@@ -37,7 +32,6 @@ export default function StudentSignUp({ navigation }) {
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [indexNumber, setIndexNumber] = useState("");
   const [faculty, setFaculty] = useState("");
-  //const [department, setDeparment] = useState('');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -158,7 +152,10 @@ export default function StudentSignUp({ navigation }) {
         ></View>
       </View>
 
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
         <ScrollView style={styles.scrollView}>
           <View style={styles.cardCont}>
             <Text style={styles.cardtext}>First Name</Text>

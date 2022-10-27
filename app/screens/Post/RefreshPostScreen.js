@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from "react";
-import * as firebase from "firebase";
+import React from "react";
 import {
   View,
-  Text,
-  RefreshControl,
   StyleSheet,
-  TouchableOpacity,
-  Image,
   ActivityIndicator,
-  FlatList,
-  Alert,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-
 export default function RefreshPostScreen({ navigation }) {
   navigation.replace("PostScreen");
 

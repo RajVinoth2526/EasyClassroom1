@@ -9,11 +9,8 @@ import {
   Image,
   Alert,
   ActivityIndicator,
-  SafeAreaView,
   KeyboardAvoidingView,
   keyboardVerticalOffset,
-  TouchableWithoutFeedback,
-  Keyboard,
   StatusBar,
 } from "react-native";
 import {
@@ -22,17 +19,11 @@ import {
 } from "react-native-responsive-screen";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
-import { FontAwesome5 } from "@expo/vector-icons";
-import uuid from "react-native-uuid";
 import * as firebase from "firebase";
 import { UploadPostImage } from "../../../API/firebaseMethods/firebaseMethod";
 import IMAGE from "../../assets/photo.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
-import { FontAwesome } from "@expo/vector-icons";
-import { set } from "react-native-reanimated";
-
 export default function EditPostScreen({ navigation, route }) {
   const [message, setMessage] = useState("");
   const [title, setTitle] = useState("");
@@ -51,22 +42,22 @@ export default function EditPostScreen({ navigation, route }) {
 
   const handlePress = () => {
     if (!message1) {
-      EditPost(PostID, message, title1, image,Faculty);
+      EditPost(PostID, message, title1, image, Faculty);
       navigation.replace("Dashboard");
       Alert.alert("Post Updated!!");
     }
     if (!title1) {
-      EditPost(PostID, message1, title, image),Faculty;
+      EditPost(PostID, message1, title, image), Faculty;
       navigation.replace("Dashboard");
       Alert.alert("post Updated!!");
     }
     if (!message1 && !title1) {
-      EditPost(PostID, message, title, image,Faculty);
+      EditPost(PostID, message, title, image, Faculty);
       navigation.replace("Dashboard");
       Alert.alert("post Updated!!");
     }
     if (title1 && message1) {
-      EditPost(PostID, message1, title1, image,Faculty);
+      EditPost(PostID, message1, title1, image, Faculty);
       navigation.replace("Dashboard");
       Alert.alert("post Updated!!");
     }
@@ -113,7 +104,7 @@ export default function EditPostScreen({ navigation, route }) {
     async function getUserInfo() {
       let doc = await firebase
         .firestore()
-        .collection(Faculty+"-Posts")
+        .collection(Faculty + "-Posts")
         .doc(PostID)
         .get();
 

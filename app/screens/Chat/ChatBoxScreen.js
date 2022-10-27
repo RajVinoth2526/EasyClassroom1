@@ -5,25 +5,20 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  Keyboard,
   StyleSheet,
   SafeAreaView,
   Image,
   FlatList,
   BackHandler,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Entypo } from "@expo/vector-icons";
-import CodeInput from "react-native-confirmation-code-input";
-import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import * as firebase from "firebase";
 import { FontAwesome } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import { StoreSendMessage } from "../../../API/firebaseMethods/firebaseMethod";
-import { StoreReceiveMessage } from "../../../API/firebaseMethods/firebaseMethod";
 import { StoreReceivedID } from "../../../API/firebaseMethods/firebaseMethod";
 import {
   widthPercentageToDP as wp,
@@ -46,7 +41,7 @@ export default function ChatBoxScreen({ navigation, route }) {
 
   const [type1, setType1] = useState("msg");
   const [type2, setType2] = useState("replay");
-     
+
   const ID = uuid.v4();
 
   let currentUserUID = firebase.auth().currentUser.uid;
@@ -173,14 +168,12 @@ export default function ChatBoxScreen({ navigation, route }) {
   }
 
   function refresh() {
-    
     fetchSubjects1();
     fetchSubjects();
-   // this.scrollView.scrollToEnd({ animated: true }); 
+    // this.scrollView.scrollToEnd({ animated: true });
   }
 
-
-  function deleteForMe(id,created){
+  function deleteForMe(id, created) {
     DeleteMessage(
       id,
       created,
@@ -190,18 +183,12 @@ export default function ChatBoxScreen({ navigation, route }) {
       ReceiverFirstName,
       ReceiverLastName,
       ReceiverUrl
-
-
-
     );
     refresh();
     RefreshPage();
-
-
-
   }
 
-  function deleteForEveryOne(id,created){
+  function deleteForEveryOne(id, created) {
     DeleteMessage(
       id,
       created,
@@ -211,9 +198,6 @@ export default function ChatBoxScreen({ navigation, route }) {
       ReceiverFirstName,
       ReceiverLastName,
       ReceiverUrl
-
-
-
     );
 
     DeleteMessage(
@@ -225,19 +209,12 @@ export default function ChatBoxScreen({ navigation, route }) {
       ReceiverFirstName,
       ReceiverLastName,
       ReceiverUrl
-
-
-
     );
     refresh();
     RefreshPage();
-
-
-
   }
 
-
-  function delectChat(id,created){
+  function delectChat(id, created) {
     Alert.alert(
       "Delete Message for",
       "",
@@ -248,18 +225,14 @@ export default function ChatBoxScreen({ navigation, route }) {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "Me", onPress: () => deleteForMe(id,created) },
-        { text: "Everyone", onPress: () => deleteForEveryOne(id,created) },
+        { text: "Me", onPress: () => deleteForMe(id, created) },
+        { text: "Everyone", onPress: () => deleteForEveryOne(id, created) },
       ],
       { cancelable: false }
     );
-
-
-
   }
 
-
-  function Delete(id,created) {
+  function Delete(id, created) {
     Alert.alert(
       "Delete Message",
       "Are you sure you want to delete message?",
@@ -269,7 +242,7 @@ export default function ChatBoxScreen({ navigation, route }) {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "delete", onPress: () => delectChat(id,created) },
+        { text: "delete", onPress: () => delectChat(id, created) },
       ],
       { cancelable: false }
     );
@@ -297,169 +270,20 @@ export default function ChatBoxScreen({ navigation, route }) {
   function RefreshPage() {
     return (
       <SafeAreaView style={styles.container}>
-      <View style={[styles.Box]}>
-        <View style={styles.HEAD}>
-         <View style ={styles.avatar}>
-                  <Image
-                    source={{ uri: ReceiverUrl }}
-                    style={{
-                      
-                     
-                      height: hp('5.2%'),
-                      width: wp('11%'),
-                      borderWidth: 1.5,
-
-                      borderRadius: 50,
-                    }}
-                  />
-                  </View>
-
-          <Text style={styles.Name}>
-            {ReceiverFirstName} {ReceiverLastName}
-          </Text>
-        </View>
-      </View>
-      <ScrollView
-        style={{ width: wp('93%'), alignSelf: "center", marginBottom: hp("10%") }}
-      >
-        <FlatList
-          data={messages}
-          renderItem={({ item }) => (
-            <View>
-              {item.type == "msg" ? (
-               
-                  <TouchableOpacity  style={styles.message}  onLongPress={() => Delete(item.MessageId,item.created)}>
-                  <Text
-                    style={{
-                      fontSize: hp('2%'),
-                      alignSelf: "center",
-                      paddingLeft: 8,
-                      paddingRight: 8,
-                      paddingTop: 5,
-                    }}
-                  >
-                    {item.message}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: hp('1%'),
-                      alignSelf: "center",
-                      color: "#8f8c8c",
-                      paddingTop: 3,
-                      paddingBottom: 4,
-                      paddingLeft: 5,
-                      paddingRight: 5,
-                    }}
-                  >
-                    {item.dateAndTime}
-                  </Text>
-                </TouchableOpacity>
-              ) : (
-                <View style={styles.message1}>
-                  <Text
-                    style={{
-                      fontSize: hp('2%'),
-                      alignSelf: "center",
-                      paddingLeft: 8,
-                      paddingRight: 8,
-                      paddingTop: 5,
-                    }}
-                  >
-                    {item.message}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: hp('1%'),
-                      alignSelf: "center",
-                      color: "#8f8c8c",
-                      paddingTop: 3,
-                      paddingBottom: 4,
-                      paddingLeft: 5,
-                      paddingRight: 5,
-                    }}
-                  >
-                    {item.dateAndTime}
-                  </Text>
-                </View>
-              )}
-            </View>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </ScrollView>
-      <View
-        style={{
-          position: "absolute",
-          bottom: hp('2.7%'),
-          flexDirection: "row",
-          alignSelf: "center",
-          justifyContent:'center'
-        }}
-      >
-        <View style={styles.action}>
-          <TextInput
-            style={styles.textinput}
-            placeholder="Type here"
-            autoComplete="off"
-            value={message}
-            multiline={true}
-            numberOfLines={1}
-            textAlignVertical="top"
-            onChangeText={(message) => setMessage(message)}
-          />
-        </View>
-
-        <View style={styles.iconAdd}>
-          <TouchableOpacity onPress={handlePress}>
-            <FontAwesome
-              name="send"
-              size={hp('3.9%')}
-              color="#c986f0"
-              style={{ alignSelf: "center" }}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
-    );
-  }
-
-  
-  React.useEffect(() => {
-    StatusBar.setBackgroundColor('#cdaffa'); 
-    StatusBar.setTranslucent(true)
-   }, []);
-
-  const MINUTE_MS = 500;
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refresh();
-      RefreshPage();
-    }, MINUTE_MS);
-
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  }, []);
-
-  if (message != "" || message == "") {
-    return (
-      <SafeAreaView style={styles.container}>
         <View style={[styles.Box]}>
           <View style={styles.HEAD}>
-           <View style ={styles.avatar}>
-                    <Image
-                      source={{ uri: ReceiverUrl }}
-                      style={{
-                        
-                       
-                        height: hp('5.2%'),
-                        width: wp('11%'),
-                        borderWidth: 1.5,
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: ReceiverUrl }}
+                style={{
+                  height: hp("5.2%"),
+                  width: wp("11%"),
+                  borderWidth: 1.5,
 
-                        borderRadius: 50,
-                      }}
-                    />
-                    </View>
+                  borderRadius: 50,
+                }}
+              />
+            </View>
 
             <Text style={styles.Name}>
               {ReceiverFirstName} {ReceiverLastName}
@@ -467,19 +291,24 @@ export default function ChatBoxScreen({ navigation, route }) {
           </View>
         </View>
         <ScrollView
-        
-          style={{ width: wp('93%'), alignSelf: "center", marginBottom: hp("10%") }}
+          style={{
+            width: wp("93%"),
+            alignSelf: "center",
+            marginBottom: hp("10%"),
+          }}
         >
           <FlatList
             data={messages}
             renderItem={({ item }) => (
               <View>
                 {item.type == "msg" ? (
-                 
-                    <TouchableOpacity  style={styles.message} onLongPress={() => Delete(item.MessageId,item.created)}>
+                  <TouchableOpacity
+                    style={styles.message}
+                    onLongPress={() => Delete(item.MessageId, item.created)}
+                  >
                     <Text
                       style={{
-                        fontSize: hp('2%'),
+                        fontSize: hp("2%"),
                         alignSelf: "center",
                         paddingLeft: 8,
                         paddingRight: 8,
@@ -490,7 +319,7 @@ export default function ChatBoxScreen({ navigation, route }) {
                     </Text>
                     <Text
                       style={{
-                        fontSize: hp('1%'),
+                        fontSize: hp("1%"),
                         alignSelf: "center",
                         color: "#8f8c8c",
                         paddingTop: 3,
@@ -506,7 +335,7 @@ export default function ChatBoxScreen({ navigation, route }) {
                   <View style={styles.message1}>
                     <Text
                       style={{
-                        fontSize: hp('2%'),
+                        fontSize: hp("2%"),
                         alignSelf: "center",
                         paddingLeft: 8,
                         paddingRight: 8,
@@ -517,7 +346,7 @@ export default function ChatBoxScreen({ navigation, route }) {
                     </Text>
                     <Text
                       style={{
-                        fontSize: hp('1%'),
+                        fontSize: hp("1%"),
                         alignSelf: "center",
                         color: "#8f8c8c",
                         paddingTop: 3,
@@ -538,10 +367,10 @@ export default function ChatBoxScreen({ navigation, route }) {
         <View
           style={{
             position: "absolute",
-            bottom: hp('2.7%'),
+            bottom: hp("2.7%"),
             flexDirection: "row",
             alignSelf: "center",
-            justifyContent:'center'
+            justifyContent: "center",
           }}
         >
           <View style={styles.action}>
@@ -553,7 +382,6 @@ export default function ChatBoxScreen({ navigation, route }) {
               multiline={true}
               numberOfLines={1}
               textAlignVertical="top"
-              
               onChangeText={(message) => setMessage(message)}
             />
           </View>
@@ -562,7 +390,157 @@ export default function ChatBoxScreen({ navigation, route }) {
             <TouchableOpacity onPress={handlePress}>
               <FontAwesome
                 name="send"
-                size={hp('3.9%')}
+                size={hp("3.9%")}
+                color="#c986f0"
+                style={{ alignSelf: "center" }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  React.useEffect(() => {
+    StatusBar.setBackgroundColor("#cdaffa");
+    StatusBar.setTranslucent(true);
+  }, []);
+
+  const MINUTE_MS = 500;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refresh();
+      RefreshPage();
+    }, MINUTE_MS);
+
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, []);
+
+  if (message != "" || message == "") {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={[styles.Box]}>
+          <View style={styles.HEAD}>
+            <View style={styles.avatar}>
+              <Image
+                source={{ uri: ReceiverUrl }}
+                style={{
+                  height: hp("5.2%"),
+                  width: wp("11%"),
+                  borderWidth: 1.5,
+
+                  borderRadius: 50,
+                }}
+              />
+            </View>
+
+            <Text style={styles.Name}>
+              {ReceiverFirstName} {ReceiverLastName}
+            </Text>
+          </View>
+        </View>
+        <ScrollView
+          style={{
+            width: wp("93%"),
+            alignSelf: "center",
+            marginBottom: hp("10%"),
+          }}
+        >
+          <FlatList
+            data={messages}
+            renderItem={({ item }) => (
+              <View>
+                {item.type == "msg" ? (
+                  <TouchableOpacity
+                    style={styles.message}
+                    onLongPress={() => Delete(item.MessageId, item.created)}
+                  >
+                    <Text
+                      style={{
+                        fontSize: hp("2%"),
+                        alignSelf: "center",
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        paddingTop: 5,
+                      }}
+                    >
+                      {item.message}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: hp("1%"),
+                        alignSelf: "center",
+                        color: "#8f8c8c",
+                        paddingTop: 3,
+                        paddingBottom: 4,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                    >
+                      {item.dateAndTime}
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <View style={styles.message1}>
+                    <Text
+                      style={{
+                        fontSize: hp("2%"),
+                        alignSelf: "center",
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        paddingTop: 5,
+                      }}
+                    >
+                      {item.message}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: hp("1%"),
+                        alignSelf: "center",
+                        color: "#8f8c8c",
+                        paddingTop: 3,
+                        paddingBottom: 4,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                    >
+                      {item.dateAndTime}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
+        <View
+          style={{
+            position: "absolute",
+            bottom: hp("2.7%"),
+            flexDirection: "row",
+            alignSelf: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View style={styles.action}>
+            <TextInput
+              style={styles.textinput}
+              placeholder="Type here"
+              autoComplete="off"
+              value={message}
+              multiline={true}
+              numberOfLines={1}
+              textAlignVertical="top"
+              onChangeText={(message) => setMessage(message)}
+            />
+          </View>
+
+          <View style={styles.iconAdd}>
+            <TouchableOpacity onPress={handlePress}>
+              <FontAwesome
+                name="send"
+                size={hp("3.9%")}
                 color="#c986f0"
                 style={{ alignSelf: "center" }}
               />
@@ -584,17 +562,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-  
   },
   Box: {
     marginBottom: hp("2%"),
     alignSelf: "center",
     width: wp("100%"),
-    height:hp('10%'),
+    height: hp("10%"),
     backgroundColor: "#cdaffa",
-    borderBottomLeftRadius:15,
-    borderBottomRightRadius:15,
-    justifyContent:'center',
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    justifyContent: "center",
     marginHorizontal: 1,
     shadowColor: "#000",
     shadowOffset: {
@@ -608,17 +585,16 @@ const styles = StyleSheet.create({
   Name: {
     alignSelf: "center",
     marginLeft: hp("2%"),
-    fontSize: hp('2.5%'),
-    fontWeight:'500'
+    fontSize: hp("2.5%"),
+    fontWeight: "500",
   },
   HEAD: {
-    marginLeft:wp('5%'),
+    marginLeft: wp("5%"),
     flexDirection: "row",
-    
   },
 
   textinput: {
-    width:wp('75%'),
+    width: wp("75%"),
     borderWidth: 2,
     borderRadius: 5,
     borderColor: "#c986f0",
@@ -637,11 +613,10 @@ const styles = StyleSheet.create({
   },
 
   action: {
-    width: wp('80%'),
+    width: wp("80%"),
   },
   iconAdd: {
     alignSelf: "center",
-    
   },
   message: {
     alignSelf: "flex-end",
@@ -649,7 +624,6 @@ const styles = StyleSheet.create({
     borderColor: "#cdaffa",
     marginBottom: hp("1.5%"),
     borderRadius: 15,
-   
   },
   message1: {
     alignSelf: "flex-start",
@@ -658,11 +632,11 @@ const styles = StyleSheet.create({
     marginBottom: hp("1.5%"),
     borderRadius: 15,
   },
-  
+
   avatar: {
-    height: hp('5.2%'),
-     width: wp('11%'),
-     backgroundColor:'white',
+    height: hp("5.2%"),
+    width: wp("11%"),
+    backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 50,
     shadowColor: "#000",

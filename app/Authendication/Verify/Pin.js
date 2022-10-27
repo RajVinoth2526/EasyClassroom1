@@ -3,19 +3,13 @@ import {
   View,
   Text,
   Image,
-  TextInput,
   Alert,
-  ScrollView,
-  Keyboard,
   StyleSheet,
-  SafeAreaView,
   ActivityIndicator,
   KeyboardAvoidingView,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import CodeInput from "react-native-confirmation-code-input";
-import { StoreRole } from "../../../API/firebaseMethods/firebaseMethod";
 import "firebase/firestore";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import * as firebase from "firebase";
@@ -32,9 +26,9 @@ export default function Pin({ navigation }) {
   const [flag, setFlag] = useState("");
 
   React.useEffect(() => {
-    StatusBar.setBackgroundColor('white'); 
-    StatusBar.setTranslucent(true)
-   }, []);
+    StatusBar.setBackgroundColor("white");
+    StatusBar.setTranslucent(true);
+  }, []);
 
   const emptyState = () => {
     setPin("");
@@ -91,7 +85,6 @@ export default function Pin({ navigation }) {
             style={styles.logo}
             source={require("../../assets/ec.png")}
           ></Image>
-          
         </View>
         <KeyboardAvoidingView
           behavior="position"
@@ -170,14 +163,13 @@ const styles = StyleSheet.create({
   headText: {
     alignSelf: "center",
     fontSize: hp("6%"),
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
   pinEntry: {
     marginTop: hp("3%"),
     marginBottom: hp("3%"),
   },
   enterButton: {
-  
     justifyContent: "center",
     marginTop: hp("8%"),
     width: wp("50%"),
@@ -199,7 +191,7 @@ const styles = StyleSheet.create({
   enterText: {
     alignSelf: "center",
     fontSize: hp("4%"),
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
   logo: {
     width: wp("55%"),
@@ -212,7 +204,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: hp("2%"),
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
   Loadingcontainer: {
     flex: 1,

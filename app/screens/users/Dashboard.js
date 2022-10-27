@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
-  Image,
   ActivityIndicator,
   Alert,
-  BackHandler,
 } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
@@ -590,16 +587,9 @@ export default function Dashboard({ navigation }) {
       screenOptions={{
         headerTintColor: "black",
         headerStyle: {
-          backgroundColor: "#cdaffa"
-        }
-        ,
-        
-
-
-    }}
-
-    
-    
+          backgroundColor: "#cdaffa",
+        },
+      }}
     >
       <Draw.Screen name="Easy Classroom" component={TabNavigation} />
       <Draw.Screen

@@ -33,23 +33,19 @@ export async function DemoRegistration(
 
     const response = await fetch(image);
     const blob = await response.blob();
-  
+
     var ref = firebase
       .storage()
       .ref()
       .child("profileImage/" + currentUser.uid);
     const snapshot = await ref.put(blob);
 
-  
-  
     const db1 = firebase.firestore();
     db1.collection("Demonstrator").doc(currentUser.uid).set({
-     
       id: currentUser.uid,
       firstName: firstName,
       lastName: lastName,
-      ProfileUrl : image
-      
+      ProfileUrl: image,
     });
 
     return true;

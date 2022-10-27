@@ -1,11 +1,16 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import uuid from "react-native-uuid";
-import { View, Text, StyleSheet, TouchableOpacity,TextInput,Alert,StatusBar,KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  StatusBar,
+  KeyboardAvoidingView,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { AddResults } from "../../../API/firebaseMethods/firebaseMethod";
-import RNPickerSelect from "react-native-picker-select";
-import { StoreCourse } from "../../../API/firebaseMethods/firebaseMethod";
-import { StoreCourseName } from "../../../API/firebaseMethods/firebaseMethod";
 import * as firebase from "firebase";
 import { StoreAcademyYear } from "../../../API/firebaseMethods/firebaseMethod";
 import {
@@ -13,56 +18,31 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 export default function AddAcademyYear({ navigation }) {
-  
-   
-    
   React.useEffect(() => {
     StatusBar.setBackgroundColor("#cdaffa");
     StatusBar.setTranslucent(true);
   }, []);
 
-    
-const [ID] = useState(uuid.v4());
-const [academyYear, setacademyYear] = useState("");
-  
- 
-
-
- 
-  
+  const [ID] = useState(uuid.v4());
+  const [academyYear, setacademyYear] = useState("");
 
   const currentUser = firebase.auth().currentUser;
 
+  const handlePress = () => {
+    if (!academyYear) {
+      Alert.alert("course required");
+    } else {
+      StoreAcademyYear(ID, academyYear);
+      setacademyYear("");
+      navigation.goBack();
+    }
+  };
 
- 
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
-
-
-
-
-    
-      const handlePress = () => {
-
-        if(!academyYear){
-            Alert.alert("course required");
-        }else{
-          
-            
-            StoreAcademyYear(ID,academyYear);
-            setacademyYear('');
-            navigation.goBack();
-        }
-       
-      };
-
-     
-
-      const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
-     
-    
   return (
     <View style={styles.container}>
-        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+      <View style={{ backgroundColor: "white", height: hp("10%") }}>
         <View
           style={{
             backgroundColor: "#cdaffa",
@@ -91,48 +71,29 @@ const [academyYear, setacademyYear] = useState("");
           }}
         ></View>
       </View>
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-        <ScrollView style={{height:hp('30%'),marginTop:hp('10%')}}>
-        <View>
-          
-       
-
-          
-
-         
-        < View style={styles.cardCont}>
-            <Text style={styles.cardtext}>AcademyYear</Text>
-            <View style={styles.action}>
-              <TextInput
-                style={styles.textinput}
-                placeholder="course"
-                value={academyYear}
-                onChangeText={(academyYear) => setacademyYear(academyYear)}
-              />
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <ScrollView style={{ height: hp("30%"), marginTop: hp("10%") }}>
+          <View>
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>AcademyYear</Text>
+              <View style={styles.action}>
+                <TextInput
+                  style={styles.textinput}
+                  placeholder="course"
+                  value={academyYear}
+                  onChangeText={(academyYear) => setacademyYear(academyYear)}
+                />
+              </View>
             </View>
           </View>
-        
-
-        
-
-         
-          
-
-
-           
-
-          
-
-            
-          </View>
-
         </ScrollView>
-        </KeyboardAvoidingView>
-        <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
-            <Text style={styles.SignUpText}>Create</Text>
-         </TouchableOpacity>
-        
-      
+      </KeyboardAvoidingView>
+      <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
+        <Text style={styles.SignUpText}>Create</Text>
+      </TouchableOpacity>
     </View>
   );
 }

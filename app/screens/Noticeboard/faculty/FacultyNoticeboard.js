@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   FlatList,
   Alert,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -18,20 +18,18 @@ import {
 } from "react-native-responsive-screen";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
 import { DeleteNotice } from "../../../../API/firebaseMethods/firebaseMethod";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-export default function PostScreen({ navigation ,route}) {
+export default function PostScreen({ navigation, route }) {
   const [subjects, setSubjects] = useState([]);
   const [role, setRole] = useState("");
   const NoticeType = "Faculty";
-  const {Faculty} = route.params;
+  const { Faculty } = route.params;
 
   let currentUserUID = firebase.auth().currentUser.uid;
 
@@ -40,18 +38,16 @@ export default function PostScreen({ navigation ,route}) {
     StatusBar.setTranslucent(true);
   }, []);
 
-
   React.useEffect(() => {
     fetchSubjects();
     getUserInfo();
     RefreshPage();
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       fetchSubjects();
       getUserInfo();
       RefreshPage();
-      //Put your Data loading function here instead of my loadData()
     });
-  
+
     return unsubscribe;
   }, [navigation]);
 
@@ -78,14 +74,18 @@ export default function PostScreen({ navigation ,route}) {
   }
 
   function editNotice(ID) {
-    navigation.navigate("EditNotice", { PostId: ID, Type: NoticeType , Faculty : Faculty });
+    navigation.navigate("EditNotice", {
+      PostId: ID,
+      Type: NoticeType,
+      Faculty: Faculty,
+    });
   }
 
   function deleteNotice(id) {
-    DeleteNotice(id,Faculty);
+    DeleteNotice(id, Faculty);
     fetchSubjects();
-      getUserInfo();
-      RefreshPage();
+    getUserInfo();
+    RefreshPage();
   }
 
   function ButtonEdit(PostID, PostUserID) {
@@ -134,7 +134,7 @@ export default function PostScreen({ navigation ,route}) {
     const data = [];
 
     const db = firebase.firestore();
-    const querySnapshot = await db.collection(Faculty+"Notices").get();
+    const querySnapshot = await db.collection(Faculty + "Notices").get();
     querySnapshot.forEach((doc) => {
       console.log(doc.id, " => ", doc.data());
       const dataObj = doc.data();
@@ -165,8 +165,6 @@ export default function PostScreen({ navigation ,route}) {
     fetchSubjects();
   }, []);
 
-
-
   const generateRandomBrightestHSLColor = () => {
     return "hsla(" + ~~(360 * Math.random()) + "," + "80%," + "90%,2)";
   };
@@ -189,12 +187,10 @@ export default function PostScreen({ navigation ,route}) {
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, []);
 
-  
   function RefreshPage() {
     if (role == "Lecturer") {
       return (
         <View style={styles.container}>
-          
           <ScrollView
             style={styles.scrollScreen}
             refreshControl={
@@ -202,75 +198,74 @@ export default function PostScreen({ navigation ,route}) {
             }
           >
             <View style={{ backgroundColor: "white", height: hp("10%") }}>
-          <View
-            style={{
-              backgroundColor: "#cdaffa",
-              height: hp("10%"),
-              borderBottomRightRadius: 60,
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: hp("3%"),
-                fontWeight: "bold",
-              }}
-            >
-              Faculty Noticboard
-            </Text>
-          </View>
-        </View>
-        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-          <View
-            style={{
-              backgroundColor: "white",
-              height: hp("10%"),
-              borderTopLeftRadius: 60,
-            }}
-          ></View>
-        </View>
-           
-  
+              <View
+                style={{
+                  backgroundColor: "#cdaffa",
+                  height: hp("10%"),
+                  borderBottomRightRadius: 60,
+                  justifyContent: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: hp("3%"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Faculty Noticboard
+                </Text>
+              </View>
+            </View>
+            <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+              <View
+                style={{
+                  backgroundColor: "white",
+                  height: hp("10%"),
+                  borderTopLeftRadius: 60,
+                }}
+              ></View>
+            </View>
+
             <FlatList
               data={subjects}
               renderItem={({ item }) => (
                 <View style={[styles.Box]}>
                   <View style={styles.head}>
-                    <View style = {styles.avatar1}>
-                    <Image
-                      source={{ uri: item.ProfileUrl }}
-                      style={{
-                        height: hp("5.2%"),
-                        width: wp("11%"),
-                        borderWidth: 1.5,
-  
-                        borderRadius: 50,
-                      }}
-                    />
-                  </View>
-  
+                    <View style={styles.avatar1}>
+                      <Image
+                        source={{ uri: item.ProfileUrl }}
+                        style={{
+                          height: hp("5.2%"),
+                          width: wp("11%"),
+                          borderWidth: 1.5,
+
+                          borderRadius: 50,
+                        }}
+                      />
+                    </View>
+
                     <View style={{ flexDirection: "column" }}>
                       <Text style={styles.Name}>
                         {item.firstName} {item.lastName}
                       </Text>
                       <Text
-                       style={{
-                        marginLeft: wp("5%"),
-                        marginBottom: hp("1%"),
-                        marginTop: hp("0.5%"),
-                        fontSize: hp("1.1%"),
-                      }}
+                        style={{
+                          marginLeft: wp("5%"),
+                          marginBottom: hp("1%"),
+                          marginTop: hp("0.5%"),
+                          fontSize: hp("1.1%"),
+                        }}
                       >
                         {item.DateTime}
                       </Text>
                     </View>
                   </View>
-  
+
                   <Text style={styles.title}>{item.title}</Text>
                   <View style={styles.Msg}>
                     <Text style={styles.msg}>{item.notice}</Text>
-  
+
                     <View
                       style={{
                         alignSelf: "flex-start",
@@ -291,297 +286,271 @@ export default function PostScreen({ navigation ,route}) {
               )}
               keyExtractor={(item, index) => index.toString()}
             />
-             <View style ={{height :hp('12%'),width:wp('100%')}}>
-
-</View>
+            <View style={{ height: hp("12%"), width: wp("100%") }}></View>
           </ScrollView>
-  
+
           <View style={styles.AddIcon}>
             <TouchableOpacity onPress={handlePress}>
-              <MaterialIcons name="add-circle" size={hp('10%')} color="#cdaffa" />
+              <MaterialIcons
+                name="add-circle"
+                size={hp("10%")}
+                color="#cdaffa"
+              />
             </TouchableOpacity>
           </View>
         </View>
       );
     } else if (role == "Demonstrator") {
       return (
-       
-          <ScrollView
-            style={styles.scrollScreen}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
-  
-  <View style={{ backgroundColor: "white", height: hp("10%") }}>
-          <View
-            style={{
-              backgroundColor: "#cdaffa",
-              height: hp("10%"),
-              borderBottomRightRadius: 60,
-              justifyContent: "center",
-            }}
-          >
-            <Text
+        <ScrollView
+          style={styles.scrollScreen}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <View style={{ backgroundColor: "white", height: hp("10%") }}>
+            <View
               style={{
-                alignSelf: "center",
-                fontSize: hp("3%"),
-                fontWeight: "bold",
+                backgroundColor: "#cdaffa",
+                height: hp("10%"),
+                borderBottomRightRadius: 60,
+                justifyContent: "center",
               }}
             >
-              Faculty Noticboard
-            </Text>
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: hp("3%"),
+                  fontWeight: "bold",
+                }}
+              >
+                Faculty Noticboard
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-          <View
-            style={{
-              backgroundColor: "white",
-              height: hp("10%"),
-              borderTopLeftRadius: 60,
-            }}
-          ></View>
-        </View>
-           
-           
-  
-            <FlatList
-              data={subjects}
-              renderItem={({ item }) => (
-                <View style={[styles.Box]}>
-                  <View style={styles.head}>
-                    <View style = {styles.avatar1}>
+          <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+            <View
+              style={{
+                backgroundColor: "white",
+                height: hp("10%"),
+                borderTopLeftRadius: 60,
+              }}
+            ></View>
+          </View>
+
+          <FlatList
+            data={subjects}
+            renderItem={({ item }) => (
+              <View style={[styles.Box]}>
+                <View style={styles.head}>
+                  <View style={styles.avatar1}>
                     <Image
                       source={{ uri: item.ProfileUrl }}
                       style={{
                         height: hp("5.2%"),
                         width: wp("11%"),
                         borderWidth: 1.5,
-  
+
                         borderRadius: 50,
                       }}
                     />
                   </View>
-  
-                    <View style={{ flexDirection: "column" }}>
-                      <Text style={styles.Name}>
-                        {item.firstName} {item.lastName}
-                      </Text>
-                      <Text
-                       style={{
+
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.Name}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text
+                      style={{
                         marginLeft: wp("5%"),
                         marginBottom: hp("1%"),
                         marginTop: hp("0.5%"),
                         fontSize: hp("1.1%"),
                       }}
-                      >
-                        {item.DateTime}
-                      </Text>
-                    </View>
-                  </View>
-  
-                  <Text style={styles.title}>{item.title}</Text>
-                  <View style={styles.Msg}>
-                    <Text style={styles.msg}>{item.notice}</Text>
-  
-                   
+                    >
+                      {item.DateTime}
+                    </Text>
                   </View>
                 </View>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </ScrollView>
-  
-          
-        
+
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.Msg}>
+                  <Text style={styles.msg}>{item.notice}</Text>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
       );
-    
     } else if (role == "Student") {
       return (
-       
         <ScrollView
           style={styles.scrollScreen}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-            <View style={{ backgroundColor: "white", height: hp("10%") }}>
-          <View
-            style={{
-              backgroundColor: "#cdaffa",
-              height: hp("10%"),
-              borderBottomRightRadius: 60,
-              justifyContent: "center",
-            }}
-          >
-            <Text
+          <View style={{ backgroundColor: "white", height: hp("10%") }}>
+            <View
               style={{
-                alignSelf: "center",
-                fontSize: hp("3%"),
-                fontWeight: "bold",
+                backgroundColor: "#cdaffa",
+                height: hp("10%"),
+                borderBottomRightRadius: 60,
+                justifyContent: "center",
               }}
             >
-              Faculty Noticboard
-            </Text>
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: hp("3%"),
+                  fontWeight: "bold",
+                }}
+              >
+                Faculty Noticboard
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-          <View
-            style={{
-              backgroundColor: "white",
-              height: hp("10%"),
-              borderTopLeftRadius: 60,
-            }}
-          ></View>
-        </View>
-           
-         
-  
+          <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+            <View
+              style={{
+                backgroundColor: "white",
+                height: hp("10%"),
+                borderTopLeftRadius: 60,
+              }}
+            ></View>
+          </View>
+
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
               <View style={[styles.Box]}>
                 <View style={styles.head}>
-                  <View style = {styles.avatar1}>
-                  <Image
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      height: hp("5.2%"),
-                      width: wp("11%"),
-                      borderWidth: 1.5,
-  
-                      borderRadius: 50,
-                    }}
-                  />
-                </View>
-  
+                  <View style={styles.avatar1}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        height: hp("5.2%"),
+                        width: wp("11%"),
+                        borderWidth: 1.5,
+
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
+
                   <View style={{ flexDirection: "column" }}>
                     <Text style={styles.Name}>
                       {item.firstName} {item.lastName}
                     </Text>
                     <Text
-                     style={{
-                      marginLeft: wp("5%"),
-                      marginBottom: hp("1%"),
-                      marginTop: hp("0.5%"),
-                      fontSize: hp("1.1%"),
-                    }}
+                      style={{
+                        marginLeft: wp("5%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("0.5%"),
+                        fontSize: hp("1.1%"),
+                      }}
                     >
                       {item.DateTime}
                     </Text>
                   </View>
                 </View>
-  
+
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.notice}</Text>
-  
-                 
                 </View>
               </View>
             )}
             keyExtractor={(item, index) => index.toString()}
           />
         </ScrollView>
-  
-        
-      
-    );
-    }
-  
-    else if(role == "Admin"){
+      );
+    } else if (role == "Admin") {
       return (
-       
         <ScrollView
           style={styles.scrollScreen}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-           <View style={{ backgroundColor: "white", height: hp("10%") }}>
-          <View
-            style={{
-              backgroundColor: "#cdaffa",
-              height: hp("10%"),
-              borderBottomRightRadius: 60,
-              justifyContent: "center",
-            }}
-          >
-            <Text
+          <View style={{ backgroundColor: "white", height: hp("10%") }}>
+            <View
               style={{
-                alignSelf: "center",
-                fontSize: hp("3%"),
-                fontWeight: "bold",
+                backgroundColor: "#cdaffa",
+                height: hp("10%"),
+                borderBottomRightRadius: 60,
+                justifyContent: "center",
               }}
             >
-              Faculty Noticboard
-            </Text>
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: hp("3%"),
+                  fontWeight: "bold",
+                }}
+              >
+                Faculty Noticboard
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-          <View
-            style={{
-              backgroundColor: "white",
-              height: hp("10%"),
-              borderTopLeftRadius: 60,
-            }}
-          ></View>
-        </View>
-           
-  
+          <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+            <View
+              style={{
+                backgroundColor: "white",
+                height: hp("10%"),
+                borderTopLeftRadius: 60,
+              }}
+            ></View>
+          </View>
+
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
               <View style={[styles.Box]}>
                 <View style={styles.head}>
-                  <View style = {styles.avatar1}>
-                  <Image
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      height: hp("5.2%"),
-                      width: wp("11%"),
-                      borderWidth: 1.5,
-  
-                      borderRadius: 50,
-                    }}
-                  />
-                </View>
-  
+                  <View style={styles.avatar1}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        height: hp("5.2%"),
+                        width: wp("11%"),
+                        borderWidth: 1.5,
+
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
+
                   <View style={{ flexDirection: "column" }}>
                     <Text style={styles.Name}>
                       {item.firstName} {item.lastName}
                     </Text>
                     <Text
-                     style={{
-                      marginLeft: wp("5%"),
-                      marginBottom: hp("1%"),
-                      marginTop: hp("0.5%"),
-                      fontSize: hp("1.1%"),
-                    }}
+                      style={{
+                        marginLeft: wp("5%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("0.5%"),
+                        fontSize: hp("1.1%"),
+                      }}
                     >
                       {item.DateTime}
                     </Text>
                   </View>
                 </View>
-  
+
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.Msg}>
                   <Text style={styles.msg}>{item.notice}</Text>
-  
-                  
                 </View>
               </View>
             )}
             keyExtractor={(item, index) => index.toString()}
           />
         </ScrollView>
-  
-        
-      
-    );
-  
+      );
     }
-  
+
     return (
       <View style={styles.Loadingcontainer}>
         <ActivityIndicator color="#cdaffa" size="large" />
@@ -592,7 +561,6 @@ export default function PostScreen({ navigation ,route}) {
   if (role == "Lecturer") {
     return (
       <View style={styles.container}>
-        
         <ScrollView
           style={styles.scrollScreen}
           refreshControl={
@@ -600,65 +568,64 @@ export default function PostScreen({ navigation ,route}) {
           }
         >
           <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              alignSelf: "center",
-              fontSize: hp("3%"),
-              fontWeight: "bold",
-            }}
-          >
-            Faculty Noticboard
-          </Text>
-        </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
-         
+            <View
+              style={{
+                backgroundColor: "#cdaffa",
+                height: hp("10%"),
+                borderBottomRightRadius: 60,
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontSize: hp("3%"),
+                  fontWeight: "bold",
+                }}
+              >
+                Faculty Noticboard
+              </Text>
+            </View>
+          </View>
+          <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+            <View
+              style={{
+                backgroundColor: "white",
+                height: hp("10%"),
+                borderTopLeftRadius: 60,
+              }}
+            ></View>
+          </View>
 
           <FlatList
             data={subjects}
             renderItem={({ item }) => (
               <View style={[styles.Box]}>
                 <View style={styles.head}>
-                  <View style = {styles.avatar1}>
-                  <Image
-                    source={{ uri: item.ProfileUrl }}
-                    style={{
-                      height: hp("5.2%"),
-                      width: wp("11%"),
-                      borderWidth: 1.5,
+                  <View style={styles.avatar1}>
+                    <Image
+                      source={{ uri: item.ProfileUrl }}
+                      style={{
+                        height: hp("5.2%"),
+                        width: wp("11%"),
+                        borderWidth: 1.5,
 
-                      borderRadius: 50,
-                    }}
-                  />
-                </View>
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
 
                   <View style={{ flexDirection: "column" }}>
                     <Text style={styles.Name}>
                       {item.firstName} {item.lastName}
                     </Text>
                     <Text
-                     style={{
-                      marginLeft: wp("5%"),
-                      marginBottom: hp("1%"),
-                      marginTop: hp("0.5%"),
-                      fontSize: hp("1.1%"),
-                    }}
+                      style={{
+                        marginLeft: wp("5%"),
+                        marginBottom: hp("1%"),
+                        marginTop: hp("0.5%"),
+                        fontSize: hp("1.1%"),
+                      }}
                     >
                       {item.DateTime}
                     </Text>
@@ -688,68 +655,61 @@ export default function PostScreen({ navigation ,route}) {
               </View>
             )}
             keyExtractor={(item, index) => index.toString()}
-
           />
-          <View style ={{height :hp('12%'),width:wp('100%')}}>
-
-          </View>
+          <View style={{ height: hp("12%"), width: wp("100%") }}></View>
         </ScrollView>
 
         <View style={styles.AddIcon}>
           <TouchableOpacity onPress={handlePress}>
-            <MaterialIcons name="add-circle" size={hp('10%')} color="#cdaffa" />
+            <MaterialIcons name="add-circle" size={hp("10%")} color="#cdaffa" />
           </TouchableOpacity>
         </View>
       </View>
     );
   } else if (role == "Demonstrator") {
     return (
-     
-        <ScrollView
-          style={styles.scrollScreen}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-
-<View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
+      <ScrollView
+        style={styles.scrollScreen}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
             style={{
-              alignSelf: "center",
-              fontSize: hp("3%"),
-              fontWeight: "bold",
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
             }}
           >
-            Faculty Noticboard
-          </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("3%"),
+                fontWeight: "bold",
+              }}
+            >
+              Faculty Noticboard
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
-         
-         
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
 
-          <FlatList
-            data={subjects}
-            renderItem={({ item }) => (
-              <View style={[styles.Box]}>
-                <View style={styles.head}>
-                  <View style = {styles.avatar1}>
+        <FlatList
+          data={subjects}
+          renderItem={({ item }) => (
+            <View style={[styles.Box]}>
+              <View style={styles.head}>
+                <View style={styles.avatar1}>
                   <Image
                     source={{ uri: item.ProfileUrl }}
                     style={{
@@ -762,109 +722,100 @@ export default function PostScreen({ navigation ,route}) {
                   />
                 </View>
 
-                  <View style={{ flexDirection: "column" }}>
-                    <Text style={styles.Name}>
-                      {item.firstName} {item.lastName}
-                    </Text>
-                    <Text
-                     style={{
+                <View style={{ flexDirection: "column" }}>
+                  <Text style={styles.Name}>
+                    {item.firstName} {item.lastName}
+                  </Text>
+                  <Text
+                    style={{
                       marginLeft: wp("5%"),
                       marginBottom: hp("1%"),
                       marginTop: hp("0.5%"),
                       fontSize: hp("1.1%"),
                     }}
-                    >
-                      {item.DateTime}
-                    </Text>
-                  </View>
-                </View>
-
-                <Text style={styles.title}>{item.title}</Text>
-                <View style={styles.Msg}>
-                  <Text style={styles.msg}>{item.notice}</Text>
-
-                 
+                  >
+                    {item.DateTime}
+                  </Text>
                 </View>
               </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </ScrollView>
 
-        
-      
+              <Text style={styles.title}>{item.title}</Text>
+              <View style={styles.Msg}>
+                <Text style={styles.msg}>{item.notice}</Text>
+              </View>
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </ScrollView>
     );
-  
   } else if (role == "Student") {
     return (
-     
       <ScrollView
         style={styles.scrollScreen}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-          <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
             style={{
-              alignSelf: "center",
-              fontSize: hp("3%"),
-              fontWeight: "bold",
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
             }}
           >
-            Faculty Noticboard
-          </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("3%"),
+                fontWeight: "bold",
+              }}
+            >
+              Faculty Noticboard
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
-         
-       
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
 
         <FlatList
           data={subjects}
           renderItem={({ item }) => (
             <View style={[styles.Box]}>
               <View style={styles.head}>
-                <View style = {styles.avatar1}>
-                <Image
-                  source={{ uri: item.ProfileUrl }}
-                  style={{
-                    height: hp("5.2%"),
-                    width: wp("11%"),
-                    borderWidth: 1.5,
+                <View style={styles.avatar1}>
+                  <Image
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      height: hp("5.2%"),
+                      width: wp("11%"),
+                      borderWidth: 1.5,
 
-                    borderRadius: 50,
-                  }}
-                />
-              </View>
+                      borderRadius: 50,
+                    }}
+                  />
+                </View>
 
                 <View style={{ flexDirection: "column" }}>
                   <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
                   </Text>
                   <Text
-                   style={{
-                    marginLeft: wp("5%"),
-                    marginBottom: hp("1%"),
-                    marginTop: hp("0.5%"),
-                    fontSize: hp("1.1%"),
-                  }}
+                    style={{
+                      marginLeft: wp("5%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("0.5%"),
+                      fontSize: hp("1.1%"),
+                    }}
                   >
                     {item.DateTime}
                   </Text>
@@ -874,89 +825,80 @@ export default function PostScreen({ navigation ,route}) {
               <Text style={styles.title}>{item.title}</Text>
               <View style={styles.Msg}>
                 <Text style={styles.msg}>{item.notice}</Text>
-
-               
               </View>
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
         />
       </ScrollView>
-
-      
-    
-  );
-  }
-
-  else if(role == "Admin"){
+    );
+  } else if (role == "Admin") {
     return (
-     
       <ScrollView
         style={styles.scrollScreen}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-         <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
             style={{
-              alignSelf: "center",
-              fontSize: hp("3%"),
-              fontWeight: "bold",
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
             }}
           >
-            Faculty Noticboard
-          </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: hp("3%"),
+                fontWeight: "bold",
+              }}
+            >
+              Faculty Noticboard
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
-         
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
 
         <FlatList
           data={subjects}
           renderItem={({ item }) => (
             <View style={[styles.Box]}>
               <View style={styles.head}>
-                <View style = {styles.avatar1}>
-                <Image
-                  source={{ uri: item.ProfileUrl }}
-                  style={{
-                    height: hp("5.2%"),
-                    width: wp("11%"),
-                    borderWidth: 1.5,
+                <View style={styles.avatar1}>
+                  <Image
+                    source={{ uri: item.ProfileUrl }}
+                    style={{
+                      height: hp("5.2%"),
+                      width: wp("11%"),
+                      borderWidth: 1.5,
 
-                    borderRadius: 50,
-                  }}
-                />
-              </View>
+                      borderRadius: 50,
+                    }}
+                  />
+                </View>
 
                 <View style={{ flexDirection: "column" }}>
                   <Text style={styles.Name}>
                     {item.firstName} {item.lastName}
                   </Text>
                   <Text
-                   style={{
-                    marginLeft: wp("5%"),
-                    marginBottom: hp("1%"),
-                    marginTop: hp("0.5%"),
-                    fontSize: hp("1.1%"),
-                  }}
+                    style={{
+                      marginLeft: wp("5%"),
+                      marginBottom: hp("1%"),
+                      marginTop: hp("0.5%"),
+                      fontSize: hp("1.1%"),
+                    }}
                   >
                     {item.DateTime}
                   </Text>
@@ -966,19 +908,13 @@ export default function PostScreen({ navigation ,route}) {
               <Text style={styles.title}>{item.title}</Text>
               <View style={styles.Msg}>
                 <Text style={styles.msg}>{item.notice}</Text>
-
-                
               </View>
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
         />
       </ScrollView>
-
-      
-    
-  );
-
+    );
   }
 
   return (
@@ -991,18 +927,18 @@ export default function PostScreen({ navigation ,route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'white',
+    backgroundColor: "white",
   },
   AddIcon: {
     position: "absolute",
     alignSelf: "flex-end",
 
-    bottom:hp('1%')
+    bottom: hp("1%"),
   },
   scrollScreen: {
     height: hp("100%"),
     width: wp("100%"),
-    backgroundColor:"white"
+    backgroundColor: "white",
   },
   homeContent: {
     alignSelf: "center",
@@ -1032,7 +968,7 @@ const styles = StyleSheet.create({
     marginBottom: hp("1%"),
     alignSelf: "center",
     width: wp("98%"),
-    
+
     backgroundColor: "white",
     borderRadius: 5,
     marginHorizontal: 1,
@@ -1056,7 +992,7 @@ const styles = StyleSheet.create({
     marginBottom: wp("3%"),
     marginRight: wp("4.5%"),
     marginTop: hp("1%"),
-    justifyContent:'center',
+    justifyContent: "center",
 
     borderRadius: 5,
   },
@@ -1093,11 +1029,9 @@ const styles = StyleSheet.create({
   msg: {
     fontSize: hp("1.8%"),
     fontWeight: "350",
-    alignSelf:'center',
-    paddingLeft:5,
-    paddingRight:5
-   
-  
+    alignSelf: "center",
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   Loadingcontainer: {
     flex: 1,
@@ -1122,7 +1056,7 @@ const styles = StyleSheet.create({
   avatar1: {
     height: hp("5.2%"),
     width: wp("11%"),
-    backgroundColor:'white',
+    backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 50,
     shadowColor: "#000",

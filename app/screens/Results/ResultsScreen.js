@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   StatusBar,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import * as firebase from "firebase";
@@ -38,21 +38,13 @@ export default function ResultsScreen({ navigation }) {
     StatusBar.setTranslucent(true);
   }, []);
 
-
-  
- 
-
   function CumlativeGPA(gpa1) {
-    cumGap += gpa1/3;
-    var n = cumGap.toFixed(3)
+    cumGap += gpa1 / 3;
+    var n = cumGap.toFixed(3);
     setCumGap(n);
-   
-    
   }
 
-
   useEffect(() => {
-    
     async function getUserInfo() {
       setFlag(true);
       let doc = await firebase
@@ -65,24 +57,35 @@ export default function ResultsScreen({ navigation }) {
         Alert.alert("No user data found!");
       } else {
         let dataObj = doc.data();
-       
-        fetchLevel1Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty,dataObj.course);
-        fetchLevel2Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty,dataObj.course);
-        fetchLevel3Data(dataObj.academyYear,dataObj.indexNumber,dataObj.faculty, dataObj.course);
-       
 
+        fetchLevel1Data(
+          dataObj.academyYear,
+          dataObj.indexNumber,
+          dataObj.faculty,
+          dataObj.course
+        );
+        fetchLevel2Data(
+          dataObj.academyYear,
+          dataObj.indexNumber,
+          dataObj.faculty,
+          dataObj.course
+        );
+        fetchLevel3Data(
+          dataObj.academyYear,
+          dataObj.indexNumber,
+          dataObj.faculty,
+          dataObj.course
+        );
       }
     }
     getUserInfo();
-  
-    
-  },[]);
+  }, []);
 
-  async function fetchLevel1Data(academyYear,indexNumber,faculty,course) {
+  async function fetchLevel1Data(academyYear, indexNumber, faculty, course) {
     const data = [];
 
     const db = firebase.firestore();
-    const querySnapshot = await db.collection(faculty+'-result');
+    const querySnapshot = await db.collection(faculty + "-result");
     const querySnapshot1 = await querySnapshot
       .doc(course)
       .collection(academyYear)
@@ -97,15 +100,13 @@ export default function ResultsScreen({ navigation }) {
     setLevel1(data);
     getGPALevel1(data);
     setFlag(false);
-    
-
   }
 
-  async function fetchLevel2Data(academyYear,indexNumber,faculty,course) {
+  async function fetchLevel2Data(academyYear, indexNumber, faculty, course) {
     const data = [];
 
     const db = firebase.firestore();
-    const querySnapshot = await db.collection(faculty+'-result');
+    const querySnapshot = await db.collection(faculty + "-result");
     const querySnapshot1 = await querySnapshot
       .doc(course)
       .collection(academyYear)
@@ -122,11 +123,11 @@ export default function ResultsScreen({ navigation }) {
     getGPALevel2(data);
   }
 
-  async function fetchLevel3Data(academyYear,indexNumber,faculty,course) {
+  async function fetchLevel3Data(academyYear, indexNumber, faculty, course) {
     const data = [];
 
     const db = firebase.firestore();
-    const querySnapshot = await db.collection(faculty+'-result');
+    const querySnapshot = await db.collection(faculty + "-result");
     const querySnapshot1 = await querySnapshot
       .doc(course)
       .collection(academyYear)
@@ -189,15 +190,13 @@ export default function ResultsScreen({ navigation }) {
         }
 
         var GPA1 = gpa1 / credits;
-        
+
         setLevel1GPA(GPA1);
         setFlag(false);
         CumlativeGPA(GPA1);
         console.log(credits + " " + gpa1);
-        
       });
     }
-
   }
 
   function getGPALevel2(data) {
@@ -250,7 +249,6 @@ export default function ResultsScreen({ navigation }) {
         setFlag(false);
         setLevel2GPA(GPA1);
         CumlativeGPA(GPA1);
-
       });
     }
 
@@ -308,409 +306,448 @@ export default function ResultsScreen({ navigation }) {
         setFlag(false);
         CumlativeGPA(GPA1);
         setisLoading(true);
-       
-
       });
     }
   }
 
-  
-if(isLoading == true){
-
-  return (
-    <View style={styles.container}>
-      <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
-          <Text
+  if (isLoading == true) {
+    return (
+      <View style={styles.container}>
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
             style={{
-              alignSelf: "center",
-              fontSize: hp("4%"),
-              fontWeight: "bold",
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
             }}
           >
-              Results Sheet
-          </Text>
-        </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
-
-      <View style={styles.GPA}>
-       
-          <View style={styles.CUMGPA}>
-            <Text style = {{fontSize:hp('2%'),fontWeight:'bold',alignSelf :'center'}} >Cumulative GPA</Text>
             <Text
-              style={{ alignSelf: "center", fontWeight: "bold", color: "#4c0370" }}
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Results Sheet
+            </Text>
+          </View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+
+        <View style={styles.GPA}>
+          <View style={styles.CUMGPA}>
+            <Text
+              style={{
+                fontSize: hp("2%"),
+                fontWeight: "bold",
+                alignSelf: "center",
+              }}
+            >
+              Cumulative GPA
+            </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontWeight: "bold",
+                color: "#4c0370",
+              }}
             >
               {cumGap}
             </Text>
           </View>
 
-         
-        <View style ={{marginLeft:wp('7%')}}>
-          <View 
-          style = {{borderColor: "#cdaffa",
-                    justifyContent:'center',
-                   width:wp('40%'),
-                   borderRadius: 40,
-                   backgroundColor: "#e9c8fa",
-                   marginBottom:hp('1%'),
-                   borderWidth:2}}>
-            <Text style={{alignSelf:'center'}}>Level1    -  {level1GPA}</Text>
-          </View>
+          <View style={{ marginLeft: wp("7%") }}>
+            <View
+              style={{
+                borderColor: "#cdaffa",
+                justifyContent: "center",
+                width: wp("40%"),
+                borderRadius: 40,
+                backgroundColor: "#e9c8fa",
+                marginBottom: hp("1%"),
+                borderWidth: 2,
+              }}
+            >
+              <Text style={{ alignSelf: "center" }}>Level1 - {level1GPA}</Text>
+            </View>
 
-          <View 
-          style = {{borderColor: "#cdaffa",
-                    justifyContent:'center',
-                   width:wp('40%'),
-                   borderRadius: 40,
-                   marginBottom:hp('1%'),
-                   backgroundColor: "#e9c8fa",
-                   borderWidth:2}}>
-            <Text  style={{alignSelf:'center'}}>Level2    -  {level2GPA}</Text>
-          </View>
-          <View 
-          style = {{borderColor: "#cdaffa",
-                    justifyContent:'center',
-                   width:wp('40%'),
-                   borderRadius: 40,
-                   marginBottom:hp('1%'),
-                   backgroundColor: "#e9c8fa",
-                   borderWidth:2}}>
-            <Text  style={{alignSelf:'center'}}>Level3    -  {level3GPA}</Text>
+            <View
+              style={{
+                borderColor: "#cdaffa",
+                justifyContent: "center",
+                width: wp("40%"),
+                borderRadius: 40,
+                marginBottom: hp("1%"),
+                backgroundColor: "#e9c8fa",
+                borderWidth: 2,
+              }}
+            >
+              <Text style={{ alignSelf: "center" }}>Level2 - {level2GPA}</Text>
+            </View>
+            <View
+              style={{
+                borderColor: "#cdaffa",
+                justifyContent: "center",
+                width: wp("40%"),
+                borderRadius: 40,
+                marginBottom: hp("1%"),
+                backgroundColor: "#e9c8fa",
+                borderWidth: 2,
+              }}
+            >
+              <Text style={{ alignSelf: "center" }}>Level3 - {level3GPA}</Text>
+            </View>
           </View>
         </View>
 
-
-
-       
-      </View>
-
-      <ScrollView style={styles.scrollScreen}>
-        <Text style = {{alignSelf:'center' ,fontSize:hp('2%'),fontWeight :'bold',marginTop:hp('2%')}}> Rsults</Text>
-        <View style={styles.tableContainer}>
-          <View style={styles.tableRowHeader}>
-            <View style={styles.tableColumnHeader}>
-              <Text style={styles.textHeader}>Level 1</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Course</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>Result</Text>
-            </View>
-          </View>
-
-          <FlatList
-            data={level1}
-            renderItem={({ item }) => (
-              <View style={styles.tableRow}>
-                <View style={styles.tableColumnCourse}>
-                  <Text style={styles.textLineItem}>{item.course}</Text>
-                </View>
-                <View style={styles.tableColumnResult}>
-                  <Text style={styles.textLineItem}>{item.result}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
-
-        <View style={styles.tableContainer}>
-          <View style={styles.tableRowHeader}>
-            <View style={styles.tableColumnHeader}>
-              <Text style={styles.textHeader}>Level 2</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Course</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>Result</Text>
-            </View>
-          </View>
-
-          <FlatList
-            data={level2}
-            renderItem={({ item }) => (
-              <View style={styles.tableRow}>
-                <View style={styles.tableColumnCourse}>
-                  <Text style={styles.textLineItem}>{item.course}</Text>
-                </View>
-                <View style={styles.tableColumnResult}>
-                  <Text style={styles.textLineItem}>{item.result}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
-        <View style={styles.tableContainer}>
-          <View style={styles.tableRowHeader}>
-            <View style={styles.tableColumnHeader}>
-              <Text style={styles.textHeader}>Level 3</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Course</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>Result</Text>
-            </View>
-          </View>
-
-          <FlatList
-            data={level3}
-            renderItem={({ item }) => (
-              <View style={styles.tableRow}>
-                <View style={styles.tableColumnCourse}>
-                  <Text style={styles.textLineItem}>{item.course}</Text>
-                </View>
-                <View style={styles.tableColumnResult}>
-                  <Text style={styles.textLineItem}>{item.result}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
-      </ScrollView>
-    </View>
-  );
-
-}
-
-if(flag == true){
-  return(
-    <View style={styles.Loadingcontainer}>
-    <ActivityIndicator color="#cdaffa" size="large" />
-  </View>
-  );
-}
-
-if( (level1 == '' && level2 == '') && level3 == ''){
-
-  return (
-    <View style={styles.container}>
-      <View style={{ backgroundColor: "white", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "#cdaffa",
-            height: hp("10%"),
-            borderBottomRightRadius: 60,
-            justifyContent: "center",
-          }}
-        >
+        <ScrollView style={styles.scrollScreen}>
           <Text
             style={{
               alignSelf: "center",
-              fontSize: hp("4%"),
+              fontSize: hp("2%"),
               fontWeight: "bold",
+              marginTop: hp("2%"),
             }}
           >
-              Results Sheet
+            {" "}
+            Rsults
           </Text>
-        </View>
-      </View>
-      <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: hp("10%"),
-            borderTopLeftRadius: 60,
-          }}
-        ></View>
-      </View>
+          <View style={styles.tableContainer}>
+            <View style={styles.tableRowHeader}>
+              <View style={styles.tableColumnHeader}>
+                <Text style={styles.textHeader}>Level 1</Text>
+              </View>
+            </View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColumnCourseHead}>
+                <Text style={styles.textLineItemHead}>Course</Text>
+              </View>
+              <View style={styles.tableColumnResultHead}>
+                <Text style={styles.textLineItemHead}>Result</Text>
+              </View>
+            </View>
 
-      <View style={styles.GPA}>
-       
-          <View style={styles.CUMGPA}>
-            <Text style = {{fontSize:hp('2%'),fontWeight:'bold',alignSelf :'center'}} >Cumulative GPA</Text>
+            <FlatList
+              data={level1}
+              renderItem={({ item }) => (
+                <View style={styles.tableRow}>
+                  <View style={styles.tableColumnCourse}>
+                    <Text style={styles.textLineItem}>{item.course}</Text>
+                  </View>
+                  <View style={styles.tableColumnResult}>
+                    <Text style={styles.textLineItem}>{item.result}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+
+          <View style={styles.tableContainer}>
+            <View style={styles.tableRowHeader}>
+              <View style={styles.tableColumnHeader}>
+                <Text style={styles.textHeader}>Level 2</Text>
+              </View>
+            </View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColumnCourseHead}>
+                <Text style={styles.textLineItemHead}>Course</Text>
+              </View>
+              <View style={styles.tableColumnResultHead}>
+                <Text style={styles.textLineItemHead}>Result</Text>
+              </View>
+            </View>
+
+            <FlatList
+              data={level2}
+              renderItem={({ item }) => (
+                <View style={styles.tableRow}>
+                  <View style={styles.tableColumnCourse}>
+                    <Text style={styles.textLineItem}>{item.course}</Text>
+                  </View>
+                  <View style={styles.tableColumnResult}>
+                    <Text style={styles.textLineItem}>{item.result}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+          <View style={styles.tableContainer}>
+            <View style={styles.tableRowHeader}>
+              <View style={styles.tableColumnHeader}>
+                <Text style={styles.textHeader}>Level 3</Text>
+              </View>
+            </View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColumnCourseHead}>
+                <Text style={styles.textLineItemHead}>Course</Text>
+              </View>
+              <View style={styles.tableColumnResultHead}>
+                <Text style={styles.textLineItemHead}>Result</Text>
+              </View>
+            </View>
+
+            <FlatList
+              data={level3}
+              renderItem={({ item }) => (
+                <View style={styles.tableRow}>
+                  <View style={styles.tableColumnCourse}>
+                    <Text style={styles.textLineItem}>{item.course}</Text>
+                  </View>
+                  <View style={styles.tableColumnResult}>
+                    <Text style={styles.textLineItem}>{item.result}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+
+  if (flag == true) {
+    return (
+      <View style={styles.Loadingcontainer}>
+        <ActivityIndicator color="#cdaffa" size="large" />
+      </View>
+    );
+  }
+
+  if (level1 == "" && level2 == "" && level3 == "") {
+    return (
+      <View style={styles.container}>
+        <View style={{ backgroundColor: "white", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "#cdaffa",
+              height: hp("10%"),
+              borderBottomRightRadius: 60,
+              justifyContent: "center",
+            }}
+          >
             <Text
-              style={{ alignSelf: "center", fontWeight: "bold", color: "#4c0370" }}
+              style={{
+                alignSelf: "center",
+                fontSize: hp("4%"),
+                fontWeight: "bold",
+              }}
+            >
+              Results Sheet
+            </Text>
+          </View>
+        </View>
+        <View style={{ backgroundColor: "#cdaffa", height: hp("10%") }}>
+          <View
+            style={{
+              backgroundColor: "white",
+              height: hp("10%"),
+              borderTopLeftRadius: 60,
+            }}
+          ></View>
+        </View>
+
+        <View style={styles.GPA}>
+          <View style={styles.CUMGPA}>
+            <Text
+              style={{
+                fontSize: hp("2%"),
+                fontWeight: "bold",
+                alignSelf: "center",
+              }}
+            >
+              Cumulative GPA
+            </Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontWeight: "bold",
+                color: "#4c0370",
+              }}
             >
               {cumGap}
             </Text>
           </View>
 
-         
-        <View style ={{marginLeft:wp('7%')}}>
-          <View 
-          style = {{borderColor: "#cdaffa",
-                    justifyContent:'center',
-                   width:wp('40%'),
-                   borderRadius: 40,
-                   backgroundColor: "#e9c8fa",
-                   marginBottom:hp('1%'),
-                   borderWidth:2}}>
-            <Text style={{alignSelf:'center'}}>Level1    -  {level1GPA}</Text>
-          </View>
+          <View style={{ marginLeft: wp("7%") }}>
+            <View
+              style={{
+                borderColor: "#cdaffa",
+                justifyContent: "center",
+                width: wp("40%"),
+                borderRadius: 40,
+                backgroundColor: "#e9c8fa",
+                marginBottom: hp("1%"),
+                borderWidth: 2,
+              }}
+            >
+              <Text style={{ alignSelf: "center" }}>Level1 - {level1GPA}</Text>
+            </View>
 
-          <View 
-          style = {{borderColor: "#cdaffa",
-                    justifyContent:'center',
-                   width:wp('40%'),
-                   borderRadius: 40,
-                   marginBottom:hp('1%'),
-                   backgroundColor: "#e9c8fa",
-                   borderWidth:2}}>
-            <Text  style={{alignSelf:'center'}}>Level2    -  {level2GPA}</Text>
-          </View>
-          <View 
-          style = {{borderColor: "#cdaffa",
-                    justifyContent:'center',
-                   width:wp('40%'),
-                   borderRadius: 40,
-                   marginBottom:hp('1%'),
-                   backgroundColor: "#e9c8fa",
-                   borderWidth:2}}>
-            <Text  style={{alignSelf:'center'}}>Level3    -  {level3GPA}</Text>
+            <View
+              style={{
+                borderColor: "#cdaffa",
+                justifyContent: "center",
+                width: wp("40%"),
+                borderRadius: 40,
+                marginBottom: hp("1%"),
+                backgroundColor: "#e9c8fa",
+                borderWidth: 2,
+              }}
+            >
+              <Text style={{ alignSelf: "center" }}>Level2 - {level2GPA}</Text>
+            </View>
+            <View
+              style={{
+                borderColor: "#cdaffa",
+                justifyContent: "center",
+                width: wp("40%"),
+                borderRadius: 40,
+                marginBottom: hp("1%"),
+                backgroundColor: "#e9c8fa",
+                borderWidth: 2,
+              }}
+            >
+              <Text style={{ alignSelf: "center" }}>Level3 - {level3GPA}</Text>
+            </View>
           </View>
         </View>
 
+        <ScrollView style={styles.scrollScreen}>
+          <Text
+            style={{
+              alignSelf: "center",
+              fontSize: hp("2%"),
+              fontWeight: "bold",
+              marginTop: hp("2%"),
+            }}
+          >
+            {" "}
+            Rsults
+          </Text>
+          <View style={styles.tableContainer}>
+            <View style={styles.tableRowHeader}>
+              <View style={styles.tableColumnHeader}>
+                <Text style={styles.textHeader}>Level 1</Text>
+              </View>
+            </View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColumnCourseHead}>
+                <Text style={styles.textLineItemHead}>Course</Text>
+              </View>
+              <View style={styles.tableColumnResultHead}>
+                <Text style={styles.textLineItemHead}>Result</Text>
+              </View>
+            </View>
 
+            <FlatList
+              data={level1}
+              renderItem={({ item }) => (
+                <View style={styles.tableRow}>
+                  <View style={styles.tableColumnCourse}>
+                    <Text style={styles.textLineItem}>{item.course}</Text>
+                  </View>
+                  <View style={styles.tableColumnResult}>
+                    <Text style={styles.textLineItem}>{item.result}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
 
-       
+          <View style={styles.tableContainer}>
+            <View style={styles.tableRowHeader}>
+              <View style={styles.tableColumnHeader}>
+                <Text style={styles.textHeader}>Level 2</Text>
+              </View>
+            </View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColumnCourseHead}>
+                <Text style={styles.textLineItemHead}>Course</Text>
+              </View>
+              <View style={styles.tableColumnResultHead}>
+                <Text style={styles.textLineItemHead}>Result</Text>
+              </View>
+            </View>
+
+            <FlatList
+              data={level2}
+              renderItem={({ item }) => (
+                <View style={styles.tableRow}>
+                  <View style={styles.tableColumnCourse}>
+                    <Text style={styles.textLineItem}>{item.course}</Text>
+                  </View>
+                  <View style={styles.tableColumnResult}>
+                    <Text style={styles.textLineItem}>{item.result}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+          <View style={styles.tableContainer}>
+            <View style={styles.tableRowHeader}>
+              <View style={styles.tableColumnHeader}>
+                <Text style={styles.textHeader}>Level 3</Text>
+              </View>
+            </View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColumnCourseHead}>
+                <Text style={styles.textLineItemHead}>Course</Text>
+              </View>
+              <View style={styles.tableColumnResultHead}>
+                <Text style={styles.textLineItemHead}>Result</Text>
+              </View>
+            </View>
+
+            <FlatList
+              data={level3}
+              renderItem={({ item }) => (
+                <View style={styles.tableRow}>
+                  <View style={styles.tableColumnCourse}>
+                    <Text style={styles.textLineItem}>{item.course}</Text>
+                  </View>
+                  <View style={styles.tableColumnResult}>
+                    <Text style={styles.textLineItem}>{item.result}</Text>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+        </ScrollView>
       </View>
+    );
+  }
 
-      <ScrollView style={styles.scrollScreen}>
-        <Text style = {{alignSelf:'center' ,fontSize:hp('2%'),fontWeight :'bold',marginTop:hp('2%')}}> Rsults</Text>
-        <View style={styles.tableContainer}>
-          <View style={styles.tableRowHeader}>
-            <View style={styles.tableColumnHeader}>
-              <Text style={styles.textHeader}>Level 1</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Course</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>Result</Text>
-            </View>
-          </View>
-
-          <FlatList
-            data={level1}
-            renderItem={({ item }) => (
-              <View style={styles.tableRow}>
-                <View style={styles.tableColumnCourse}>
-                  <Text style={styles.textLineItem}>{item.course}</Text>
-                </View>
-                <View style={styles.tableColumnResult}>
-                  <Text style={styles.textLineItem}>{item.result}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
-
-        <View style={styles.tableContainer}>
-          <View style={styles.tableRowHeader}>
-            <View style={styles.tableColumnHeader}>
-              <Text style={styles.textHeader}>Level 2</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Course</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>Result</Text>
-            </View>
-          </View>
-
-          <FlatList
-            data={level2}
-            renderItem={({ item }) => (
-              <View style={styles.tableRow}>
-                <View style={styles.tableColumnCourse}>
-                  <Text style={styles.textLineItem}>{item.course}</Text>
-                </View>
-                <View style={styles.tableColumnResult}>
-                  <Text style={styles.textLineItem}>{item.result}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
-        <View style={styles.tableContainer}>
-          <View style={styles.tableRowHeader}>
-            <View style={styles.tableColumnHeader}>
-              <Text style={styles.textHeader}>Level 3</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColumnCourseHead}>
-              <Text style={styles.textLineItemHead}>Course</Text>
-            </View>
-            <View style={styles.tableColumnResultHead}>
-              <Text style={styles.textLineItemHead}>Result</Text>
-            </View>
-          </View>
-
-          <FlatList
-            data={level3}
-            renderItem={({ item }) => (
-              <View style={styles.tableRow}>
-                <View style={styles.tableColumnCourse}>
-                  <Text style={styles.textLineItem}>{item.course}</Text>
-                </View>
-                <View style={styles.tableColumnResult}>
-                  <Text style={styles.textLineItem}>{item.result}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
-      </ScrollView>
-    </View>
-  );
-
-}
-
-
-
-
-  return(
+  return (
     <View style={styles.Loadingcontainer}>
-    <ActivityIndicator color="#cdaffa" size="large" />
-  </View>
+      <ActivityIndicator color="#cdaffa" size="large" />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  
 
     backgroundColor: "white",
   },
   GPA: {
     alignContent: "center",
-    alignSelf:'center',
+    alignSelf: "center",
     width: wp("100%"),
     height: hp("30%"),
     borderRadius: 5,
@@ -745,18 +782,18 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   CUMGPA: {
-    width:wp('60%'),
-    height:hp('10%'),
-    justifyContent:'center',
-    marginBottom:hp('3%'),
-    alignSelf:'center',
-    marginLeft: wp('4%'),
-    marginRight: wp('10%'),
+    width: wp("60%"),
+    height: hp("10%"),
+    justifyContent: "center",
+    marginBottom: hp("3%"),
+    alignSelf: "center",
+    marginLeft: wp("4%"),
+    marginRight: wp("10%"),
     borderWidth: 3,
     borderColor: "#cdaffa",
     borderRadius: 60,
     backgroundColor: "#e9c8fa",
-    marginTop: hp('1%'),
+    marginTop: hp("1%"),
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -767,10 +804,10 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   scrollScreen: {
-    marginTop: hp('3%'),
-   
-    width: wp('100%'),
-    height: hp('75%'),
+    marginTop: hp("3%"),
+
+    width: wp("100%"),
+    height: hp("75%"),
     backgroundColor: "white",
     borderRadius: 5,
     marginHorizontal: 1,
@@ -842,27 +879,27 @@ const styles = StyleSheet.create({
   tableRow: {
     flex: 5,
     flexDirection: "row",
-    maxHeight: hp('3.7%'),
+    maxHeight: hp("3.7%"),
   },
   tableRowHeader: {
     flex: 5,
     flexDirection: "row",
-    maxHeight: hp('10%'),
+    maxHeight: hp("10%"),
   },
   tableContainer: {
     backgroundColor: "#cdaffa",
-    marginTop:hp('3%'),
-    width:wp('96%'),
-    alignSelf:'center',
+    marginTop: hp("3%"),
+    width: wp("96%"),
+    alignSelf: "center",
     borderRadius: 5,
-    marginBottom: hp('2%'),
+    marginBottom: hp("2%"),
     flex: 1,
     padding: 3,
   },
   textHeader: {
     color: "#000000",
     fontWeight: "bold",
-    fontSize: hp('2%'),
+    fontSize: hp("2%"),
   },
   textHeaderSubTitle: {
     color: "#000000",
@@ -870,14 +907,14 @@ const styles = StyleSheet.create({
   },
   textLineItemHead: {
     color: "black",
-    fontSize: hp('2%'),
-    fontWeight:'500'
+    fontSize: hp("2%"),
+    fontWeight: "500",
   },
   textLineItem: {
     color: "#878a8c",
-    fontSize: hp('1.9%'),
-  }
-  ,Loadingcontainer: {
+    fontSize: hp("1.9%"),
+  },
+  Loadingcontainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

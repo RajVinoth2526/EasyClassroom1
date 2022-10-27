@@ -7,45 +7,33 @@ import {
   SafeAreaView,
   Image,
   BackHandler,
-  
 } from "react-native";
 import React from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { StatusBar } from "react-native";
 import {
-  useFocusEffect
- } from '@react-navigation/native';
- import { StatusBar } from 'react-native';
- import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 export default function WelcomeScreen({ navigation }) {
-
-
   useFocusEffect(
-    React.useCallback(() => {    
+    React.useCallback(() => {
       const onBackPress = () => {
         BackHandler.exitApp();
-        // Return true to stop default back navigaton
-        // Return false to keep default back navigaton
         return true;
       };
- 
-      // Add Event Listener for hardwareBackPress
-      BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress
-      );
- 
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
       return () => {
-        // Once the Screen gets blur Remove Event Listener
-        BackHandler.removeEventListener(
-          'hardwareBackPress',
-          onBackPress
-        );
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
-    }, []),
+    }, [])
   );
   React.useEffect(() => {
-    StatusBar.setBackgroundColor('white'); 
-    StatusBar.setTranslucent(true)
-   }, []);
+    StatusBar.setBackgroundColor("white");
+    StatusBar.setTranslucent(true);
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -53,10 +41,14 @@ export default function WelcomeScreen({ navigation }) {
           style={styles.logo}
           source={require("./../assets/ec.png")}
         ></Image>
-        <Text style = {{alignSelf:'center', color :'#cdaffa' ,fontWeight:'bold'}}>Easy Classroom</Text>
+        <Text
+          style={{ alignSelf: "center", color: "#cdaffa", fontWeight: "bold" }}
+        >
+          Easy Classroom
+        </Text>
         <Text style={styles.text}> TIME TO LEARN </Text>
       </View>
-    
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -82,18 +74,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    justifyContent:'center',
+    justifyContent: "center",
     alignItems: "center",
   },
 
-  
   button: {
-    
     backgroundColor: "#cdaffa",
-    marginBottom:hp('2%'),
-    justifyContent:'center',
+    marginBottom: hp("2%"),
+    justifyContent: "center",
     alignItems: "center",
-    height:hp('8%'),
+    height: hp("8%"),
     borderRadius: 12,
     shadowColor: "#000",
     shadowOffset: {
@@ -106,34 +96,31 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: wp('60%'),
-    height: hp('20%'),
+    width: wp("60%"),
+    height: hp("20%"),
   },
 
   logoContainer: {
-    marginTop:hp('20%'),
+    marginTop: hp("20%"),
     alignItems: "center",
   },
 
   buttonText: {
-    
     color: "black",
-    fontSize: hp('3%'),
-    fontWeight:'bold'
+    fontSize: hp("3%"),
+    fontWeight: "bold",
   },
 
   text: {
     fontWeight: "bold",
     color: "black",
-    marginTop:hp('1%'),
-    fontSize: hp('2.5%'),
-    fontWeight:'bold'
+    marginTop: hp("1%"),
+    fontSize: hp("2.5%"),
+    fontWeight: "bold",
   },
 
   buttonContainer: {
-    marginTop:hp('30%'),
-    width:wp('70%'),
-   
-  
+    marginTop: hp("30%"),
+    width: wp("70%"),
   },
 });

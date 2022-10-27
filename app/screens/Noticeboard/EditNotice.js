@@ -6,27 +6,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Image,
   Alert,
-  SafeAreaView,
   KeyboardAvoidingView,
-  keyboardVerticalOffset,
-  TouchableWithoutFeedback,
-  Keyboard,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import * as ImagePicker from "expo-image-picker";
-import { FontAwesome5 } from "@expo/vector-icons";
-import uuid from "react-native-uuid";
 import * as firebase from "firebase";
-//import { UploadPost } from '../../../../API/firebaseMethods/firebaseMethod';
-//import IMAGE from '../../../assets/photo.png';
-import { MaterialIcons } from "@expo/vector-icons";
-import { EditPost } from "../../../API/firebaseMethods/firebaseMethod";
-import { FontAwesome } from "@expo/vector-icons";
 import { EditNotice } from "../../../API/firebaseMethods/firebaseMethod";
-import { normalizeUnits } from "moment";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -37,32 +23,34 @@ export default function EditNoticeScreen({ navigation, route }) {
   const [notice1, setNotice1] = useState("");
   const [title1, setTitle1] = useState("");
   const { PostId } = route.params;
-  const {Type} = route.params;
-  const {Faculty} = route.params;
- 
+  const { Type } = route.params;
+  const { Faculty } = route.params;
+
   React.useEffect(() => {
     StatusBar.setBackgroundColor("#cdaffa");
     StatusBar.setTranslucent(true);
   }, []);
 
   const handlePress = () => {
-     if(!title1  ){
-      EditNotice(PostId, notice1, title, Type,Faculty);
+    if (!title1) {
+      EditNotice(PostId, notice1, title, Type, Faculty);
       navigation.goBack();
       Alert.alert("notice Updated!!");
-    }if(!notice1){
-      EditNotice(PostId, notice, title1, Type , Faculty);
+    }
+    if (!notice1) {
+      EditNotice(PostId, notice, title1, Type, Faculty);
       navigation.goBack();
       Alert.alert("notice Updated!!");
-    }if(!notice1 && !title1){
-      EditNotice(PostId, notice, title, Type , Faculty);
+    }
+    if (!notice1 && !title1) {
+      EditNotice(PostId, notice, title, Type, Faculty);
       navigation.goBack();
       Alert.alert("notice Updated!!");
-    }if(notice1 && title1){
-      EditNotice(PostId, notice1, title1, Type , Faculty);
+    }
+    if (notice1 && title1) {
+      EditNotice(PostId, notice1, title1, Type, Faculty);
       navigation.goBack();
       Alert.alert("notice Updated!!");
-
     }
   };
 
@@ -70,7 +58,7 @@ export default function EditNoticeScreen({ navigation, route }) {
     async function getUserInfo() {
       let doc = await firebase
         .firestore()
-        .collection(Faculty+"Notices")
+        .collection(Faculty + "Notices")
         .doc(PostId)
         .get();
 
@@ -120,38 +108,30 @@ export default function EditNoticeScreen({ navigation, route }) {
         ></View>
       </View>
 
-
-
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-        <ScrollView style={{height:hp('40%'),marginTop:hp('10%')}}>
-        <View>
-       
-       
-
-          
-
-         
-         
-        
-
-          <View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Title</Text>
-            <View style={styles.action}>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <ScrollView style={{ height: hp("40%"), marginTop: hp("10%") }}>
+          <View>
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Title</Text>
+              <View style={styles.action}>
                 <TextInput
                   style={styles.textinput}
                   editable={true}
-                  defaultValue ={title}
+                  defaultValue={title}
                   multiline={true}
                   numberOfLines={2}
                   textAlignVertical="top"
                   onChangeText={(title1) => setTitle1(title1)}
                 />
               </View>
-          </View>
+            </View>
 
-          < View style={styles.cardCont}>
-            <Text style={styles.cardtext}>Content</Text>
-            <View style={styles.action1}>
+            <View style={styles.cardCont}>
+              <Text style={styles.cardtext}>Content</Text>
+              <View style={styles.action1}>
                 <TextInput
                   style={styles.textinput}
                   editable={true}
@@ -162,28 +142,13 @@ export default function EditNoticeScreen({ navigation, route }) {
                   onChangeText={(notice1) => setNotice1(notice1)}
                 />
               </View>
+            </View>
           </View>
-
-         
-
-         
-
-          
-
-
-           
-          
-
-            
-          </View>
-
         </ScrollView>
-        </KeyboardAvoidingView>
-        <TouchableOpacity style={styles.buttonSignup}  onPress={handlePress}>
-            <Text style={styles.SignUpText}>Upload</Text>
-         </TouchableOpacity>
-
-     
+      </KeyboardAvoidingView>
+      <TouchableOpacity style={styles.buttonSignup} onPress={handlePress}>
+        <Text style={styles.SignUpText}>Upload</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -217,11 +182,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
   },
-  photoUpload:{
-    alignSelf:'flex-end',
-    marginRight:wp('20%'),
-    marginTop:hp('3%')
-
+  photoUpload: {
+    alignSelf: "flex-end",
+    marginRight: wp("20%"),
+    marginTop: hp("3%"),
   },
 
   cardtext: {
@@ -315,11 +279,11 @@ const styles = StyleSheet.create({
   },
   avatar: {
     height: hp("20%"),
-                    width: wp("60%"),
+    width: wp("60%"),
     alignSelf: "center",
     borderRadius: 10,
     shadowColor: "#000",
-    backgroundColor:'white',
+    backgroundColor: "white",
     shadowOffset: {
       width: 0,
       height: 1,
