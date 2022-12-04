@@ -87,6 +87,7 @@ export default function AddResultsScreen({ navigation }) {
            faculty,
            department
           );
+          navigation.goBack();
           Alert.alert(" Result Added successfully");
           emptyState();
         }

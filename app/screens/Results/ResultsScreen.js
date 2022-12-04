@@ -507,7 +507,7 @@ if(flag == true){
   );
 }
 
-if( (level1 == '' && level2 == '') && level3 == ''){
+if( (level1 == '' || level2 == '') || level3 == ''){
 
   return (
     <View style={styles.container}>
