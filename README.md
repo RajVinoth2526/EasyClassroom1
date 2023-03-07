@@ -2,6 +2,12 @@
 
 Mobile application to manage classroom works for any educational institutions.
 
+Please use bellow this link for user guide and installation
+
+https://drive.google.com/drive/folders/1ByHwVio1kRAaWPCWEx4z9dujUxlUxSMx?usp=share_link
+
+
+
 ### Software prerequisites
 
 Install the below tools/packages
